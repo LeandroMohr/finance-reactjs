@@ -1,15 +1,38 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { navGroups, siteConfig } from "@/config/site";
-import { useTheme } from "./useTheme";
 import styles from "./Header.module.scss";
 
+type Theme = "dark" | "light";
+
+// The pre-hydration script in the root layout sets `data-theme`, so the DOM is the source of truth.
+function subscribeToTheme(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+  return () => observer.disconnect();
+}
+
+function readTheme(): Theme {
+  return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+}
+
+function applyTheme(theme: Theme) {
+  window.localStorage.setItem("theme", theme);
+  document.documentElement.setAttribute("data-theme", theme);
+  document.documentElement.style.colorScheme = theme;
+}
+
 export default function Header() {
-  const { theme, toggleTheme } = useTheme();
+  const theme = useSyncExternalStore(subscribeToTheme, readTheme, () => "dark" as Theme);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
+
+  const toggleTheme = () => applyTheme(theme === "dark" ? "light" : "dark");
 
   useEffect(() => {
     if (!openGroup) return;

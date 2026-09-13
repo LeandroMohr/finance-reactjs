@@ -60,10 +60,10 @@ src/
     compound-interest/
       page.tsx
   components/
-    layout/                             # Header, Footer e hook de tema
+    header/
       Header.tsx / Header.module.scss / Header.test.tsx
+    footer/
       Footer.tsx / Footer.module.scss / Footer.test.tsx
-      useTheme.ts
     compoundInterestCalculator/         # uma pasta por ferramenta
       CompoundInterestCalculator.tsx    # UI + cálculo
       CompoundInterestCalculator.module.scss
