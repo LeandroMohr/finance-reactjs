@@ -1,0 +1,16 @@
+@use "@/styles/variables" as *;
+
+.calculatorContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.chartBar {
+  width: 100%;
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  background-color: var(--brand-cta);
+  opacity: 0.9;
+  transition: height 0.3s ease-in-out;
+}
