@@ -48,15 +48,14 @@ src/
   app/                                  # rotas (App Router) + SEO
     layout.tsx                          # Header + Footer + tema
     page.tsx                            # hub de ferramentas
+    page.module.scss
     page.test.tsx
     loading.tsx                         # skeleton de transição de rota
+    loading.module.scss
     not-found.tsx
+    not-found.module.scss
     robots.ts
     sitemap.ts                          # gerado a partir das rotas existentes
-    _styles/                            # estilos das páginas (pasta privada)
-      home.module.scss
-      loading.module.scss
-      not-found.module.scss
     compound-interest/
       page.tsx
   components/
