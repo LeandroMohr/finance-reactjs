@@ -1,0 +1,51 @@
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  background-color: var(--bg-surface);
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.cardAvailable:hover {
+  border-color: var(--brand-accent);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 25%);
+  transform: translateY(-2px);
+}
+
+.cardSoon {
+  opacity: 0.6;
+}
+
+.badge {
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badgeAvailable {
+  background-color: color-mix(in srgb, var(--brand-primary) 12%, transparent);
+  color: var(--brand-accent);
+}
+
+.badgeSoon {
+  background-color: color-mix(in srgb, var(--feedback-warning) 12%, transparent);
+  color: var(--feedback-warning);
+}
