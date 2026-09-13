@@ -1,0 +1,73 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.main {
+  @include container;
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  padding-block: $space-12;
+}
+
+.bar {
+  height: 1rem;
+  border-radius: $radius-pill;
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface) 25%,
+    var(--bg-card) 50%,
+    var(--bg-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.title {
+  width: min(28rem, 80%);
+  height: 2.25rem;
+}
+
+.subtitle {
+  width: min(40rem, 100%);
+}
+
+.grid {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: 1fr;
+
+  @media (min-width: $bp-sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: $bp-lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.card {
+  @include surface;
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  height: 11rem;
+  padding: $space-6;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+  }
+}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
-import styles from "./not-found.module.scss";
+import styles from "./_styles/not-found.module.scss";
 
 export default function NotFound() {
   return (

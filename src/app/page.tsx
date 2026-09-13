@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { navGroups, siteConfig } from "@/config/site";
-import styles from "./page.module.scss";
+import styles from "./_styles/home.module.scss";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
