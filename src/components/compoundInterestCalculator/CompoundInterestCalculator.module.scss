@@ -1,16 +1,230 @@
 @use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
-.calculatorContainer {
+.main {
+  @include container;
+
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: $space-8;
+  padding-block: $space-8 $space-12;
+}
+
+.intro {
+  @include surface;
+
+  padding: $space-6;
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.title {
+  margin-top: $space-3;
+  font-size: $font-2xl;
+
+  @media (min-width: $bp-sm) {
+    font-size: $font-3xl;
+  }
+}
+
+.introText {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  margin-top: $space-4;
+  color: var(--text-muted);
+}
+
+.simulation {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: 1fr;
+
+  @media (min-width: $bp-lg) {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+.form {
+  @include card;
+
+  padding: $space-6;
+}
+
+.sectionTitle {
+  margin-top: $space-2;
+  font-size: $font-xl;
+}
+
+.fields {
+  display: grid;
+  gap: $space-4;
+  margin-top: $space-6;
+  grid-template-columns: 1fr;
+
+  @media (min-width: $bp-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.input {
+  padding: $space-3;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: $font-md;
+  transition: border-color 0.2s ease;
+
+  @include focus-ring;
+
+  &:focus {
+    border-color: var(--brand-cta);
+    outline: none;
+  }
+}
+
+.summary {
+  @include surface;
+
+  margin-top: $space-6;
+  padding: $space-4;
+}
+
+.summaryLabel {
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.summaryValue {
+  margin-top: $space-2;
+  font-size: $font-lg;
+  font-weight: 600;
+}
+
+.result {
+  @include surface;
+
+  padding: $space-6;
+}
+
+.highlight {
+  @include card;
+
+  margin-top: $space-6;
+  padding: $space-4;
+}
+
+.highlightValue {
+  margin-top: $space-2;
+  font-size: $font-2xl;
+  font-weight: 700;
+  color: var(--brand-primary);
+}
+
+.metrics {
+  display: grid;
+  gap: $space-3;
+  margin-top: $space-6;
+  grid-template-columns: 1fr;
+
+  @media (min-width: $bp-sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.metric {
+  @include card;
+
+  padding: $space-4;
+}
+
+.metricLabel {
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.metricValue {
+  margin-top: $space-2;
+  font-size: $font-lg;
+  font-weight: 600;
+}
+
+.metricPositive {
+  color: var(--feedback-success);
+}
+
+.evolution {
+  @include card;
+
+  padding: $space-6;
+}
+
+.chart {
+  display: grid;
+  align-items: end;
+  gap: $space-2;
+  height: 9rem;
+  margin-block: $space-6;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.chartColumn {
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
 }
 
 .chartBar {
   width: 100%;
-  border-top-left-radius: 0.375rem;
-  border-top-right-radius: 0.375rem;
+  border-radius: $radius-sm $radius-sm 0 0;
   background-color: var(--brand-cta);
   opacity: 0.9;
   transition: height 0.3s ease-in-out;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-sm;
+  text-align: left;
+
+  thead {
+    background-color: var(--bg-surface);
+    color: var(--text-muted);
+  }
+
+  th,
+  td {
+    padding: $space-3 $space-4;
+  }
+
+  tbody tr {
+    border-top: 1px solid var(--border);
+  }
+}
+
+.interest {
+  color: var(--feedback-success);
+}
+
+.balance {
+  font-weight: 600;
 }

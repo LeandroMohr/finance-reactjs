@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getStaticRoutes } from "./routes";
-import { tools } from "./site";
+import { allNavItems } from "./site";
 
 describe("getStaticRoutes", () => {
   const routes = getStaticRoutes();
@@ -12,16 +12,16 @@ describe("getStaticRoutes", () => {
   it("discovers a route for every available tool", () => {
     const paths = routes.map((route) => route.path);
 
-    for (const tool of tools.filter((item) => item.available)) {
-      expect(paths).toContain(`/${tool.slug}/`);
+    for (const item of allNavItems.filter((entry) => entry.available)) {
+      expect(paths).toContain(`/${item.slug}/`);
     }
   });
 
   it("does not expose routes for tools that are not implemented yet", () => {
     const paths = routes.map((route) => route.path);
 
-    for (const tool of tools.filter((item) => !item.available)) {
-      expect(paths).not.toContain(`/${tool.slug}/`);
+    for (const item of allNavItems.filter((entry) => !entry.available)) {
+      expect(paths).not.toContain(`/${item.slug}/`);
     }
   });
 

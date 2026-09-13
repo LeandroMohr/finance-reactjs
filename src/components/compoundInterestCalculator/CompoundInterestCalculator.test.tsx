@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import CompoundInterestCalculator from "./CompoundInterestCalculator";
 
 function getInput(label: string): HTMLInputElement {
@@ -8,27 +8,19 @@ function getInput(label: string): HTMLInputElement {
 }
 
 describe("CompoundInterestCalculator", () => {
-  beforeEach(() => {
-    window.localStorage.clear();
-  });
-
   it("renders the heading and every simulation field", () => {
     render(<CompoundInterestCalculator />);
 
     expect(
-      screen.getByRole("heading", { name: "Calculadora de juros compostos" }),
+      screen.getByRole("heading", {
+        name: "Juros compostos: como o dinheiro cresce com o tempo",
+      }),
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Descubra seu crescimento" })).toBeInTheDocument();
 
     for (const label of ["Aporte inicial", "Aporte mensal", "Taxa anual (%)", "Tempo (anos)"]) {
       expect(getInput(label)).toBeInTheDocument();
     }
-  });
-
-  it("links back to the tools hub", () => {
-    render(<CompoundInterestCalculator />);
-
-    expect(screen.getByRole("link", { name: /Lemo Finance/ })).toHaveAttribute("href", "/");
   });
 
   it("renders the monthly breakdown limited to the last twelve months", () => {
@@ -39,11 +31,15 @@ describe("CompoundInterestCalculator", () => {
     expect(rows).toHaveLength(13); // header + 12 months
   });
 
-  it("recalculates the result when the user changes a field", async () => {
-    const user = userEvent.setup();
+  it("shows the default result before any interaction", () => {
     render(<CompoundInterestCalculator />);
 
     expect(screen.getByText("R$ 35.000,00 aportados em 5 ano(s)")).toBeInTheDocument();
+  });
+
+  it("recalculates the result when the user changes a field", async () => {
+    const user = userEvent.setup();
+    render(<CompoundInterestCalculator />);
 
     const years = getInput("Tempo (anos)");
     await user.clear(years);
@@ -52,17 +48,12 @@ describe("CompoundInterestCalculator", () => {
     expect(screen.getByText("R$ 11.000,00 aportados em 1 ano(s)")).toBeInTheDocument();
   });
 
-  it("toggles the theme and persists the choice", async () => {
+  it("treats an emptied field as zero without breaking the calculation", async () => {
     const user = userEvent.setup();
     render(<CompoundInterestCalculator />);
 
-    const toggle = screen.getByRole("button", { name: "Alternar tema" });
-    expect(toggle).toHaveTextContent("Modo claro");
+    await user.clear(getInput("Aporte inicial"));
 
-    await user.click(toggle);
-
-    expect(toggle).toHaveTextContent("Modo escuro");
-    expect(window.localStorage.getItem("theme")).toBe("light");
-    expect(document.documentElement).toHaveAttribute("data-theme", "light");
+    expect(screen.getByText("R$ 30.000,00 aportados em 5 ano(s)")).toBeInTheDocument();
   });
 });

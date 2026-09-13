@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { siteConfig } from "@/config/site";
-import "./globals.css";
 import "@/styles/global.scss";
 
 const inter = Inter({
@@ -25,11 +26,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${inter.variable} min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] antialiased`}>
+      <body className={inter.variable}>
         <Script id="theme-init" strategy="beforeInteractive">
           {`(function(){ try { const saved = localStorage.getItem('theme'); const theme = saved || 'dark'; document.documentElement.setAttribute('data-theme', theme); document.documentElement.style.colorScheme = theme; } catch (e) {} })();`}
         </Script>
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

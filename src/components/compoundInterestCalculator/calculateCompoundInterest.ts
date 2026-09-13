@@ -32,7 +32,6 @@ export function calculateCompoundInterest({
 
   let balance = initialAmount;
   let totalContribution = initialAmount;
-  let totalInterest = 0;
   const monthlyBreakdown: MonthlyBreakdown[] = [];
 
   for (let month = 1; month <= totalMonths; month += 1) {
@@ -41,7 +40,6 @@ export function calculateCompoundInterest({
 
     const interest = balance * monthlyRate;
     balance += contribution + interest;
-    totalInterest += interest;
 
     monthlyBreakdown.push({
       month,

@@ -1,0 +1,44 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.main {
+  @include container;
+
+  display: grid;
+  place-items: center;
+  flex: 1;
+  padding-block: $space-12;
+}
+
+.card {
+  @include card;
+
+  padding: $space-8;
+  text-align: center;
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.title {
+  margin-top: $space-4;
+  font-size: $font-3xl;
+}
+
+.text {
+  margin-top: $space-2;
+  color: var(--text-muted);
+}
+
+.link {
+  @include focus-ring;
+
+  display: inline-block;
+  margin-top: $space-6;
+  padding: $space-3 $space-5;
+  border-radius: $radius-pill;
+  background-color: var(--brand-cta);
+  color: #08110c;
+  font-weight: 600;
+}
