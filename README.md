@@ -4,7 +4,7 @@ Projeto inicial do MVP de calculadora financeira em Next.js, com foco em juros c
 
 ## Visão geral
 
-- Stack: Next.js + TypeScript + Tailwind + Sass (CSS Modules)
+- Stack: Next.js + TypeScript + Sass (SCSS Modules)
 - Objetivo: criar calculadora estática de juros compostos
 - Branding: dark-first com tema claro opcional e paleta definida em docs/DESIGN.md
 - Deploy alvo: Cloudflare Pages com export estático
@@ -13,6 +13,7 @@ Projeto inicial do MVP de calculadora financeira em Next.js, com foco em juros c
 
 - [docs/DESIGN.md](docs/DESIGN.md) — identidade visual, paleta e acessibilidade
 - [docs/PLAN.md](docs/PLAN.md) — arquitetura, SEO, monetização e roadmap do MVP
+- [docs/ROADMAP.md](docs/ROADMAP.md) — lista de calculadoras e ferramentas planejadas
 
 ## Instalação e scripts
 
@@ -45,18 +46,22 @@ yarn test:coverage
 ```text
 src/
   app/                                  # rotas (App Router) + SEO
-    layout.tsx
-    globals.css
+    layout.tsx                          # Header + Footer + tema
     page.tsx                            # hub de ferramentas
     page.module.scss
     page.test.tsx
     not-found.tsx
+    not-found.module.scss
     robots.ts
     sitemap.ts                          # gerado a partir das rotas existentes
     compound-interest/
       page.tsx
-  components/                           # uma pasta por ferramenta
-    compoundInterestCalculator/
+  components/
+    layout/                             # Header, Footer e hook de tema
+      Header.tsx / Header.module.scss / Header.test.tsx
+      Footer.tsx / Footer.module.scss / Footer.test.tsx
+      useTheme.ts
+    compoundInterestCalculator/         # uma pasta por ferramenta
       CompoundInterestCalculator.tsx
       CompoundInterestCalculator.module.scss
       CompoundInterestCalculator.test.tsx
@@ -66,12 +71,22 @@ src/
     site.ts                             # domínio, nome e catálogo de ferramentas
     routes.ts                           # descoberta automática de rotas
   styles/
-    global.scss
-    variables.scss
+    global.scss                         # reset e tema (dark/light)
+    variables.scss                      # tokens: cores, espaçamentos, breakpoints
+    mixins.scss                         # container, card, surface, focus-ring
 public/
   documents/ images/
 docs/                                   # planejamento e documentação
 ```
+
+## Estilos
+
+O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitários.
+
+- `variables.scss` — tokens em Sass (`$space-4`, `$radius-lg`, `$bp-md`)
+- `global.scss` — reset e variáveis CSS de tema (`--bg-base`, `--brand-cta`), trocadas em runtime
+- `mixins.scss` — blocos reutilizáveis (`@include card`, `@include container`)
+- `*.module.scss` — estilo local de cada componente, com classes escopadas automaticamente
 
 ## Build e deploy
 
