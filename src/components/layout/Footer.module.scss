@@ -1,0 +1,127 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  background-color: var(--bg-surface);
+}
+
+.inner {
+  @include container;
+
+  display: grid;
+  gap: $space-8;
+  padding-block: $space-12 $space-8;
+  grid-template-columns: 1fr;
+
+  @media (min-width: $bp-md) {
+    grid-template-columns: 1.4fr repeat(2, 1fr);
+  }
+}
+
+.brandColumn {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  width: fit-content;
+
+  @include focus-ring;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: $radius-pill;
+  background-color: var(--brand-cta);
+  color: #08110c;
+  font-weight: 900;
+}
+
+.brandName {
+  font-weight: 700;
+}
+
+.tagline {
+  max-width: 32ch;
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.columnTitle {
+  @include eyebrow;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  font-size: $font-sm;
+  transition: color 0.2s ease;
+
+  @include focus-ring;
+
+  &:hover {
+    color: var(--brand-accent);
+  }
+}
+
+.linkDisabled {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-sm;
+  color: var(--text-muted);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.soonBadge {
+  padding: 0.1rem $space-2;
+  border-radius: $radius-pill;
+  background-color: color-mix(in srgb, var(--feedback-warning) 16%, transparent);
+  color: var(--feedback-warning);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.bottom {
+  border-top: 1px solid var(--border);
+
+  > * {
+    @include container;
+  }
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding-block: $space-5;
+  font-size: $font-xs;
+  color: var(--text-muted);
+}
+
+.disclaimer {
+  opacity: 0.85;
+}
