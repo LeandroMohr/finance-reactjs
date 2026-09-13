@@ -1,0 +1,52 @@
+@use "./variables" as *;
+
+:root {
+  --bg-base: #{$bg-base};
+  --bg-surface: #{$bg-surface};
+  --bg-card: #{$bg-card};
+  --border: #{$border};
+  --text-primary: #{$text-primary};
+  --text-muted: #{$text-muted};
+  --brand-primary: #{$brand-primary};
+  --brand-accent: #{$brand-accent};
+  --brand-cta: #{$brand-cta};
+  --feedback-success: #{$feedback-success};
+  --feedback-warning: #{$feedback-warning};
+  --feedback-error: #{$feedback-error};
+}
+
+html[data-theme="light"] {
+  --bg-base: #{$light-bg-base};
+  --bg-surface: #{$light-bg-surface};
+  --bg-card: #{$light-bg-card};
+  --border: #{$light-border};
+  --text-primary: #{$light-text-primary};
+  --text-muted: #{$light-text-muted};
+  --brand-primary: #{$light-brand-primary};
+  --brand-accent: #{$light-brand-accent};
+  --brand-cta: #{$light-brand-cta};
+  --feedback-success: #{$light-feedback-success};
+  --feedback-warning: #{$light-feedback-warning};
+  --feedback-error: #{$light-feedback-error};
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+}
+
+html {
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans), Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}

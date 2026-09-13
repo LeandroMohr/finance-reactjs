@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
+import { siteConfig } from "@/config/site";
 import "./globals.css";
+import "@/styles/global.scss";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -9,13 +11,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://calc.lemohr.com.br"),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Lemo | Calculadora de juros compostos",
-    template: "%s | Lemo",
+    default: `${siteConfig.name} | Calculadoras e Ferramentas Financeiras`,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "Calculadora de juros compostos com simulação de aporte inicial, aporte mensal e projeção de crescimento financeiro.",
+  description: siteConfig.description,
   alternates: {
     canonical: "/",
   },
