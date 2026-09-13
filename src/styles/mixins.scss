@@ -1,0 +1,40 @@
+@use "./variables" as *;
+
+@mixin surface {
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  background-color: var(--bg-surface);
+}
+
+@mixin card {
+  border: 1px solid var(--border);
+  border-radius: $radius-lg;
+  background-color: var(--bg-card);
+}
+
+@mixin container {
+  width: 100%;
+  max-width: $container-width;
+  margin: 0 auto;
+  padding-inline: $space-4;
+
+  @media (min-width: $bp-sm) {
+    padding-inline: $space-6;
+  }
+}
+
+@mixin eyebrow {
+  margin: 0;
+  font-size: $font-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--brand-cta);
+    outline-offset: 2px;
+  }
+}
