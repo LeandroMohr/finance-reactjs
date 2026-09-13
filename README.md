@@ -69,7 +69,7 @@ src/
     global.scss
     variables.scss
 public/
-  banners/ documents/ icons/ images/ pdfs/
+  documents/ images/
 docs/                                   # planejamento e documentação
 ```
 
