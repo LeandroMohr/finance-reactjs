@@ -48,12 +48,15 @@ src/
   app/                                  # rotas (App Router) + SEO
     layout.tsx                          # Header + Footer + tema
     page.tsx                            # hub de ferramentas
-    page.module.scss
     page.test.tsx
+    loading.tsx                         # skeleton de transição de rota
     not-found.tsx
-    not-found.module.scss
     robots.ts
     sitemap.ts                          # gerado a partir das rotas existentes
+    _styles/                            # estilos das páginas (pasta privada)
+      home.module.scss
+      loading.module.scss
+      not-found.module.scss
     compound-interest/
       page.tsx
   components/
@@ -62,11 +65,9 @@ src/
       Footer.tsx / Footer.module.scss / Footer.test.tsx
       useTheme.ts
     compoundInterestCalculator/         # uma pasta por ferramenta
-      CompoundInterestCalculator.tsx
+      CompoundInterestCalculator.tsx    # UI + cálculo
       CompoundInterestCalculator.module.scss
       CompoundInterestCalculator.test.tsx
-      calculateCompoundInterest.ts      # lógica pura
-      calculateCompoundInterest.test.ts
   config/
     site.ts                             # domínio, nome e catálogo de ferramentas
     routes.ts                           # descoberta automática de rotas
@@ -75,6 +76,7 @@ src/
     variables.scss                      # tokens: cores, espaçamentos, breakpoints
     mixins.scss                         # container, card, surface, focus-ring
 public/
+  favicon.ico
   documents/ images/
 docs/                                   # planejamento e documentação
 ```
