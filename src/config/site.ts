@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Lemo Finance",
   url: "https://calc.lemohr.com.br",
   description:
-    "Simuladores e calculadoras financeiras simples, rápidas e gratuitas para planejamento e investimentos.",
+    "Simuladores e calculadoras financeiras eficientes para planejamento e tomadas de decisão.",
   author: "Leandro Mohr",
 } as const;
 
