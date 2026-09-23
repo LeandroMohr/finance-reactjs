@@ -128,7 +128,7 @@ describe("CompoundInterestCalculator", () => {
     expect(rows).toHaveLength(1); // header only
   });
 
-  it("renders the monthly breakdown limited to the last twelve months", async () => {
+  it("paginates the monthly breakdown twelve rows at a time", async () => {
     const user = userEvent.setup();
     render(<CompoundInterestCalculator />);
 
@@ -139,9 +139,58 @@ describe("CompoundInterestCalculator", () => {
     await user.type(duration, "18");
     await user.selectOptions(screen.getByLabelText("Unidade do tempo"), "months");
 
-    const rows = within(screen.getByRole("table")).getAllByRole("row");
+    const table = screen.getByRole("table");
 
-    expect(rows).toHaveLength(13); // header + 12 months
+    expect(within(table).getAllByRole("row")).toHaveLength(13); // header + 12 months
+    expect(within(table).getByRole("columnheader", { name: "Mês" })).toBeInTheDocument();
+    expect(screen.getByText("Página 1 de 2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Última página" }));
+
+    expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(7); // header + 6
+    expect(screen.getByText("Página 2 de 2")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Primeira página" }));
+
+    expect(screen.getByText("Página 1 de 2")).toBeInTheDocument();
+  });
+
+  it("groups the monthly breakdown every twelve months on demand", async () => {
+    const user = userEvent.setup();
+    render(<CompoundInterestCalculator />);
+
+    await user.type(getInput("Aporte mensal"), "10000");
+
+    const duration = getInput("Tempo");
+    await user.clear(duration);
+    await user.type(duration, "18");
+    await user.selectOptions(screen.getByLabelText("Unidade do tempo"), "months");
+    await user.click(screen.getByLabelText("Agrupar a cada 12 meses"));
+
+    const table = screen.getByRole("table");
+
+    expect(within(table).getByRole("columnheader", { name: "Mês" })).toBeInTheDocument();
+    expect(within(table).getAllByRole("row")).toHaveLength(3); // header + 2 ranges
+    expect(within(table).getByRole("cell", { name: "1-12" })).toBeInTheDocument();
+    expect(within(table).getByRole("cell", { name: "13-18" })).toBeInTheDocument();
+    expect(screen.queryByText(/Página/)).not.toBeInTheDocument();
+  });
+
+  it("lists the breakdown by year when the period is set in years", async () => {
+    const user = userEvent.setup();
+    render(<CompoundInterestCalculator />);
+
+    await user.type(getInput("Aporte mensal"), "10000");
+
+    const duration = getInput("Tempo");
+    await user.clear(duration);
+    await user.type(duration, "2");
+
+    const table = screen.getByRole("table");
+
+    expect(within(table).getByRole("columnheader", { name: "Ano" })).toBeInTheDocument();
+    expect(within(table).getAllByRole("row")).toHaveLength(3); // header + 2 years
+    expect(screen.queryByLabelText("Agrupar a cada 12 meses")).not.toBeInTheDocument();
   });
 
   it("masks currency fields as BRL while the user types", async () => {
@@ -170,7 +219,7 @@ describe("CompoundInterestCalculator", () => {
     await user.type(duration, "1.5");
 
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(13);
+    expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(3); // header + 2 years
   });
 
   it("shows an error when the interest rate is negative", async () => {

@@ -110,6 +110,51 @@ const CHART = {
 
 type ChartPoint = { month: number; balance: number; x: number; y: number };
 
+type TableMode = "months" | "monthRanges" | "years";
+
+type TableRow = {
+  key: number;
+  label: string;
+  contribution: number;
+  interest: number;
+  balance: number;
+};
+
+const ROWS_PER_PAGE = 12;
+
+function buildTableRows(months: MonthlyBreakdown[], mode: TableMode): TableRow[] {
+  if (mode === "months") {
+    return months.map((item) => ({
+      key: item.month,
+      label: String(item.month),
+      contribution: item.contribution,
+      interest: item.interest,
+      balance: item.balance,
+    }));
+  }
+
+  const rows: TableRow[] = [];
+
+  for (let start = 0; start < months.length; start += MONTHS_PER_YEAR) {
+    const chunk = months.slice(start, start + MONTHS_PER_YEAR);
+    const first = chunk[0];
+    const last = chunk[chunk.length - 1];
+
+    rows.push({
+      key: last.month,
+      label:
+        mode === "years"
+          ? String(Math.ceil(last.month / MONTHS_PER_YEAR))
+          : `${first.month}-${last.month}`,
+      contribution: chunk.reduce((total, item) => total + item.contribution, 0),
+      interest: chunk.reduce((total, item) => total + item.interest, 0),
+      balance: last.balance,
+    });
+  }
+
+  return rows;
+}
+
 function buildChart(months: MonthlyBreakdown[]) {
   const innerWidth = CHART.width - CHART.paddingLeft - CHART.paddingRight;
   const innerHeight = CHART.height - CHART.paddingTop - CHART.paddingBottom;
@@ -285,9 +330,19 @@ export default function CompoundInterestCalculator() {
 
   const chart = useMemo(() => buildChart(result.monthlyBreakdown), [result]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [groupByYear, setGroupByYear] = useState(false);
+  const [page, setPage] = useState(1);
   const hoveredPoint = hoveredIndex === null ? null : (chart.points[hoveredIndex] ?? null);
 
-  const visibleMonths = result.monthlyBreakdown.slice(-12);
+  const tableMode: TableMode =
+    values.durationUnit === "years" ? "years" : groupByYear ? "monthRanges" : "months";
+  const rows = useMemo(
+    () => buildTableRows(result.monthlyBreakdown, tableMode),
+    [result, tableMode],
+  );
+  const totalPages = Math.max(1, Math.ceil(rows.length / ROWS_PER_PAGE));
+  const currentPage = Math.min(page, totalPages);
+  const visibleRows = rows.slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE);
 
   const handleChartPointerMove = (event: PointerEvent<SVGSVGElement>) => {
     const { left, width } = event.currentTarget.getBoundingClientRect();
@@ -302,6 +357,7 @@ export default function CompoundInterestCalculator() {
   };
 
   const handleChange = (key: AmountKey, type: FieldType, value: string) => {
+    setPage(1);
     setValues((current) => ({
       ...current,
       [key]: type === "currency" ? maskCurrency(value) : value,
@@ -309,6 +365,7 @@ export default function CompoundInterestCalculator() {
   };
 
   const handleUnitChange = (key: UnitKey, value: string) => {
+    setPage(1);
     setValues((current) => ({ ...current, [key]: value }) as FormValues);
   };
 
@@ -493,28 +550,86 @@ export default function CompoundInterestCalculator() {
           <p className={styles.chartEmpty}>Informe um tempo maior que zero para ver a evolução.</p>
         )}
 
+        {values.durationUnit === "months" ? (
+          <label className={styles.groupToggle}>
+            <input
+              type="checkbox"
+              checked={groupByYear}
+              onChange={(event) => {
+                setPage(1);
+                setGroupByYear(event.target.checked);
+              }}
+            />
+            <span>Agrupar a cada 12 meses</span>
+          </label>
+        ) : null}
+
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Mês</th>
+                <th>{tableMode === "years" ? "Ano" : "Mês"}</th>
                 <th>Aporte</th>
                 <th>Juros</th>
                 <th>Saldo</th>
               </tr>
             </thead>
             <tbody>
-              {visibleMonths.map((item) => (
-                <tr key={item.month}>
-                  <td>{item.month}</td>
-                  <td>{currency.format(item.contribution)}</td>
-                  <td className={styles.interest}>{currency.format(item.interest)}</td>
-                  <td className={styles.balance}>{currency.format(item.balance)}</td>
+              {visibleRows.map((row) => (
+                <tr key={row.key}>
+                  <td>{row.label}</td>
+                  <td>{currency.format(row.contribution)}</td>
+                  <td className={styles.interest}>{currency.format(row.interest)}</td>
+                  <td className={styles.balance}>{currency.format(row.balance)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        {totalPages > 1 ? (
+          <div className={styles.pagination}>
+            <button
+              type="button"
+              className={styles.pageButton}
+              aria-label="Primeira página"
+              onClick={() => setPage(1)}
+              disabled={currentPage === 1}
+            >
+              «
+            </button>
+            <button
+              type="button"
+              className={styles.pageButton}
+              aria-label="Página anterior"
+              onClick={() => setPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              ‹
+            </button>
+            <span className={styles.pageStatus}>
+              Página {currentPage} de {totalPages}
+            </span>
+            <button
+              type="button"
+              className={styles.pageButton}
+              aria-label="Próxima página"
+              onClick={() => setPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              ›
+            </button>
+            <button
+              type="button"
+              className={styles.pageButton}
+              aria-label="Última página"
+              onClick={() => setPage(totalPages)}
+              disabled={currentPage === totalPages}
+            >
+              »
+            </button>
+          </div>
+        ) : null}
       </section>
     </main>
   );
