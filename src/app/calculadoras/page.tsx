@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
-import ToolGrid from "@/components/toolGrid/ToolGrid";
+import HomeDashboard from "@/components/homeDashboard/HomeDashboard";
 import { navGroups, siteConfig } from "@/config/site";
 import styles from "./page.module.scss";
 
@@ -31,7 +31,7 @@ export default function CalculadorasPage() {
         <p className={styles.subtitle}>{group.description}</p>
       </section>
 
-      <ToolGrid items={group.items} />
+      <HomeDashboard items={group.items} />
     </main>
   );
 }

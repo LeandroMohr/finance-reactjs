@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { NavItem } from "@/config/site";
-import ToolGrid from "./ToolGrid";
+import HomeDashboard from "./HomeDashboard";
 
 const items: NavItem[] = [
   {
@@ -20,9 +20,9 @@ const items: NavItem[] = [
   },
 ];
 
-describe("ToolGrid", () => {
+describe("HomeDashboard", () => {
   it("links available items and keeps unavailable ones without a link", () => {
-    render(<ToolGrid items={items} />);
+    render(<HomeDashboard items={items} />);
 
     expect(screen.getByRole("link", { name: /Juros Compostos/ }).getAttribute("href")).toMatch(
       /^\/compound-interest\/?$/,
@@ -31,7 +31,7 @@ describe("ToolGrid", () => {
   });
 
   it("renders every item title as a heading", () => {
-    render(<ToolGrid items={items} />);
+    render(<HomeDashboard items={items} />);
 
     for (const item of items) {
       expect(screen.getByRole("heading", { name: item.title })).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe("ToolGrid", () => {
   });
 
   it("groups tools under their catalog sections", () => {
-    render(<ToolGrid items={items} />);
+    render(<HomeDashboard items={items} />);
 
     expect(screen.getByRole("heading", { level: 2, name: "Investimentos" })).toBeInTheDocument();
     expect(

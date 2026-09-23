@@ -1,12 +1,12 @@
 import Link from "next/link";
 import type { NavItem } from "@/config/site";
-import styles from "./ToolGrid.module.scss";
+import styles from "./HomeDashboard.module.scss";
 
-type ToolGridProps = {
+type HomeDashboardProps = {
   items: NavItem[];
 };
 
-export default function ToolGrid({ items }: ToolGridProps) {
+export default function HomeDashboard({ items }: HomeDashboardProps) {
   const sections = items.reduce<{ title: string; items: NavItem[] }[]>((groups, item) => {
     const existing = groups.find((group) => group.title === item.section);
 
