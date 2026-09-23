@@ -83,6 +83,8 @@ export default function Header() {
 
           {navGroups.map((group) => {
             const isOpen = openGroup === group.id;
+            const availableItems = group.items.filter((item) => item.available);
+            const upcomingCount = group.items.length - availableItems.length;
 
             return (
               <div key={group.id} className={styles.group}>
@@ -98,31 +100,22 @@ export default function Header() {
                 </button>
 
                 <ul id={`menu-${group.id}`} className={styles.menu} data-open={isOpen}>
-                  {group.items.map((item) =>
-                    item.available ? (
-                      <li key={item.slug}>
-                        <Link
-                          href={`/${item.slug}/`}
-                          className={styles.menuItem}
-                          onClick={closeNav}
-                        >
-                          <span className={styles.menuTitle}>{item.title}</span>
-                          <span className={styles.menuDescription}>{item.description}</span>
-                        </Link>
-                      </li>
-                    ) : (
-                      <li key={item.slug}>
-                        <span className={styles.menuItemDisabled} aria-disabled="true">
-                          <span className={styles.menuTitle}>
-                            {item.title}
-                            <span className={styles.soonBadge}>em breve</span>
-                          </span>
-                          <span className={styles.menuDescription}>{item.description}</span>
-                        </span>
-                      </li>
-                    ),
-                  )}
-                  <li className={styles.menuFooter}>{group.emptyMessage}</li>
+                  <li>
+                    <Link href={`/${group.id}/`} className={styles.menuOverview} onClick={closeNav}>
+                      Ver todas as {group.label.toLowerCase()}
+                    </Link>
+                  </li>
+                  {availableItems.map((item) => (
+                    <li key={item.slug}>
+                      <Link href={`/${item.slug}/`} className={styles.menuItem} onClick={closeNav}>
+                        <span className={styles.menuTitle}>{item.title}</span>
+                        <span className={styles.menuDescription}>{item.description}</span>
+                      </Link>
+                    </li>
+                  ))}
+                  <li className={styles.menuFooter}>
+                    {upcomingCount} novas opções <span className={styles.soonBadge}>em breve</span>
+                  </li>
                 </ul>
               </div>
             );

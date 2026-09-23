@@ -176,8 +176,7 @@
   }
 }
 
-.menuItem,
-.menuItemDisabled {
+.menuItem {
   display: flex;
   flex-direction: column;
   gap: $space-1;
@@ -185,19 +184,27 @@
   border-radius: $radius-sm;
 }
 
-.menuItem {
-  transition: background-color 0.2s ease;
+.menuItem,
+.menuOverview {
+  transition: background-color 0.2s ease, color 0.2s ease;
 
   @include focus-ring;
 
   &:hover {
     background-color: var(--bg-surface);
+    color: var(--brand-accent);
   }
 }
 
-.menuItemDisabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+.menuOverview {
+  display: block;
+  margin-bottom: $space-2;
+  padding: $space-2 $space-3;
+  border-bottom: 1px solid var(--border);
+  border-radius: $radius-sm $radius-sm 0 0;
+  color: var(--brand-cta);
+  font-size: $font-sm;
+  font-weight: 700;
 }
 
 .menuTitle {
@@ -226,6 +233,10 @@
 }
 
 .menuFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
   margin-top: $space-2;
   padding: $space-2 $space-3 $space-1;
   border-top: 1px solid var(--border);

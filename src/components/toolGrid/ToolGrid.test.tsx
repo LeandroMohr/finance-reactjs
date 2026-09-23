@@ -8,12 +8,14 @@ const items: NavItem[] = [
     slug: "compound-interest",
     title: "Juros Compostos",
     description: "Simule o crescimento do seu patrimônio.",
+    section: "Investimentos",
     available: true,
   },
   {
     slug: "simple-interest",
     title: "Juros Simples",
     description: "Compare o rendimento linear com o composto.",
+    section: "Crédito e financiamento",
     available: false,
   },
 ];
@@ -34,5 +36,14 @@ describe("ToolGrid", () => {
     for (const item of items) {
       expect(screen.getByRole("heading", { name: item.title })).toBeInTheDocument();
     }
+  });
+
+  it("groups tools under their catalog sections", () => {
+    render(<ToolGrid items={items} />);
+
+    expect(screen.getByRole("heading", { level: 2, name: "Investimentos" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Crédito e financiamento" }),
+    ).toBeInTheDocument();
   });
 });

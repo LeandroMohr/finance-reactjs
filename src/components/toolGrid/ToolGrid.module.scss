@@ -1,6 +1,24 @@
 @use "@/styles/variables" as *;
 @use "@/styles/mixins" as *;
 
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: $space-12;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.sectionTitle {
+  padding-bottom: $space-3;
+  border-bottom: 1px solid var(--border);
+  font-size: $font-xl;
+}
+
 .grid {
   display: grid;
   gap: $space-6;

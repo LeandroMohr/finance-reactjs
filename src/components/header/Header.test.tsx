@@ -69,7 +69,7 @@ describe("Header", () => {
     }
   });
 
-  it("opens a group menu and links only the available items", async () => {
+  it("opens a compact group menu with the dashboard and available items", async () => {
     const user = userEvent.setup();
     render(<Header />);
 
@@ -89,9 +89,14 @@ describe("Header", () => {
     const available = group.items.find((item) => item.available)!;
     const unavailable = group.items.find((item) => !item.available)!;
 
+    expect(
+      menu.getByRole("link", { name: `Ver todas as ${group.label.toLowerCase()}` }).getAttribute(
+        "href",
+      ),
+    ).toMatch(new RegExp(`^/${group.id}/?$`));
     expect(menu.getByRole("link", { name: new RegExp(available.title) })).toBeVisible();
-    expect(menu.queryByRole("link", { name: new RegExp(unavailable.title) })).not.toBeInTheDocument();
-    expect(menu.getAllByText("em breve").length).toBeGreaterThan(0);
+    expect(menu.queryByText(unavailable.title)).not.toBeInTheDocument();
+    expect(menu.getByText("em breve")).toBeVisible();
   });
 
   it("closes the open menu when Escape is pressed", async () => {
