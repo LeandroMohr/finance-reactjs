@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChevronDownIcon } from "@/components/icons";
+import { Icon } from "@/components/icons";
 import styles from "./Accordion.module.scss";
 
 type AccordionProps = {
@@ -14,7 +14,7 @@ export default function Accordion({ title, defaultOpen = false, children }: Acco
     <details className={styles.accordion} open={defaultOpen}>
       <summary className={styles.summary}>
         <span>{title}</span>
-        <ChevronDownIcon className={styles.icon} />
+        <Icon name="chevron-down" size={16} className={styles.icon} />
       </summary>
       <div className={styles.content}>{children}</div>
     </details>

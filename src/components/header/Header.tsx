@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { navGroups, siteConfig } from "@/config/site";
-import { MenuIcon, MoonIcon, SunIcon } from "@/components/icons";
+import { Icon } from "@/components/icons";
 import styles from "./Header.module.scss";
 
 type Theme = "dark" | "light";
@@ -136,7 +136,7 @@ export default function Header() {
             aria-label={theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
             onClick={toggleTheme}
           >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+            {theme === "dark" ? <Icon name="sun" /> : <Icon name="moon" />}
           </button>
 
           <button
@@ -150,7 +150,7 @@ export default function Header() {
               setIsNavOpen((open) => !open);
             }}
           >
-            <MenuIcon open={isNavOpen} />
+            <Icon name={isNavOpen ? "close" : "menu"} />
           </button>
         </div>
       </div>
