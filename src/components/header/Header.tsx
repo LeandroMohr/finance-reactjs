@@ -44,21 +44,40 @@ function MoonIcon() {
   );
 }
 
+function MenuIcon({ open }: { open: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      {open ? (
+        <path d="M6 6l12 12M18 6L6 18" />
+      ) : (
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      )}
+    </svg>
+  );
+}
+
 export default function Header() {
   const theme = useSyncExternalStore(subscribeToTheme, readTheme, () => "dark" as Theme);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   const toggleTheme = () => applyTheme(theme === "dark" ? "light" : "dark");
 
+  const closeNav = () => {
+    setOpenGroup(null);
+    setIsNavOpen(false);
+  };
+
   useEffect(() => {
-    if (!openGroup) return;
+    if (!openGroup && !isNavOpen) return;
 
     const handlePointerDown = (event: MouseEvent) => {
-      if (!navRef.current?.contains(event.target as Node)) setOpenGroup(null);
+      if (!headerRef.current?.contains(event.target as Node)) closeNav();
     };
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpenGroup(null);
+      if (event.key === "Escape") closeNav();
     };
 
     document.addEventListener("mousedown", handlePointerDown);
@@ -67,20 +86,26 @@ export default function Header() {
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [openGroup]);
+  }, [openGroup, isNavOpen]);
 
   return (
-    <header className={styles.header}>
+    <header ref={headerRef} className={styles.header}>
       <div className={styles.inner}>
-        <Link href="/" className={styles.brand}>
+        <Link href="/" className={styles.brand} onClick={closeNav}>
           <span className={styles.logo} aria-hidden="true">
             L
           </span>
           <span className={styles.brandName}>{siteConfig.name}</span>
         </Link>
 
-        <nav ref={navRef} className={styles.nav} aria-label="Navegação principal">
-          <Link href="/" className={styles.navLink}>
+        <nav
+          ref={navRef}
+          id="main-nav"
+          className={styles.nav}
+          data-open={isNavOpen}
+          aria-label="Navegação principal"
+        >
+          <Link href="/" className={styles.navLink} onClick={closeNav}>
             Home
           </Link>
 
@@ -107,7 +132,7 @@ export default function Header() {
                         <Link
                           href={`/${item.slug}/`}
                           className={styles.menuItem}
-                          onClick={() => setOpenGroup(null)}
+                          onClick={closeNav}
                         >
                           <span className={styles.menuTitle}>{item.title}</span>
                           <span className={styles.menuDescription}>{item.description}</span>
@@ -132,14 +157,30 @@ export default function Header() {
           })}
         </nav>
 
-        <button
-          type="button"
-          className={styles.themeToggle}
-          aria-label={theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
-          onClick={toggleTheme}
-        >
-          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-        </button>
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={styles.themeToggle}
+            aria-label={theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
+            onClick={toggleTheme}
+          >
+            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+          </button>
+
+          <button
+            type="button"
+            className={styles.navToggle}
+            aria-label={isNavOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={isNavOpen}
+            aria-controls="main-nav"
+            onClick={() => {
+              setOpenGroup(null);
+              setIsNavOpen((open) => !open);
+            }}
+          >
+            <MenuIcon open={isNavOpen} />
+          </button>
+        </div>
       </div>
     </header>
   );

@@ -60,6 +60,27 @@ describe("Header", () => {
     expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 
+  it("toggles the mobile navigation panel", async () => {
+    const user = userEvent.setup();
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", { name: "Abrir menu" });
+    const nav = screen.getByRole("navigation", { name: "Navegação principal" });
+
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveAttribute("aria-controls", nav.id);
+    expect(nav).toHaveAttribute("data-open", "false");
+
+    await user.click(toggle);
+
+    expect(toggle).toHaveAccessibleName("Fechar menu");
+    expect(nav).toHaveAttribute("data-open", "true");
+
+    await user.click(within(nav).getByRole("link", { name: "Home" }));
+
+    expect(nav).toHaveAttribute("data-open", "false");
+  });
+
   it("toggles the theme and persists the choice", async () => {
     const user = userEvent.setup();
     render(<Header />);
