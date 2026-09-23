@@ -1,6 +1,6 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import CompoundInterestCalculator, { calculateCompoundInterest } from "./CompoundInterestCalculator";
 
 function getInput(label: string): HTMLInputElement {
@@ -220,6 +220,37 @@ describe("CompoundInterestCalculator", () => {
     expect(screen.getByRole("alert")).toHaveTextContent(
       "O tempo máximo é de 100 anos (1200 meses).",
     );
+  });
+
+  it("shows the value of the hovered point on the chart", async () => {
+    const user = userEvent.setup();
+    render(<CompoundInterestCalculator />);
+
+    await user.type(getInput("Aporte mensal"), "10000");
+
+    const duration = getInput("Tempo");
+    await user.clear(duration);
+    await user.type(duration, "3");
+    await user.selectOptions(screen.getByLabelText("Unidade do tempo"), "months");
+
+    const chart = screen.getByRole("img");
+    // jsdom não calcula layout, então o tamanho do gráfico precisa ser simulado.
+    vi.spyOn(chart, "getBoundingClientRect").mockReturnValue({
+      ...new DOMRect(),
+      left: 0,
+      width: 640,
+    });
+
+    fireEvent.pointerMove(chart, { clientX: 640 });
+
+    const tooltip = screen.getByText("3º mês").parentElement as HTMLElement;
+
+    expect(tooltip).toHaveTextContent("3º mês");
+    expect(tooltip).toHaveTextContent(currency.format(300).replace(/\u00a0/g, " "));
+
+    fireEvent.pointerLeave(chart);
+
+    expect(screen.queryByText("3º mês")).not.toBeInTheDocument();
   });
 
   it("recalculates the result when the user changes a field", async () => {

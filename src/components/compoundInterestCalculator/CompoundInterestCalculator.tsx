@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type PointerEvent } from "react";
 import styles from "./CompoundInterestCalculator.module.scss";
 
 type CompoundInterestInput = {
@@ -91,6 +91,77 @@ const currency = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
 });
+
+const compactCurrency = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+  notation: "compact",
+  maximumFractionDigits: 1,
+});
+
+const CHART = {
+  width: 640,
+  height: 240,
+  paddingTop: 16,
+  paddingRight: 16,
+  paddingBottom: 36,
+  paddingLeft: 92,
+};
+
+type ChartPoint = { month: number; balance: number; x: number; y: number };
+
+function buildChart(months: MonthlyBreakdown[]) {
+  const innerWidth = CHART.width - CHART.paddingLeft - CHART.paddingRight;
+  const innerHeight = CHART.height - CHART.paddingTop - CHART.paddingBottom;
+  const baseline = CHART.paddingTop + innerHeight;
+  const maxBalance = Math.max(...months.map((item) => item.balance), 1);
+
+  const points = months.map((item, index) => ({
+    month: item.month,
+    balance: item.balance,
+    x: CHART.paddingLeft + (months.length > 1 ? index / (months.length - 1) : 1) * innerWidth,
+    y: baseline - (item.balance / maxBalance) * innerHeight,
+  }));
+
+  const line = points.map((point) => `${point.x.toFixed(2)},${point.y.toFixed(2)}`).join(" ");
+  const lastPoint = points[points.length - 1];
+  const area = lastPoint
+    ? `${CHART.paddingLeft},${baseline} ${line} ${lastPoint.x.toFixed(2)},${baseline}`
+    : "";
+
+  const valueTicks = [0, 0.5, 1].map((ratio) => ({
+    ratio,
+    value: maxBalance * ratio,
+    y: baseline - ratio * innerHeight,
+  }));
+
+  return { points, line, area, valueTicks, timeAxis: buildTimeAxis(points), baseline };
+}
+
+function buildTimeAxis(points: ChartPoint[]) {
+  if (points.length < MONTHS_PER_YEAR) {
+    const indexes = points.length
+      ? [...new Set([0, Math.floor((points.length - 1) / 2), points.length - 1])]
+      : [];
+
+    return {
+      unit: "meses",
+      ticks: indexes.map((index) => ({ ...points[index], label: String(points[index].month) })),
+    };
+  }
+
+  const totalYears = Math.floor(points.length / MONTHS_PER_YEAR);
+  const step = totalYears <= 10 ? 1 : totalYears <= 25 ? 2 : 5;
+  const ticks = [];
+
+  for (let year = step; year <= totalYears; year += step) {
+    const point = points[year * MONTHS_PER_YEAR - 1];
+
+    if (point) ticks.push({ ...point, label: String(year) });
+  }
+
+  return { unit: "anos", ticks };
+}
 
 function maskCurrency(raw: string) {
   const digitsAsCents = raw.replace(/\D/g, "").slice(0, 13);
@@ -212,8 +283,23 @@ export default function CompoundInterestCalculator() {
   const { errors, input } = useMemo(() => validateValues(values), [values]);
   const result = useMemo(() => calculateCompoundInterest(input), [input]);
 
+  const chart = useMemo(() => buildChart(result.monthlyBreakdown), [result]);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const hoveredPoint = hoveredIndex === null ? null : (chart.points[hoveredIndex] ?? null);
+
   const visibleMonths = result.monthlyBreakdown.slice(-12);
-  const maxBalance = Math.max(...result.monthlyBreakdown.map((item) => item.balance), 1);
+
+  const handleChartPointerMove = (event: PointerEvent<SVGSVGElement>) => {
+    const { left, width } = event.currentTarget.getBoundingClientRect();
+
+    if (chart.points.length === 0 || width === 0) return;
+
+    const innerWidth = CHART.width - CHART.paddingLeft - CHART.paddingRight;
+    const x = ((event.clientX - left) / width) * CHART.width;
+    const position = ((x - CHART.paddingLeft) / innerWidth) * (chart.points.length - 1);
+
+    setHoveredIndex(Math.min(chart.points.length - 1, Math.max(0, Math.round(position))));
+  };
 
   const handleChange = (key: AmountKey, type: FieldType, value: string) => {
     setValues((current) => ({
@@ -322,19 +408,90 @@ export default function CompoundInterestCalculator() {
 
       <section className={styles.evolution}>
         <p className={styles.eyebrow}>Evolução mensal</p>
-        <h2 className={styles.sectionTitle}>Projeção do patrimônio</h2>
+        <h2 className={styles.sectionTitle}>Valor x Tempo</h2>
 
-        <div className={styles.chart}>
-          {visibleMonths.map((item) => (
-            <div key={item.month} className={styles.chartColumn}>
-              <div
-                className={styles.chartBar}
-                style={{ height: `${(item.balance / maxBalance) * 100}%` }}
-                title={`${item.month}º mês: ${currency.format(item.balance)}`}
-              />
+        {chart.points.length > 0 ? (
+          <figure className={styles.chart}>
+            <div className={styles.chartCanvas}>
+              <svg
+                className={styles.chartSvg}
+                viewBox={`0 0 ${CHART.width} ${CHART.height}`}
+                role="img"
+                aria-label={`Evolução do valor ao longo de ${chart.points.length} mês(es), chegando a ${currency.format(result.finalAmount)}`}
+                onPointerMove={handleChartPointerMove}
+                onPointerLeave={() => setHoveredIndex(null)}
+              >
+                {chart.valueTicks.map((tick) => (
+                  <g key={tick.ratio}>
+                    <line
+                      className={styles.chartGrid}
+                      x1={CHART.paddingLeft}
+                      x2={CHART.width - CHART.paddingRight}
+                      y1={tick.y}
+                      y2={tick.y}
+                    />
+                    <text
+                      className={styles.chartTick}
+                      x={CHART.paddingLeft - 10}
+                      y={tick.y + 4}
+                      textAnchor="end"
+                    >
+                      {compactCurrency.format(tick.value)}
+                    </text>
+                  </g>
+                ))}
+
+                <polygon className={styles.chartArea} points={chart.area} />
+                <polyline className={styles.chartLine} points={chart.line} />
+
+                {hoveredPoint ? (
+                  <g>
+                    <line
+                      className={styles.chartGuide}
+                      x1={hoveredPoint.x}
+                      x2={hoveredPoint.x}
+                      y1={CHART.paddingTop}
+                      y2={chart.baseline}
+                    />
+                    <circle className={styles.chartMarker} cx={hoveredPoint.x} cy={hoveredPoint.y} r={5} />
+                  </g>
+                ) : null}
+
+                {chart.timeAxis.ticks.map((tick) => (
+                  <text
+                    key={tick.month}
+                    className={styles.chartTick}
+                    x={tick.x}
+                    y={chart.baseline + 22}
+                    textAnchor="middle"
+                  >
+                    {tick.label}
+                  </text>
+                ))}
+              </svg>
+
+              {hoveredPoint ? (
+                <div
+                  className={styles.chartTooltip}
+                  style={{
+                    left: `${(hoveredPoint.x / CHART.width) * 100}%`,
+                    top: `${(hoveredPoint.y / CHART.height) * 100}%`,
+                  }}
+                >
+                  <span className={styles.chartTooltipMonth}>{hoveredPoint.month}º mês</span>
+                  <span className={styles.chartTooltipValue}>
+                    {currency.format(hoveredPoint.balance)}
+                  </span>
+                </div>
+              ) : null}
             </div>
-          ))}
-        </div>
+            <figcaption className={styles.chartCaption}>
+              Valor (R$) x Tempo ({chart.timeAxis.unit})
+            </figcaption>
+          </figure>
+        ) : (
+          <p className={styles.chartEmpty}>Informe um tempo maior que zero para ver a evolução.</p>
+        )}
 
         <div className={styles.tableWrapper}>
           <table className={styles.table}>

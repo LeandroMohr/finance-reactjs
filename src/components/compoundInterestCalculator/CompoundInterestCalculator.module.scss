@@ -200,26 +200,91 @@
 }
 
 .chart {
-  display: grid;
-  align-items: end;
-  gap: $space-2;
-  height: 9rem;
   margin-block: $space-6;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
-.chartColumn {
-  display: flex;
-  height: 100%;
-  align-items: flex-end;
+.chartCanvas {
+  position: relative;
 }
 
-.chartBar {
+.chartSvg {
+  display: block;
   width: 100%;
-  border-radius: $radius-sm $radius-sm 0 0;
-  background-color: var(--brand-cta);
-  opacity: 0.9;
-  transition: height 0.3s ease-in-out;
+  height: auto;
+  touch-action: none;
+}
+
+.chartGuide {
+  stroke: var(--text-muted);
+  stroke-dasharray: 4 4;
+  stroke-width: 1;
+}
+
+.chartMarker {
+  fill: var(--brand-cta);
+  stroke: var(--bg-surface);
+  stroke-width: 2;
+}
+
+.chartTooltip {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: $space-2 $space-3;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background-color: var(--bg-surface);
+  pointer-events: none;
+  transform: translate(-50%, -125%);
+  white-space: nowrap;
+}
+
+.chartTooltipMonth {
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.chartTooltipValue {
+  font-size: $font-sm;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chartGrid {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.chartTick {
+  fill: var(--text-muted);
+  font-size: 12px;
+}
+
+.chartArea {
+  fill: var(--brand-cta);
+  opacity: 0.15;
+}
+
+.chartLine {
+  fill: none;
+  stroke: var(--brand-cta);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chartCaption {
+  margin-top: $space-2;
+  font-size: $font-sm;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.chartEmpty {
+  margin-block: $space-6;
+  font-size: $font-sm;
+  color: var(--text-muted);
 }
 
 .tableWrapper {
