@@ -1,0 +1,266 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.main {
+  @include container;
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+  padding-block: $space-8 $space-12;
+}
+
+.intro {
+  @include surface;
+
+  padding: $space-6;
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.title {
+  margin-top: $space-3;
+  font-size: $font-2xl;
+
+  @media (min-width: $bp-sm) {
+    font-size: $font-3xl;
+  }
+}
+
+.introText {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  margin-top: $space-4;
+  color: var(--text-muted);
+}
+
+.simulation {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (min-width: $bp-lg) {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+}
+
+.form {
+  @include card;
+
+  padding: $space-6;
+}
+
+.sectionTitle {
+  margin-top: $space-2;
+  font-size: $font-xl;
+}
+
+.fields {
+  display: grid;
+  gap: $space-4;
+  margin-top: $space-6;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (min-width: $bp-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: $space-2;
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.fieldLabel {
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.inputGroup {
+  display: flex;
+  align-items: stretch;
+  gap: $space-2;
+}
+
+.input {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+  padding: $space-3;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: $font-md;
+  transition: border-color 0.2s ease;
+
+  @include focus-ring;
+
+  &:focus {
+    border-color: var(--brand-cta);
+    outline: none;
+  }
+}
+
+.unitSelect {
+  flex-shrink: 0;
+  padding: $space-3 $space-2;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: $font-sm;
+  transition: border-color 0.2s ease;
+
+  @include focus-ring;
+
+  &:focus {
+    border-color: var(--brand-cta);
+    outline: none;
+  }
+}
+
+.swapButton {
+  flex-shrink: 0;
+  padding: $space-3;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: $font-md;
+  line-height: 1;
+  transition: border-color 0.2s ease;
+
+  @include focus-ring;
+
+  &:hover {
+    border-color: var(--brand-cta);
+  }
+}
+
+.inputError {
+  border-color: var(--feedback-error);
+
+  &:focus {
+    border-color: var(--feedback-error);
+  }
+}
+
+.errorMessage {
+  font-size: $font-sm;
+  color: var(--feedback-error);
+}
+
+.result {
+  @include surface;
+
+  padding: $space-6;
+}
+
+.highlight {
+  @include card;
+
+  margin-top: $space-6;
+  padding: $space-4;
+}
+
+.metricLabel {
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.highlightValue {
+  margin-top: $space-2;
+  font-size: $font-2xl;
+  font-weight: 700;
+  color: var(--brand-primary);
+}
+
+.metrics {
+  display: grid;
+  gap: $space-3;
+  margin-top: $space-6;
+  grid-template-columns: 1fr;
+
+  @media (min-width: $bp-sm) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.metric {
+  @include card;
+
+  padding: $space-4;
+}
+
+.metricValue {
+  margin-top: $space-2;
+  font-size: $font-lg;
+  font-weight: 600;
+}
+
+.comparison {
+  @include card;
+
+  padding: $space-6;
+}
+
+.tableWrapper {
+  margin-top: $space-6;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  scrollbar-color: var(--border) transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: $radius-pill;
+    background-color: var(--border);
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-sm;
+  text-align: left;
+
+  thead {
+    background-color: var(--bg-surface);
+    color: var(--text-muted);
+    font-size: $font-xs;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  th,
+  td {
+    padding: $space-2 $space-3;
+    white-space: nowrap;
+  }
+
+  th:not(:first-child),
+  td:not(:first-child) {
+    text-align: right;
+  }
+
+  tbody tr {
+    border-top: 1px solid var(--border);
+  }
+}

@@ -11,6 +11,7 @@ correspondente em `src/config/site.ts`.
 | Ferramenta | Slug | Status |
 | --- | --- | --- |
 | Juros Compostos | `compound-interest` | ✅ Implementada |
+| Conversor de Taxas | `rate-converter` | ✅ Implementada |
 
 ---
 

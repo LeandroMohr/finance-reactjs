@@ -57,7 +57,7 @@ export const navGroups: NavGroup[] = [
         slug: "rate-converter",
         title: "Conversor de Taxas",
         description: "Converta taxas anuais em mensais (e vice-versa) com precisão.",
-        available: false,
+        available: true,
       },
       {
         slug: "inflation-adjuster",
