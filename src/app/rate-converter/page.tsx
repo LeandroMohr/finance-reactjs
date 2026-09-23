@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import dynamicImport from "next/dynamic";
-import { allNavItems, siteConfig } from "@/config/site";
+import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+import { allNavItems, findToolGroup, siteConfig } from "@/config/site";
 
 const tool = allNavItems.find((item) => item.slug === "rate-converter")!;
+const group = findToolGroup(tool.slug)!;
 const canonical = `/${tool.slug}/`;
 
 // Client bundle is split out of the page chunk and fetched only when this route is visited.
@@ -23,5 +25,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RateConverterPage() {
-  return <RateConverter />;
+  return (
+    <RateConverter
+      breadcrumb={
+        <Breadcrumbs items={[{ label: group.label, href: `/${group.id}/` }, { label: tool.title }]} />
+      }
+    />
+  );
 }

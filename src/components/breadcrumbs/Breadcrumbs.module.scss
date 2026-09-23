@@ -1,0 +1,40 @@
+@use "@/styles/variables" as *;
+
+.breadcrumbs {
+  font-size: $font-sm;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+.link {
+  color: var(--text-muted);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--brand-accent);
+    text-decoration: underline;
+  }
+}
+
+.current {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.separator {
+  color: var(--text-muted);
+}

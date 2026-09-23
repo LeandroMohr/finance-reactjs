@@ -16,6 +16,7 @@ export type NavItem = {
 export type NavGroup = {
   id: string;
   label: string;
+  description: string;
   emptyMessage: string;
   items: NavItem[];
 };
@@ -24,6 +25,8 @@ export const navGroups: NavGroup[] = [
   {
     id: "calculadoras",
     label: "Calculadoras",
+    description:
+      "Simule cálculos financeiros completos — aportes, taxas e prazos — para planejar suas decisões com mais segurança.",
     emptyMessage: "Novas calculadoras em breve.",
     items: [
       {
@@ -51,6 +54,8 @@ export const navGroups: NavGroup[] = [
   {
     id: "ferramentas",
     label: "Ferramentas",
+    description:
+      "Converta taxas, ajuste valores e resolva outros cálculos financeiros pontuais, direto no navegador.",
     emptyMessage: "Ferramentas em desenvolvimento.",
     items: [
       {
@@ -70,3 +75,7 @@ export const navGroups: NavGroup[] = [
 ];
 
 export const allNavItems: NavItem[] = navGroups.flatMap((group) => group.items);
+
+export function findToolGroup(slug: string): NavGroup | undefined {
+  return navGroups.find((group) => group.items.some((item) => item.slug === slug));
+}
