@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import RelatedTools from "@/components/relatedTools/RelatedTools";
 import styles from "./CompoundInterestCalculator.module.scss";
 
 type CompoundInterestInput = {
@@ -646,6 +647,8 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
           </div>
         ) : null}
       </section>
+
+      <RelatedTools slugs={["rate-converter", "simple-interest", "first-million"]} />
     </main>
   );
 }

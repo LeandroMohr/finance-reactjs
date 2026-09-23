@@ -1,0 +1,91 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.title {
+  font-size: $font-xl;
+}
+
+.grid {
+  display: grid;
+  gap: $space-4;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (min-width: $bp-sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: $bp-lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.card {
+  @include card;
+  @include focus-ring;
+
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $space-2;
+  padding: $space-5;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: var(--brand-accent);
+    transform: translateY(-2px);
+  }
+}
+
+.cardSoon {
+  opacity: 0.68;
+
+  &:hover {
+    border-color: var(--border);
+    transform: none;
+  }
+}
+
+.status {
+  color: var(--brand-accent);
+  font-size: $font-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.statusSoon {
+  color: var(--feedback-warning);
+}
+
+.cardTitle {
+  font-size: $font-md;
+}
+
+.description {
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.action {
+  margin-top: auto;
+  padding-top: $space-2;
+  color: var(--brand-cta);
+  font-size: $font-sm;
+  font-weight: 600;
+}

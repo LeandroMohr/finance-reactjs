@@ -120,6 +120,14 @@ describe("CompoundInterestCalculator", () => {
     expect(screen.getByLabelText("Unidade do tempo")).toHaveValue("years");
   });
 
+  it("recommends related tools", () => {
+    render(<CompoundInterestCalculator />);
+
+    expect(screen.getByRole("heading", { name: "Ferramentas relacionadas" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Conversor de Taxas/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Primeiro Milhão" })).toBeInTheDocument();
+  });
+
   it("renders no monthly rows before the user informs a period", () => {
     render(<CompoundInterestCalculator />);
 

@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import RelatedTools from "@/components/relatedTools/RelatedTools";
 import styles from "./RateConverter.module.scss";
 
 type RatePeriod = "daily" | "monthly" | "annual";
@@ -319,6 +320,8 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
           </table>
         </div>
       </section>
+
+      <RelatedTools slugs={["compound-interest", "real-interest-rate", "loan-total-cost"]} />
     </main>
   );
 }

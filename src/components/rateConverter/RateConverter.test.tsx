@@ -42,6 +42,14 @@ describe("RateConverter", () => {
     expect(screen.getByLabelText("Valor de exemplo")).toHaveValue("R$ 1.000,00");
   });
 
+  it("recommends related tools", () => {
+    render(<RateConverter />);
+
+    expect(screen.getByRole("heading", { name: "Ferramentas relacionadas" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Juros Compostos/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Taxa Real de Juros" })).toBeInTheDocument();
+  });
+
   it("shows the equivalent rate for the default inputs", () => {
     render(<RateConverter />);
 
