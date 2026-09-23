@@ -21,12 +21,15 @@
 }
 
 .title {
-  margin-top: $space-3;
   font-size: $font-2xl;
 
   @media (min-width: $bp-sm) {
     font-size: $font-3xl;
   }
+}
+
+.intro > details {
+  margin-top: $space-6;
 }
 
 .introText {

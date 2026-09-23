@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, type PointerEvent } from "react";
+import Accordion from "@/components/accordion/Accordion";
 import styles from "./CompoundInterestCalculator.module.scss";
 
 type CompoundInterestInput = {
@@ -372,20 +373,21 @@ export default function CompoundInterestCalculator() {
   return (
     <main className={styles.main}>
       <section className={styles.intro}>
-        <p className={styles.eyebrow}>Entenda a fórmula</p>
         <h1 className={styles.title}>Juros compostos: como o dinheiro cresce com o tempo</h1>
-        <div className={styles.introText}>
-          <p>
-            Juros compostos são os juros calculados sobre o valor inicial mais os rendimentos
-            acumulados. Em outras palavras, o dinheiro rende sobre o dinheiro que já foi gerado,
-            criando crescimento exponencial ao longo do tempo.
-          </p>
-          <p>
-            Essa calculadora ajuda a simular cenários de investimento com aporte inicial, aporte
-            mensal, taxa anual e período. Ao ajustar os valores, você vê o impacto real do tempo e da
-            consistência no crescimento do patrimônio.
-          </p>
-        </div>
+        <Accordion title="Entenda a fórmula">
+          <div className={styles.introText}>
+            <p>
+              Juros compostos são os juros calculados sobre o valor inicial mais os rendimentos
+              acumulados. Em outras palavras, o dinheiro rende sobre o dinheiro que já foi gerado,
+              criando crescimento exponencial ao longo do tempo.
+            </p>
+            <p>
+              Essa calculadora ajuda a simular cenários de investimento com aporte inicial, aporte
+              mensal, taxa anual e período. Ao ajustar os valores, você vê o impacto real do tempo e da
+              consistência no crescimento do patrimônio.
+            </p>
+          </div>
+        </Accordion>
       </section>
 
       <section className={styles.simulation}>

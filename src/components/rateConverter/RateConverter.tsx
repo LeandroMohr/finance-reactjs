@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Accordion from "@/components/accordion/Accordion";
 import styles from "./RateConverter.module.scss";
 
 type RatePeriod = "daily" | "monthly" | "annual";
@@ -148,21 +149,22 @@ export default function RateConverter() {
   return (
     <main className={styles.main}>
       <section className={styles.intro}>
-        <p className={styles.eyebrow}>Entenda a conversão</p>
         <h1 className={styles.title}>Conversor de taxas: taxas equivalentes entre períodos</h1>
-        <div className={styles.introText}>
-          <p>
-            Taxas equivalentes geram o mesmo rendimento acumulado em um mesmo intervalo de tempo, ao
-            contrário das taxas proporcionais, que apenas multiplicam ou dividem o valor nominal.
-            Por isso, converter uma taxa mensal em anual (ou o contrário) exige uma fórmula
-            exponencial, e não uma simples regra de três.
-          </p>
-          <p>
-            Informe a taxa, o período de referência e o período de destino para ver a taxa
-            equivalente, e use o valor de exemplo para entender quanto isso representa em juros no
-            mês e no ano.
-          </p>
-        </div>
+        <Accordion title="Entenda a conversão">
+          <div className={styles.introText}>
+            <p>
+              Taxas equivalentes geram o mesmo rendimento acumulado em um mesmo intervalo de tempo, ao
+              contrário das taxas proporcionais, que apenas multiplicam ou dividem o valor nominal.
+              Por isso, converter uma taxa mensal em anual (ou o contrário) exige uma fórmula
+              exponencial, e não uma simples regra de três.
+            </p>
+            <p>
+              Informe a taxa, o período de referência e o período de destino para ver a taxa
+              equivalente, e use o valor de exemplo para entender quanto isso representa em juros no
+              mês e no ano.
+            </p>
+          </div>
+        </Accordion>
       </section>
 
       <section className={styles.simulation}>
