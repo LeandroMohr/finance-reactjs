@@ -30,6 +30,33 @@
   color: var(--text-muted);
 }
 
+.formula {
+  margin-top: $space-2;
+  overflow-x: auto;
+  font-size: $font-lg;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.definitionList {
+  display: grid;
+  gap: $space-2;
+  margin-top: $space-3;
+  padding-left: $space-5;
+}
+
+.example {
+  padding-left: $space-4;
+  border-left: 3px solid var(--brand-accent);
+
+  h3 {
+    margin-bottom: $space-2;
+    font-size: $font-md;
+    color: var(--text-primary);
+  }
+}
+
 .simulation {
   display: grid;
   gap: $space-6;

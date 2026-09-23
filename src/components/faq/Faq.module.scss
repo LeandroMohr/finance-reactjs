@@ -1,0 +1,33 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.section,
+.heading,
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  gap: $space-5;
+}
+
+.heading {
+  gap: $space-2;
+}
+
+.list {
+  gap: $space-3;
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.title {
+  font-size: $font-xl;
+}
+
+.answer {
+  color: var(--text-muted);
+}

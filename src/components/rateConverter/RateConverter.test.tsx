@@ -50,6 +50,14 @@ describe("RateConverter", () => {
     expect(screen.getByRole("heading", { name: "Taxa Real de Juros" })).toBeInTheDocument();
   });
 
+  it("explains equivalent rates and answers conversion questions", () => {
+    render(<RateConverter />);
+
+    expect(screen.getByText(/39,29% ao ano/)).toBeInTheDocument();
+    expect(screen.getByText(/Posso multiplicar uma taxa mensal por 12/)).toBeInTheDocument();
+    expect(screen.getAllByText(/convenção comercial 30\/360/)).toHaveLength(2);
+  });
+
   it("shows the equivalent rate for the default inputs", () => {
     render(<RateConverter />);
 

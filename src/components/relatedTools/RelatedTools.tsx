@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { allNavItems } from "@/config/site";
+import { allNavItems, type NavItem } from "@/config/site";
 import styles from "./RelatedTools.module.scss";
 
 type RelatedToolsProps = {
@@ -7,7 +7,9 @@ type RelatedToolsProps = {
 };
 
 export default function RelatedTools({ slugs }: RelatedToolsProps) {
-  const items = slugs.map((slug) => allNavItems.find((item) => item.slug === slug)).filter(Boolean);
+  const items = slugs
+    .map((slug) => allNavItems.find((item) => item.slug === slug))
+    .filter((item): item is NavItem => item !== undefined);
 
   return (
     <section className={styles.section} aria-labelledby="related-tools-title">

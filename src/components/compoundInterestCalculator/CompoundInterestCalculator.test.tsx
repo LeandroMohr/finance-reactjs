@@ -128,6 +128,14 @@ describe("CompoundInterestCalculator", () => {
     expect(screen.getByRole("heading", { name: "Primeiro Milhão" })).toBeInTheDocument();
   });
 
+  it("explains the formula and answers compound-interest questions", () => {
+    render(<CompoundInterestCalculator />);
+
+    expect(screen.getByText(/VF = P ×/)).toBeInTheDocument();
+    expect(screen.getByText(/R\$ 2\.395,08/)).toBeInTheDocument();
+    expect(screen.getByText("Quando o aporte mensal entra no cálculo?")).toBeInTheDocument();
+  });
+
   it("renders no monthly rows before the user informs a period", () => {
     render(<CompoundInterestCalculator />);
 
