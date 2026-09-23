@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { navGroups, siteConfig } from "@/config/site";
+import { MenuIcon, MoonIcon, SunIcon } from "@/components/icons";
 import styles from "./Header.module.scss";
 
 type Theme = "dark" | "light";
@@ -25,35 +26,6 @@ function applyTheme(theme: Theme) {
   window.localStorage.setItem("theme", theme);
   document.documentElement.setAttribute("data-theme", theme);
   document.documentElement.style.colorScheme = theme;
-}
-
-function SunIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle cx="12" cy="12" r="4.5" />
-      <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
-    </svg>
-  );
-}
-
-function MoonIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M20.5 14.8A8.8 8.8 0 0 1 9.2 3.5a8.5 8.5 0 1 0 11.3 11.3Z" />
-    </svg>
-  );
-}
-
-function MenuIcon({ open }: { open: boolean }) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      {open ? (
-        <path d="M6 6l12 12M18 6L6 18" />
-      ) : (
-        <path d="M4 7h16M4 12h16M4 17h16" />
-      )}
-    </svg>
-  );
 }
 
 export default function Header() {
