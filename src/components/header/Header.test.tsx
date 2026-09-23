@@ -64,12 +64,11 @@ describe("Header", () => {
     const user = userEvent.setup();
     render(<Header />);
 
-    const toggle = screen.getByRole("button", { name: "Alternar tema" });
-    expect(toggle).toHaveTextContent("Modo claro");
+    const toggle = screen.getByRole("button", { name: "Ativar modo claro" });
 
     await user.click(toggle);
 
-    expect(toggle).toHaveTextContent("Modo escuro");
+    expect(toggle).toHaveAccessibleName("Ativar modo escuro");
     expect(window.localStorage.getItem("theme")).toBe("light");
     expect(document.documentElement).toHaveAttribute("data-theme", "light");
   });

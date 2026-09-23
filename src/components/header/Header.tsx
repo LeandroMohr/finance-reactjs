@@ -27,6 +27,23 @@ function applyTheme(theme: Theme) {
   document.documentElement.style.colorScheme = theme;
 }
 
+function SunIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="4.5" />
+      <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M20.5 14.8A8.8 8.8 0 0 1 9.2 3.5a8.5 8.5 0 1 0 11.3 11.3Z" />
+    </svg>
+  );
+}
+
 export default function Header() {
   const theme = useSyncExternalStore(subscribeToTheme, readTheme, () => "dark" as Theme);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
@@ -115,8 +132,13 @@ export default function Header() {
           })}
         </nav>
 
-        <button type="button" className={styles.themeToggle} aria-label="Alternar tema" onClick={toggleTheme}>
-          {theme === "dark" ? "Modo claro" : "Modo escuro"}
+        <button
+          type="button"
+          className={styles.themeToggle}
+          aria-label={theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
+          onClick={toggleTheme}
+        >
+          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
         </button>
       </div>
     </header>
