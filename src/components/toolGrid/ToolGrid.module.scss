@@ -1,44 +1,7 @@
 @use "@/styles/variables" as *;
 @use "@/styles/mixins" as *;
 
-.main {
-  @include container;
-
-  display: flex;
-  flex-direction: column;
-  gap: $space-12;
-  padding-block: $space-12;
-}
-
-.hero {
-  display: flex;
-  flex-direction: column;
-  gap: $space-3;
-}
-
-.eyebrow {
-  @include eyebrow;
-}
-
-.title {
-  font-size: $font-2xl;
-
-  @media (min-width: $bp-sm) {
-    font-size: $font-3xl;
-  }
-}
-
-.subtitle {
-  max-width: 60ch;
-  color: var(--text-muted);
-}
-
-.hubs {
-  display: flex;
-  flex-direction: column;
-}
-
-.hubGrid {
+.grid {
   display: grid;
   gap: $space-6;
   grid-template-columns: 1fr;
@@ -46,9 +9,13 @@
   @media (min-width: $bp-sm) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  @media (min-width: $bp-lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
-.hubCard {
+.card {
   @include surface;
   @include focus-ring;
 
@@ -66,20 +33,44 @@
   }
 }
 
-.hubTitle {
-  font-size: $font-xl;
+.cardSoon {
+  opacity: 0.6;
+  cursor: not-allowed;
+
+  &:hover {
+    border-color: var(--border);
+    box-shadow: none;
+    transform: none;
+  }
 }
 
-.hubDescription {
-  color: var(--text-muted);
-}
-
-.hubMeta {
+.badge {
+  padding: $space-1 $space-3;
+  border-radius: $radius-pill;
   font-size: $font-xs;
+  font-weight: 600;
+}
+
+.badgeAvailable {
+  background-color: color-mix(in srgb, var(--brand-primary) 14%, transparent);
+  color: var(--brand-accent);
+}
+
+.badgeSoon {
+  background-color: color-mix(in srgb, var(--feedback-warning) 14%, transparent);
+  color: var(--feedback-warning);
+}
+
+.cardTitle {
+  font-size: $font-lg;
+}
+
+.cardDescription {
+  font-size: $font-sm;
   color: var(--text-muted);
 }
 
-.hubAction {
+.cardAction {
   margin-top: auto;
   padding-top: $space-3;
   font-weight: 600;

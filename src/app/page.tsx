@@ -24,37 +24,31 @@ export default function Home() {
         <p className={styles.eyebrow}>{siteConfig.name}</p>
         <h1 className={styles.title}>Simule, planeje e faça seu dinheiro render</h1>
         <p className={styles.subtitle}>
-          Ferramentas financeiras diretas ao ponto, sem cadastro e sem custo. Escolha uma opção
-          abaixo para começar.
+          Ferramentas financeiras diretas ao ponto, sem cadastro e sem custo. Escolha uma categoria
+          abaixo para encontrar a calculadora ou ferramenta certa para o seu momento.
         </p>
       </section>
 
-      {navGroups.map((group) => (
-        <section key={group.id} className={styles.group} aria-labelledby={`group-${group.id}`}>
-          <h2 id={`group-${group.id}`} className={styles.groupTitle}>
-            {group.label}
-          </h2>
+      <section className={styles.hubs} aria-label="Categorias">
+        <div className={styles.hubGrid}>
+          {navGroups.map((group) => {
+            const availableCount = group.items.filter((item) => item.available).length;
 
-          <div className={styles.grid}>
-            {group.items.map((item) =>
-              item.available ? (
-                <Link key={item.slug} href={`/${item.slug}/`} className={styles.card}>
-                  <span className={`${styles.badge} ${styles.badgeAvailable}`}>Disponível</span>
-                  <h3 className={styles.cardTitle}>{item.title}</h3>
-                  <p className={styles.cardDescription}>{item.description}</p>
-                  <span className={styles.cardAction}>Acessar ferramenta &rarr;</span>
-                </Link>
-              ) : (
-                <article key={item.slug} className={`${styles.card} ${styles.cardSoon}`}>
-                  <span className={`${styles.badge} ${styles.badgeSoon}`}>Em breve</span>
-                  <h3 className={styles.cardTitle}>{item.title}</h3>
-                  <p className={styles.cardDescription}>{item.description}</p>
-                </article>
-              ),
-            )}
-          </div>
-        </section>
-      ))}
+            return (
+              <Link key={group.id} href={`/${group.id}/`} className={styles.hubCard}>
+                <h2 className={styles.hubTitle}>{group.label}</h2>
+                <p className={styles.hubDescription}>{group.description}</p>
+                <span className={styles.hubMeta}>
+                  {availableCount} de {group.items.length} dispon{availableCount === 1 ? "ível" : "íveis"}
+                </span>
+                <span className={styles.hubAction}>
+                  Ver {group.label.toLowerCase()} &rarr;
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
     </main>
   );
 }
