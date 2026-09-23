@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { navGroups, siteConfig } from "@/config/site";
-import { Icon } from "@/components/icons";
+import { Icon } from "@/components/icon";
 import styles from "./Header.module.scss";
 
 type Theme = "dark" | "light";
