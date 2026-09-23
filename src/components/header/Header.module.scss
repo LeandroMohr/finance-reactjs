@@ -51,25 +51,30 @@
 }
 
 .nav {
-  display: flex;
-  align-items: center;
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  flex-direction: column;
+  align-items: stretch;
   gap: $space-1;
+  padding: $space-3 $space-4 $space-4;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--bg-surface);
 
-  @media (max-width: #{$bp-md - 1px}) {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    flex-direction: column;
-    align-items: stretch;
-    padding: $space-3 $space-4 $space-4;
-    border-bottom: 1px solid var(--border);
-    background-color: var(--bg-surface);
+  &[data-open="true"] {
+    display: flex;
+  }
 
-    &[data-open="true"] {
-      display: flex;
-    }
+  @media (min-width: $bp-md) {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    border-bottom: 0;
+    background-color: transparent;
   }
 }
 
@@ -112,8 +117,10 @@
 }
 
 .navLink {
-  display: inline-flex;
+  display: flex;
+  width: 100%;
   align-items: center;
+  justify-content: center;
   gap: $space-2;
   padding: $space-2 $space-3;
   border: 0;
@@ -123,6 +130,7 @@
   cursor: pointer;
   font-size: $font-sm;
   font-weight: 500;
+  text-align: center;
   white-space: nowrap;
   transition: background-color 0.2s ease, color 0.2s ease;
 
@@ -133,11 +141,11 @@
     color: var(--brand-accent);
   }
 
-  @media (max-width: #{$bp-md - 1px}) {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    text-align: center;
+  @media (min-width: $bp-md) {
+    display: inline-flex;
+    width: auto;
+    justify-content: flex-start;
+    text-align: left;
   }
 }
 
@@ -155,15 +163,12 @@
 
 .menu {
   display: none;
-  position: absolute;
-  top: calc(100% + #{$space-2});
-  left: 0;
+  position: static;
   z-index: 60;
-  min-width: 18rem;
+  min-width: 0;
   margin: 0;
   padding: $space-2;
   list-style: none;
-  box-shadow: 0 18px 40px rgb(0 0 0 / 28%);
 
   @include card;
 
@@ -171,10 +176,12 @@
     display: block;
   }
 
-  @media (max-width: #{$bp-md - 1px}) {
-    position: static;
-    min-width: 0;
-    box-shadow: none;
+  @media (min-width: $bp-md) {
+    position: absolute;
+    top: calc(100% + #{$space-2});
+    left: 0;
+    min-width: 18rem;
+    box-shadow: 0 18px 40px rgb(0 0 0 / 28%);
   }
 }
 
