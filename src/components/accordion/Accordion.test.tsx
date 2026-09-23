@@ -6,37 +6,41 @@ import Accordion from "./Accordion";
 describe("Accordion", () => {
   it("renders collapsed by default while keeping content in the DOM", () => {
     render(
-      <Accordion title="Entenda a fórmula">
+      <Accordion summary={<h1>Conversor de taxas</h1>}>
         <p>Texto explicativo para SEO.</p>
       </Accordion>,
     );
 
-    const details = screen.getByText("Entenda a fórmula").closest("details")!;
+    const details = screen.getByRole("heading", { name: "Conversor de taxas" }).closest("details")!;
 
     expect(details).not.toHaveAttribute("open");
     expect(screen.getByText("Texto explicativo para SEO.")).toBeInTheDocument();
   });
 
-  it("expands when the summary is clicked", async () => {
+  it("expands when clicking the summary (title included)", async () => {
     const user = userEvent.setup();
     render(
-      <Accordion title="Entenda a fórmula">
+      <Accordion summary={<h1>Conversor de taxas</h1>}>
         <p>Texto explicativo para SEO.</p>
       </Accordion>,
     );
 
-    await user.click(screen.getByText("Entenda a fórmula"));
+    await user.click(screen.getByRole("heading", { name: "Conversor de taxas" }));
 
-    expect(screen.getByText("Entenda a fórmula").closest("details")).toHaveAttribute("open");
+    expect(
+      screen.getByRole("heading", { name: "Conversor de taxas" }).closest("details"),
+    ).toHaveAttribute("open");
   });
 
   it("renders open by default when defaultOpen is set", () => {
     render(
-      <Accordion title="Entenda a fórmula" defaultOpen>
+      <Accordion summary={<h1>Conversor de taxas</h1>} defaultOpen>
         <p>Texto explicativo para SEO.</p>
       </Accordion>,
     );
 
-    expect(screen.getByText("Entenda a fórmula").closest("details")).toHaveAttribute("open");
+    expect(
+      screen.getByRole("heading", { name: "Conversor de taxas" }).closest("details"),
+    ).toHaveAttribute("open");
   });
 });

@@ -10,12 +10,6 @@
   padding-block: $space-8 $space-12;
 }
 
-.intro {
-  @include surface;
-
-  padding: $space-6;
-}
-
 .eyebrow {
   @include eyebrow;
 }
@@ -26,10 +20,6 @@
   @media (min-width: $bp-sm) {
     font-size: $font-3xl;
   }
-}
-
-.intro > details {
-  margin-top: $space-6;
 }
 
 .introText {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
 import styles from "./RateConverter.module.scss";
 
@@ -103,7 +103,7 @@ const defaultValues: FormValues = {
   amount: maskCurrency("100000"),
 };
 
-export default function RateConverter() {
+export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }) {
   const [values, setValues] = useState(defaultValues);
 
   const { error, input } = useMemo(() => validateValues(values), [values]);
@@ -148,24 +148,36 @@ export default function RateConverter() {
 
   return (
     <main className={styles.main}>
-      <section className={styles.intro}>
-        <h1 className={styles.title}>Conversor de taxas: taxas equivalentes entre períodos</h1>
-        <Accordion title="Entenda a conversão">
-          <div className={styles.introText}>
-            <p>
-              Taxas equivalentes geram o mesmo rendimento acumulado em um mesmo intervalo de tempo, ao
-              contrário das taxas proporcionais, que apenas multiplicam ou dividem o valor nominal.
-              Por isso, converter uma taxa mensal em anual (ou o contrário) exige uma fórmula
-              exponencial, e não uma simples regra de três.
-            </p>
-            <p>
-              Informe a taxa, o período de referência e o período de destino para ver a taxa
-              equivalente, e use o valor de exemplo para entender quanto isso representa em juros no
-              mês e no ano.
-            </p>
-          </div>
-        </Accordion>
-      </section>
+      {breadcrumb}
+      <h1 className={styles.title}>
+        Conversor de taxas: converta taxas de juros entre períodos diferentes
+      </h1>
+
+      <Accordion summary="Entenda como funciona o cálculo">
+        <div className={styles.introText}>
+          <p>
+            Quer saber como calcular a taxa equivalente entre períodos diferentes? Taxas
+            equivalentes geram o mesmo rendimento acumulado em um mesmo intervalo de tempo, ao
+            contrário das taxas proporcionais, que apenas multiplicam ou dividem o valor nominal.
+            Por isso, converter uma taxa mensal em anual (ou o contrário) exige uma fórmula
+            exponencial, e não uma simples regra de três.
+          </p>
+          <p>
+            Para calcular a taxa equivalente manualmente, use a fórmula
+            i(destino) = (1 + i(origem))^(dias do período de destino / dias do período de origem) − 1.
+            Esta calculadora adota a convenção comercial de 30 dias por mês e 360 dias por ano, a
+            mesma usada por bancos e financeiras no Brasil para calcular taxas de juros.
+          </p>
+          <p>
+            Saber como converter taxas é útil para comparar o rendimento de um CDB que paga, por
+            exemplo, 1% ao mês com a rentabilidade anual de outro investimento, entender a taxa
+            efetiva de um cartão de crédito rotativo ou conferir se um financiamento está cobrando a
+            taxa mensal ou anual informada no contrato. Informe a taxa, o período de referência e o
+            período de destino para ver a taxa equivalente, e use o valor de exemplo para entender
+            quanto isso representa em juros no dia, no mês e no ano.
+          </p>
+        </div>
+      </Accordion>
 
       <section className={styles.simulation}>
         <div className={styles.form}>

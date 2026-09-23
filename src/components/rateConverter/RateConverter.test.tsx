@@ -34,7 +34,7 @@ describe("RateConverter", () => {
     render(<RateConverter />);
 
     expect(
-      screen.getByRole("heading", { name: "Conversor de taxas: taxas equivalentes entre períodos" }),
+      screen.getByRole("heading", { name: "Conversor de taxas: converta taxas de juros entre períodos diferentes" }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Taxa de juros (%)")).toHaveValue("2,8");
     expect(screen.getByLabelText("Periodicidade da taxa")).toHaveValue("monthly");

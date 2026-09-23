@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type PointerEvent } from "react";
+import { useMemo, useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
 import styles from "./CompoundInterestCalculator.module.scss";
 
@@ -323,7 +323,7 @@ const fields: Field[] = [
   },
 ];
 
-export default function CompoundInterestCalculator() {
+export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?: ReactNode }) {
   const [values, setValues] = useState(defaultValues);
 
   const { errors, input } = useMemo(() => validateValues(values), [values]);
@@ -372,23 +372,36 @@ export default function CompoundInterestCalculator() {
 
   return (
     <main className={styles.main}>
-      <section className={styles.intro}>
-        <h1 className={styles.title}>Juros compostos: como o dinheiro cresce com o tempo</h1>
-        <Accordion title="Entenda a fórmula">
-          <div className={styles.introText}>
-            <p>
-              Juros compostos são os juros calculados sobre o valor inicial mais os rendimentos
-              acumulados. Em outras palavras, o dinheiro rende sobre o dinheiro que já foi gerado,
-              criando crescimento exponencial ao longo do tempo.
-            </p>
-            <p>
-              Essa calculadora ajuda a simular cenários de investimento com aporte inicial, aporte
-              mensal, taxa anual e período. Ao ajustar os valores, você vê o impacto real do tempo e da
-              consistência no crescimento do patrimônio.
-            </p>
-          </div>
-        </Accordion>
-      </section>
+      {breadcrumb}
+      <h1 className={styles.title}>
+        Calculadora de juros compostos: simule o crescimento do seu dinheiro
+      </h1>
+
+      <Accordion summary="Entenda como funciona o cálculo">
+        <div className={styles.introText}>
+          <p>
+            Quer saber como calcular juros compostos? Juros compostos são os juros calculados
+            sobre o valor inicial mais os rendimentos acumulados: o dinheiro rende sobre o dinheiro
+            que já foi gerado, criando um crescimento exponencial ao longo do tempo — diferente dos
+            juros simples, em que o rendimento incide sempre sobre o valor inicial.
+          </p>
+          <p>
+            Para calcular juros compostos manualmente, use a fórmula
+            VF = P × (1 + i)ⁿ + A × [((1 + i)ⁿ − 1) / i], em que P é o aporte inicial, A é o
+            aporte mensal, i é a taxa de juros mensal em decimal e n é o número de meses simulados.
+            É exatamente essa conta que a calculadora reproduz mês a mês: em cada período, os juros
+            são calculados sobre o saldo acumulado até o mês anterior e, em seguida, o aporte mensal
+            é somado ao saldo, repetindo o processo até o fim do prazo informado.
+          </p>
+          <p>
+            Para fazer essa simulação sem calculadora, repita esse cálculo mês a mês com papel e
+            caneta (ou uma planilha) — ou use os campos de aporte inicial, aporte mensal, taxa de
+            juros (mensal ou anual) e prazo (em meses ou anos) abaixo para simular cenários reais de
+            investimento e visualizar, mês a mês, o total aportado, os juros acumulados e o valor
+            final do seu patrimônio.
+          </p>
+        </div>
+      </Accordion>
 
       <section className={styles.simulation}>
         <div className={styles.form}>
