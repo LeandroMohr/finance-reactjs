@@ -6,8 +6,10 @@ import styles from "./CompoundInterestCalculator.module.scss";
 type CompoundInterestInput = {
   initialAmount: number;
   monthlyContribution: number;
-  annualRate: number;
-  years: number;
+  interestRate: number;
+  ratePeriod: "monthly" | "annual";
+  duration: number;
+  durationUnit: "months" | "years";
 };
 
 type MonthlyBreakdown = {
@@ -29,11 +31,16 @@ const MONTHS_PER_YEAR = 12;
 export function calculateCompoundInterest({
   initialAmount,
   monthlyContribution,
-  annualRate,
-  years,
+  interestRate,
+  ratePeriod,
+  duration,
+  durationUnit,
 }: CompoundInterestInput): CompoundInterestResult {
-  const monthlyRate = annualRate / 100 / MONTHS_PER_YEAR;
-  const totalMonths = Math.max(1, years * MONTHS_PER_YEAR);
+  const monthlyRate = interestRate / 100 / (ratePeriod === "annual" ? MONTHS_PER_YEAR : 1);
+  const totalMonths = Math.max(
+    0,
+    Math.round(duration * (durationUnit === "years" ? MONTHS_PER_YEAR : 1)),
+  );
 
   let balance = initialAmount;
   let totalContribution = initialAmount;
@@ -57,35 +64,166 @@ export function calculateCompoundInterest({
   };
 }
 
-const defaultValues = {
-  initialAmount: 5000,
-  monthlyContribution: 500,
-  annualRate: 12,
-  years: 5,
+type FormValues = {
+  initialAmount: string;
+  monthlyContribution: string;
+  interestRate: string;
+  duration: string;
+  ratePeriod: CompoundInterestInput["ratePeriod"];
+  durationUnit: CompoundInterestInput["durationUnit"];
 };
 
-const fields: [label: string, key: keyof typeof defaultValues][] = [
-  ["Aporte inicial", "initialAmount"],
-  ["Aporte mensal", "monthlyContribution"],
-  ["Taxa anual (%)", "annualRate"],
-  ["Tempo (anos)", "years"],
-];
+type AmountKey = "initialAmount" | "monthlyContribution" | "interestRate" | "duration";
+type UnitKey = "ratePeriod" | "durationUnit";
+type DecimalKey = "interestRate" | "duration";
+type FieldType = "currency" | "decimal";
+type FieldErrors = Partial<Record<DecimalKey, string>>;
+
+type ParsedDecimal =
+  | { ok: true; value: number }
+  | { ok: false; reason: "empty" | "negative" | "format" };
+
+const MAX_YEARS = 100;
+const MAX_MONTHS = MAX_YEARS * MONTHS_PER_YEAR;
+const DECIMAL_PATTERN = /^\d+(?:[.,]\d{1,6})?$/;
 
 const currency = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
 });
 
+function maskCurrency(raw: string) {
+  const digitsAsCents = raw.replace(/\D/g, "").slice(0, 13);
+
+  return currency.format(Number(digitsAsCents) / 100);
+}
+
+function parseCurrency(masked: string) {
+  return Number(masked.replace(/\D/g, "")) / 100;
+}
+
+function parseDecimal(raw: string): ParsedDecimal {
+  const value = raw.replace(/\s/g, "");
+
+  if (!value) return { ok: false, reason: "empty" };
+  if (value.startsWith("-")) return { ok: false, reason: "negative" };
+  if (!DECIMAL_PATTERN.test(value)) return { ok: false, reason: "format" };
+
+  return { ok: true, value: Number(value.replace(",", ".")) };
+}
+
+const decimalErrors: Record<DecimalKey, Record<"empty" | "negative" | "format", string>> = {
+  interestRate: {
+    empty: "Informe a taxa de juros.",
+    negative: "A taxa de juros não pode ser negativa.",
+    format: "Use apenas números, com vírgula ou ponto. Ex.: 12,25",
+  },
+  duration: {
+    empty: "Informe o tempo.",
+    negative: "O tempo não pode ser negativo.",
+    format: "Use apenas números, com vírgula ou ponto. Ex.: 1,8",
+  },
+};
+
+function validateValues(values: FormValues) {
+  const errors: FieldErrors = {};
+
+  const rate = parseDecimal(values.interestRate);
+  if (!rate.ok) errors.interestRate = decimalErrors.interestRate[rate.reason];
+
+  const duration = parseDecimal(values.duration);
+  if (!duration.ok) {
+    errors.duration = decimalErrors.duration[duration.reason];
+  } else if (duration.value * (values.durationUnit === "years" ? MONTHS_PER_YEAR : 1) > MAX_MONTHS) {
+    errors.duration = `O tempo máximo é de ${MAX_YEARS} anos (${MAX_MONTHS} meses).`;
+  }
+
+  const isValid = Object.keys(errors).length === 0;
+
+  const input: CompoundInterestInput = {
+    initialAmount: parseCurrency(values.initialAmount),
+    monthlyContribution: parseCurrency(values.monthlyContribution),
+    interestRate: isValid && rate.ok ? rate.value : 0,
+    ratePeriod: values.ratePeriod,
+    duration: isValid && duration.ok ? duration.value : 0,
+    durationUnit: values.durationUnit,
+  };
+
+  return { errors, input };
+}
+
+const defaultValues: FormValues = {
+  initialAmount: maskCurrency("0"),
+  monthlyContribution: maskCurrency("0"),
+  interestRate: "0",
+  duration: "0",
+  ratePeriod: "annual",
+  durationUnit: "years",
+};
+
+type Field = {
+  label: string;
+  key: AmountKey;
+  type: FieldType;
+  placeholder: string;
+  unit?: {
+    key: UnitKey;
+    label: string;
+    options: { value: string; label: string }[];
+  };
+};
+
+const fields: Field[] = [
+  { label: "Aporte inicial", key: "initialAmount", type: "currency", placeholder: "R$ 0,00" },
+  { label: "Aporte mensal", key: "monthlyContribution", type: "currency", placeholder: "R$ 0,00" },
+  {
+    label: "Taxa de juros (%)",
+    key: "interestRate",
+    type: "decimal",
+    placeholder: "12,25",
+    unit: {
+      key: "ratePeriod",
+      label: "Periodicidade da taxa",
+      options: [
+        { value: "monthly", label: "Mensal" },
+        { value: "annual", label: "Anual" },
+      ],
+    },
+  },
+  {
+    label: "Tempo",
+    key: "duration",
+    type: "decimal",
+    placeholder: "1,8",
+    unit: {
+      key: "durationUnit",
+      label: "Unidade do tempo",
+      options: [
+        { value: "months", label: "Meses" },
+        { value: "years", label: "Anos" },
+      ],
+    },
+  },
+];
+
 export default function CompoundInterestCalculator() {
   const [values, setValues] = useState(defaultValues);
 
-  const result = useMemo(() => calculateCompoundInterest(values), [values]);
+  const { errors, input } = useMemo(() => validateValues(values), [values]);
+  const result = useMemo(() => calculateCompoundInterest(input), [input]);
 
   const visibleMonths = result.monthlyBreakdown.slice(-12);
   const maxBalance = Math.max(...result.monthlyBreakdown.map((item) => item.balance), 1);
 
-  const handleChange = (key: keyof typeof defaultValues, value: string) => {
-    setValues((current) => ({ ...current, [key]: Number(value) || 0 }));
+  const handleChange = (key: AmountKey, type: FieldType, value: string) => {
+    setValues((current) => ({
+      ...current,
+      [key]: type === "currency" ? maskCurrency(value) : value,
+    }));
+  };
+
+  const handleUnitChange = (key: UnitKey, value: string) => {
+    setValues((current) => ({ ...current, [key]: value }) as FormValues);
   };
 
   return (
@@ -113,25 +251,49 @@ export default function CompoundInterestCalculator() {
           <h2 className={styles.sectionTitle}>Descubra seu crescimento</h2>
 
           <div className={styles.fields}>
-            {fields.map(([label, key]) => (
-              <label key={key} className={styles.field}>
-                <span>{label}</span>
-                <input
-                  className={styles.input}
-                  type="number"
-                  min={0}
-                  value={values[key]}
-                  onChange={(event) => handleChange(key, event.target.value)}
-                />
-              </label>
-            ))}
-          </div>
+            {fields.map(({ label, key, type, placeholder, unit }) => {
+              const error = key === "interestRate" || key === "duration" ? errors[key] : undefined;
 
-          <div className={styles.summary}>
-            <p className={styles.summaryLabel}>Resumo de investimento</p>
-            <p className={styles.summaryValue}>
-              {currency.format(result.totalContributed)} aportados em {values.years || 0} ano(s)
-            </p>
+              return (
+                <div key={key} className={styles.field}>
+                  <label className={styles.fieldLabel} htmlFor={key}>
+                    {label}
+                  </label>
+                  <div className={styles.inputGroup}>
+                    <input
+                      id={key}
+                      className={`${styles.input} ${error ? styles.inputError : ""}`}
+                      type="text"
+                      inputMode="decimal"
+                      placeholder={placeholder}
+                      aria-invalid={error ? true : undefined}
+                      aria-describedby={error ? `${key}-error` : undefined}
+                      value={values[key]}
+                      onChange={(event) => handleChange(key, type, event.target.value)}
+                    />
+                    {unit ? (
+                      <select
+                        aria-label={unit.label}
+                        className={styles.unitSelect}
+                        value={values[unit.key]}
+                        onChange={(event) => handleUnitChange(unit.key, event.target.value)}
+                      >
+                        {unit.options.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : null}
+                  </div>
+                  {error ? (
+                    <p id={`${key}-error`} className={styles.errorMessage} role="alert">
+                      {error}
+                    </p>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
         </div>
 

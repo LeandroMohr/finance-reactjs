@@ -77,7 +77,20 @@
   color: var(--text-muted);
 }
 
+.fieldLabel {
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.inputGroup {
+  display: flex;
+  align-items: stretch;
+  gap: $space-2;
+}
+
 .input {
+  flex: 1;
+  min-width: 0;
   padding: $space-3;
   border: 1px solid var(--border);
   border-radius: $radius-md;
@@ -95,22 +108,37 @@
   }
 }
 
-.summary {
-  @include surface;
-
-  margin-top: $space-6;
-  padding: $space-4;
-}
-
-.summaryLabel {
+.unitSelect {
+  flex-shrink: 0;
+  padding: $space-3 $space-2;
+  border: 1px solid var(--border);
+  border-radius: $radius-md;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  font: inherit;
   font-size: $font-sm;
-  color: var(--text-muted);
+  transition: border-color 0.2s ease;
+
+  @include focus-ring;
+
+  &:focus {
+    border-color: var(--brand-cta);
+    outline: none;
+  }
 }
 
-.summaryValue {
-  margin-top: $space-2;
-  font-size: $font-lg;
-  font-weight: 600;
+.inputError {
+  border-color: var(--feedback-error);
+
+  &:focus {
+    border-color: var(--feedback-error);
+  }
+}
+
+.errorMessage {
+  font-size: $font-sm;
+  color: var(--feedback-error);
 }
 
 .result {
