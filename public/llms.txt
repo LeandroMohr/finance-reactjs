@@ -16,5 +16,6 @@ Use os resultados como simulações educacionais, não como recomendação finan
 
 ## Optional
 
+- [Perguntas Frequentes](https://calc.lemohr.com.br/faq/): Respostas gerais e dúvidas sobre as calculadoras e ferramentas publicadas.
 - [Página inicial](https://calc.lemohr.com.br/): Visão geral da Lemo Finance e acesso às categorias.
 - [Sitemap XML](https://calc.lemohr.com.br/sitemap.xml): Relação completa das páginas públicas e indexáveis.

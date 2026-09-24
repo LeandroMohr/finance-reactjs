@@ -39,6 +39,17 @@ export default function Footer() {
             </ul>
           </nav>
         ))}
+
+        <nav className={styles.column} aria-label="Ajuda">
+          <h2 className={styles.columnTitle}>Ajuda</h2>
+          <ul className={styles.list}>
+            <li>
+              <Link href="/faq/" className={styles.link}>
+                Perguntas frequentes
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
 
       <div className={styles.bottom}>

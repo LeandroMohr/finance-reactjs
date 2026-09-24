@@ -34,4 +34,12 @@ describe("Footer", () => {
       screen.getByText(new RegExp(`${new Date().getFullYear()}.*${siteConfig.author}`)),
     ).toBeInTheDocument();
   });
+
+  it("links to the FAQ page", () => {
+    render(<Footer />);
+
+    expect(
+      screen.getByRole("link", { name: "Perguntas frequentes" }).getAttribute("href"),
+    ).toMatch(/^\/faq\/?$/);
+  });
 });
