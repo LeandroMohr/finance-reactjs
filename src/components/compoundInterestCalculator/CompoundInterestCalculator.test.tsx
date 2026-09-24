@@ -123,7 +123,10 @@ describe("CompoundInterestCalculator", () => {
   it("recommends related tools", () => {
     render(<CompoundInterestCalculator />);
 
-    expect(screen.getByRole("heading", { name: "Ferramentas relacionadas" })).toBeInTheDocument();
+    const related = screen.getByRole("heading", { name: "Ferramentas relacionadas" });
+    const faq = screen.getByRole("heading", { name: "Perguntas frequentes" });
+
+    expect(related.closest("section")!.compareDocumentPosition(faq.closest("section")!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByRole("link", { name: /Conversor de Taxas/ })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Primeiro Milhão" })).toBeInTheDocument();
   });

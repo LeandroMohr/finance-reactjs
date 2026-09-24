@@ -355,8 +355,8 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
         </div>
       </Accordion>
 
-      <Faq items={faqItems} />
       <RelatedTools slugs={["compound-interest", "real-interest-rate", "loan-total-cost"]} />
+      <Faq items={faqItems} />
     </main>
   );
 }

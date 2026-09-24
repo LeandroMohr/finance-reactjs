@@ -45,7 +45,10 @@ describe("RateConverter", () => {
   it("recommends related tools", () => {
     render(<RateConverter />);
 
-    expect(screen.getByRole("heading", { name: "Ferramentas relacionadas" })).toBeInTheDocument();
+    const related = screen.getByRole("heading", { name: "Ferramentas relacionadas" });
+    const faq = screen.getByRole("heading", { name: "Perguntas frequentes" });
+
+    expect(related.closest("section")!.compareDocumentPosition(faq.closest("section")!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByRole("link", { name: /Juros Compostos/ })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Taxa Real de Juros" })).toBeInTheDocument();
   });
