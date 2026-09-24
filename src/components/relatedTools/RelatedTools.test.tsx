@@ -4,12 +4,12 @@ import RelatedTools from "./RelatedTools";
 
 describe("RelatedTools", () => {
   it("links available tools and marks upcoming suggestions", () => {
-    render(<RelatedTools slugs={["rate-converter", "simple-interest"]} />);
+    render(<RelatedTools slugs={["rate-converter", "first-million"]} />);
 
     expect(screen.getByRole("link", { name: /Conversor de Taxas/ }).getAttribute("href")).toMatch(
       /^\/rate-converter\/?$/,
     );
-    expect(screen.queryByRole("link", { name: /Juros Simples/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Primeiro Milhão/ })).not.toBeInTheDocument();
     expect(screen.getByText("Em breve")).toBeInTheDocument();
   });
 

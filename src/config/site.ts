@@ -39,13 +39,6 @@ export const navGroups: NavGroup[] = [
         available: true,
       },
       {
-        slug: "simple-interest",
-        title: "Juros Simples",
-        description: "Compare o rendimento linear com o rendimento composto.",
-        section: "Crédito e financiamento",
-        available: false,
-      },
-      {
         slug: "goal-planner",
         title: "Simulador de Metas",
         description:

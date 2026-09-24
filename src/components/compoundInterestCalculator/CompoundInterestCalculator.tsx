@@ -656,7 +656,7 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
         </div>
       </Accordion>
 
-      <RelatedTools slugs={["rate-converter", "simple-interest", "first-million"]} />
+      <RelatedTools slugs={["rate-converter", "first-million"]} />
       <Faq items={compoundInterestFaqItems} />
     </main>
   );

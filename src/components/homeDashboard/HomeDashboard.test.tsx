@@ -12,10 +12,10 @@ const items: NavItem[] = [
     available: true,
   },
   {
-    slug: "simple-interest",
-    title: "Juros Simples",
-    description: "Compare o rendimento linear com o composto.",
-    section: "Crédito e financiamento",
+    slug: "goal-planner",
+    title: "Simulador de Metas",
+    description: "Descubra quanto guardar por mês.",
+    section: "Planejamento financeiro",
     available: false,
   },
 ];
@@ -27,7 +27,7 @@ describe("HomeDashboard", () => {
     expect(screen.getByRole("link", { name: /Juros Compostos/ }).getAttribute("href")).toMatch(
       /^\/compound-interest\/?$/,
     );
-    expect(screen.queryByRole("link", { name: /Juros Simples/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Simulador de Metas/ })).not.toBeInTheDocument();
   });
 
   it("renders every item title as a heading", () => {
@@ -43,7 +43,7 @@ describe("HomeDashboard", () => {
 
     expect(screen.getByRole("heading", { level: 2, name: "Investimentos" })).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { level: 2, name: "Crédito e financiamento" }),
+      screen.getByRole("heading", { level: 2, name: "Planejamento financeiro" }),
     ).toBeInTheDocument();
   });
 });

@@ -19,7 +19,6 @@ correspondente em `src/config/site.ts`.
 
 | Ferramenta | Slug sugerido | Observação |
 | --- | --- | --- |
-| Juros Simples | `simple-interest` | Reaproveita quase toda a UI de juros compostos |
 | Simulador de Metas | `goal-planner` | "Quanto guardar por mês para chegar em X" |
 | Conversor de Taxas | `rate-converter` | Anual ↔ mensal ↔ diária; base para as demais |
 | Correção pela Inflação | `inflation-adjuster` | Requer série do IPCA |
