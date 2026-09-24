@@ -14,6 +14,7 @@ const ICONS = {
   telegram: "/img/icons/telegram.svg",
   link: "/img/icons/link.svg",
   check: "/img/icons/check.svg",
+  "arrow-up": "/img/icons/arrow-up.svg",
 } as const;
 
 export type IconName = keyof typeof ICONS;

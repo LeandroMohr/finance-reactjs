@@ -1,0 +1,48 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.button {
+  position: fixed;
+  right: $space-4;
+  bottom: $space-4;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--border);
+  border-radius: $radius-pill;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY($space-3);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease;
+
+  @include focus-ring;
+
+  &:hover {
+    border-color: var(--brand-accent);
+    color: var(--brand-accent);
+  }
+
+  @media (min-width: $bp-sm) {
+    right: $space-6;
+    bottom: $space-6;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}

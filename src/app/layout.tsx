@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Inter } from "next/font/google";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
+import BackToTop from "@/components/backToTop/BackToTop";
 import { siteConfig } from "@/config/site";
 import "@/styles/global.scss";
 
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {children}
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );
