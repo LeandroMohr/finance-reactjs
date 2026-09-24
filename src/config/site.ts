@@ -9,6 +9,7 @@ export const siteConfig = {
 
 export const institutionalLinks = [
   { href: "/sobre-nos/", label: "Sobre nós" },
+  { href: "/contato/", label: "Contato" },
   { href: "/politica-de-privacidade/", label: "Política de privacidade" },
   { href: "/termos-de-uso/", label: "Termos de uso" },
 ] as const;
