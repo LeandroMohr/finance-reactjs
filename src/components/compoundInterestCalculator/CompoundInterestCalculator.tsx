@@ -4,6 +4,7 @@ import { useMemo, useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
+import ShareContent from "@/components/share/ShareContent";
 import { compoundInterestFaqItems } from "@/config/faq";
 import styles from "./CompoundInterestCalculator.module.scss";
 
@@ -658,6 +659,7 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
 
       <RelatedTools slugs={["rate-converter", "first-million"]} />
       <Faq items={compoundInterestFaqItems} />
+      <ShareContent path="/compound-interest/" title="Calculadora de Juros Compostos" />
     </main>
   );
 }

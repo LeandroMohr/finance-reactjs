@@ -1,0 +1,87 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.section,
+.heading {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  gap: $space-5;
+}
+
+.heading {
+  gap: $space-2;
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.title {
+  font-size: $font-xl;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--border);
+  border-radius: $radius-pill;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease,
+    transform 0.2s ease;
+
+  @include focus-ring;
+
+  &:hover {
+    color: var(--brand-cta);
+    transform: translateY(-2px);
+  }
+}
+
+.whatsapp:hover {
+  border-color: #25d366;
+  color: #25d366;
+}
+
+.facebook:hover {
+  border-color: #1877f2;
+  color: #1877f2;
+}
+
+.twitter:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.linkedin:hover {
+  border-color: #0a66c2;
+  color: #0a66c2;
+}
+
+.telegram:hover {
+  border-color: #229ed9;
+  color: #229ed9;
+}
+
+.copy:hover {
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+}
+
+.feedback {
+  font-size: $font-sm;
+  color: var(--feedback-success);
+}

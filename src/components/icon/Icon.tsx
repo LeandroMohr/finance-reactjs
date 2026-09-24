@@ -7,6 +7,13 @@ const ICONS = {
   moon: "/img/icons/moon.svg",
   menu: "/img/icons/menu.svg",
   close: "/img/icons/close.svg",
+  whatsapp: "/img/icons/whatsapp.svg",
+  facebook: "/img/icons/facebook.svg",
+  "x-twitter": "/img/icons/x-twitter.svg",
+  linkedin: "/img/icons/linkedin.svg",
+  telegram: "/img/icons/telegram.svg",
+  link: "/img/icons/link.svg",
+  check: "/img/icons/check.svg",
 } as const;
 
 export type IconName = keyof typeof ICONS;

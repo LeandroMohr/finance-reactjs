@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 import Faq from "@/components/faq/Faq";
+import ShareContent from "@/components/share/ShareContent";
 import { faqSections } from "@/config/faq";
 import { siteConfig } from "@/config/site";
 import styles from "./page.module.scss";
@@ -68,6 +69,8 @@ export default function FaqPage() {
           </section>
         ))}
       </div>
+
+      <ShareContent path={canonical} title="Perguntas frequentes" />
 
       <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
     </main>

@@ -4,6 +4,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
+import ShareContent from "@/components/share/ShareContent";
 import { rateConverterFaqItems } from "@/config/faq";
 import styles from "./RateConverter.module.scss";
 
@@ -333,6 +334,7 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
 
       <RelatedTools slugs={["compound-interest", "real-interest-rate", "loan-total-cost"]} />
       <Faq items={rateConverterFaqItems} />
+      <ShareContent path="/rate-converter/" title="Conversor de Taxas de Juros" />
     </main>
   );
 }
