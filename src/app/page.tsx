@@ -52,10 +52,6 @@ export default function Home() {
       <section className={styles.hero}>
         <p className={styles.eyebrow}>{siteConfig.name}</p>
         <h1 className={styles.title}>Simule, planeje e faça seu dinheiro render</h1>
-        <p className={styles.subtitle}>
-          Ferramentas financeiras diretas ao ponto, sem cadastro e sem custo. Escolha uma categoria
-          abaixo para encontrar a calculadora ou ferramenta certa para o seu momento.
-        </p>
       </section>
 
       <section className={styles.hubs} aria-label="Categorias">

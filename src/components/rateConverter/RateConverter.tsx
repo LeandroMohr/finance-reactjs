@@ -174,9 +174,7 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
   return (
     <main className={styles.main}>
       {breadcrumb}
-      <h1 className={styles.title}>
-        Conversor de taxas: converta taxas de juros entre períodos diferentes
-      </h1>
+      <h1 className={styles.title}>Conversor de taxas</h1>
 
       <section className={styles.simulation}>
         <div className={styles.form}>

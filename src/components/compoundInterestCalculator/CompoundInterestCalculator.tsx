@@ -398,9 +398,7 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
   return (
     <main className={styles.main}>
       {breadcrumb}
-      <h1 className={styles.title}>
-        Calculadora de juros compostos: simule o crescimento do seu dinheiro
-      </h1>
+      <h1 className={styles.title}>Calculadora de juros compostos</h1>
 
       <section className={styles.simulation}>
         <div className={styles.form}>

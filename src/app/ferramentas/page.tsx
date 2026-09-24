@@ -28,7 +28,6 @@ export default function FerramentasPage() {
 
       <section className={styles.hero}>
         <h1 className={styles.title}>{group.label}</h1>
-        <p className={styles.subtitle}>{group.description}</p>
       </section>
 
       <HomeDashboard items={group.items} />

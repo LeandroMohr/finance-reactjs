@@ -10,6 +10,7 @@ describe("Home", () => {
     expect(
       screen.getByRole("heading", { name: "Simule, planeje e faça seu dinheiro render" }),
     ).toBeInTheDocument();
+    expect(screen.queryByText(/Ferramentas financeiras diretas ao ponto/)).not.toBeInTheDocument();
   });
 
   it("links to every category dashboard instead of listing individual tools", () => {

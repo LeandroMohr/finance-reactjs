@@ -107,7 +107,7 @@ describe("CompoundInterestCalculator", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "Calculadora de juros compostos: simule o crescimento do seu dinheiro",
+        name: "Calculadora de juros compostos",
       }),
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Descubra seu crescimento" })).toBeInTheDocument();
