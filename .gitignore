@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# third-party reference material collected by scripts/crawl-reference.mjs
+/.research
+
 # debug
 npm-debug.log*
 yarn-debug.log*
