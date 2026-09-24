@@ -1,0 +1,20 @@
+# Lemo Finance
+
+> Calculadoras e ferramentas financeiras gratuitas, em português do Brasil, para simulações e planejamento financeiro. O site funciona sem cadastro e executa os cálculos diretamente no navegador.
+
+Use os resultados como simulações educacionais, não como recomendação financeira profissional. Valores podem variar conforme regras, taxas e condições reais.
+
+## Calculadoras
+
+- [Calculadora de Juros Compostos](https://calc.lemohr.com.br/compound-interest/): Simula a evolução de um investimento com valor inicial, aportes mensais, taxa de juros e prazo.
+- [Catálogo de Calculadoras](https://calc.lemohr.com.br/calculadoras/): Lista as calculadoras financeiras disponíveis no site.
+
+## Ferramentas
+
+- [Conversor de Taxas](https://calc.lemohr.com.br/rate-converter/): Converte taxas de juros equivalentes entre períodos mensais e anuais.
+- [Catálogo de Ferramentas](https://calc.lemohr.com.br/ferramentas/): Lista as ferramentas financeiras disponíveis no site.
+
+## Optional
+
+- [Página inicial](https://calc.lemohr.com.br/): Visão geral da Lemo Finance e acesso às categorias.
+- [Sitemap XML](https://calc.lemohr.com.br/sitemap.xml): Relação completa das páginas públicas e indexáveis.
