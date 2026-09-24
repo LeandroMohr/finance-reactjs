@@ -9,6 +9,7 @@ export const siteConfig = {
 
 export const institutionalLinks = [
   { href: "/politica-de-privacidade/", label: "Política de privacidade" },
+  { href: "/termos-de-uso/", label: "Termos de uso" },
 ] as const;
 
 export type NavItem = {
