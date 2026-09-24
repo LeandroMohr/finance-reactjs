@@ -1,16 +1,25 @@
 import Accordion from "@/components/accordion/Accordion";
+import type { FaqItem } from "@/config/faq";
 import styles from "./Faq.module.scss";
-
-export type FaqItem = {
-  question: string;
-  answer: string;
-};
 
 type FaqProps = {
   items: FaqItem[];
+  eyebrow?: string;
+  title?: string;
+  headingId?: string;
+  headingLevel?: 2 | 3;
+  includeStructuredData?: boolean;
 };
 
-export default function Faq({ items }: FaqProps) {
+export default function Faq({
+  items,
+  eyebrow = "Tire suas dúvidas",
+  title = "Perguntas frequentes",
+  headingId = "faq-title",
+  headingLevel = 2,
+  includeStructuredData = true,
+}: FaqProps) {
+  const Heading = `h${headingLevel}` as "h2" | "h3";
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -25,12 +34,12 @@ export default function Faq({ items }: FaqProps) {
   };
 
   return (
-    <section className={styles.section} aria-labelledby="faq-title">
+    <section className={styles.section} aria-labelledby={headingId}>
       <div className={styles.heading}>
-        <p className={styles.eyebrow}>Tire suas dúvidas</p>
-        <h2 id="faq-title" className={styles.title}>
-          Perguntas frequentes
-        </h2>
+        <p className={styles.eyebrow}>{eyebrow}</p>
+        <Heading id={headingId} className={styles.title}>
+          {title}
+        </Heading>
       </div>
 
       <div className={styles.list}>
@@ -41,7 +50,9 @@ export default function Faq({ items }: FaqProps) {
         ))}
       </div>
 
-      <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      {includeStructuredData ? (
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      ) : null}
     </section>
   );
 }

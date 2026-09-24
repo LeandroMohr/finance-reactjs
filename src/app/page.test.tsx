@@ -28,13 +28,9 @@ describe("Home", () => {
     }
   });
 
-  it("renders the general FAQ after the category dashboards", () => {
+  it("keeps the general FAQ on its dedicated route", () => {
     render(<Home />);
 
-    const categorySection = screen.getByRole("link", { name: /Calculadoras/ }).closest("section")!;
-    const faqSection = screen.getByRole("heading", { name: "Perguntas frequentes" }).closest("section")!;
-
-    expect(screen.getByText("Os valores informados ficam salvos?")).toBeInTheDocument();
-    expect(categorySection.compareDocumentPosition(faqSection) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.queryByText("Os valores informados ficam salvos?")).not.toBeInTheDocument();
   });
 });

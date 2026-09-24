@@ -2,8 +2,9 @@
 
 import { useMemo, useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
-import Faq, { type FaqItem } from "@/components/faq/Faq";
+import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
+import { compoundInterestFaqItems } from "@/config/faq";
 import styles from "./CompoundInterestCalculator.module.scss";
 
 type CompoundInterestInput = {
@@ -322,29 +323,6 @@ const fields: Field[] = [
         { value: "years", label: "Anos" },
       ],
     },
-  },
-];
-
-const faqItems: FaqItem[] = [
-  {
-    question: "Qual é a diferença entre juros simples e compostos?",
-    answer:
-      "Nos juros simples, a taxa incide sempre sobre o valor inicial. Nos juros compostos, cada rendimento passa a integrar o saldo e também rende nos períodos seguintes.",
-  },
-  {
-    question: "Como a taxa anual é usada na simulação?",
-    answer:
-      "Quando a taxa é anual, a calculadora a divide por 12 para obter a taxa mensal aplicada à evolução do saldo. Para reproduzir outra convenção contratual, informe diretamente a taxa mensal correspondente.",
-  },
-  {
-    question: "Quando o aporte mensal entra no cálculo?",
-    answer:
-      "A simulação calcula os juros sobre o saldo existente no início do mês e adiciona o aporte ao final do período. Por isso, o primeiro aporte mensal começa a render no mês seguinte.",
-  },
-  {
-    question: "O valor final é uma garantia de rendimento?",
-    answer:
-      "Não. O resultado é uma projeção matemática com taxa constante e não considera impostos, inflação, taxas, oscilações de mercado nem mudanças futuras nos aportes.",
   },
 ];
 
@@ -679,7 +657,7 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
       </Accordion>
 
       <RelatedTools slugs={["rate-converter", "simple-interest", "first-million"]} />
-      <Faq items={faqItems} />
+      <Faq items={compoundInterestFaqItems} />
     </main>
   );
 }

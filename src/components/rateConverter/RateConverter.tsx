@@ -2,8 +2,9 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
-import Faq, { type FaqItem } from "@/components/faq/Faq";
+import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
+import { rateConverterFaqItems } from "@/config/faq";
 import styles from "./RateConverter.module.scss";
 
 type RatePeriod = "daily" | "monthly" | "annual";
@@ -104,29 +105,6 @@ const defaultValues: FormValues = {
   toPeriod: "annual",
   amount: maskCurrency("100000"),
 };
-
-const faqItems: FaqItem[] = [
-  {
-    question: "Posso multiplicar uma taxa mensal por 12 para obter a anual?",
-    answer:
-      "Não quando você precisa da taxa efetiva equivalente. A multiplicação produz uma taxa proporcional e ignora os juros sobre juros acumulados ao longo dos meses.",
-  },
-  {
-    question: "Qual é a diferença entre taxa nominal e taxa efetiva?",
-    answer:
-      "A taxa nominal é uma referência declarada e pode não incorporar a capitalização dentro do período. A taxa efetiva representa o rendimento ou custo realmente acumulado após essa capitalização.",
-  },
-  {
-    question: "Por que o conversor usa meses de 30 dias e anos de 360 dias?",
-    answer:
-      "A ferramenta adota a convenção comercial 30/360 para manter uma base consistente entre taxas diárias, mensais e anuais. Um contrato pode usar outra convenção, que deve prevalecer na análise.",
-  },
-  {
-    question: "Quando é útil converter taxas equivalentes?",
-    answer:
-      "A conversão ajuda a comparar investimentos, empréstimos e financiamentos divulgados em períodos diferentes, desde que as taxas tenham a mesma natureza e condições comparáveis.",
-  },
-];
 
 export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }) {
   const [values, setValues] = useState(defaultValues);
@@ -354,7 +332,7 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
       </Accordion>
 
       <RelatedTools slugs={["compound-interest", "real-interest-rate", "loan-total-cost"]} />
-      <Faq items={faqItems} />
+      <Faq items={rateConverterFaqItems} />
     </main>
   );
 }

@@ -1,0 +1,48 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.main {
+  @include container;
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+  padding-block: $space-8 $space-12;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.title {
+  font-size: $font-2xl;
+
+  @media (min-width: $bp-sm) {
+    font-size: $font-3xl;
+  }
+}
+
+.description {
+  max-width: 60ch;
+  color: var(--text-muted);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: $space-12;
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.categoryTitle {
+  padding-bottom: $space-3;
+  border-bottom: 1px solid var(--border);
+  font-size: $font-2xl;
+}
