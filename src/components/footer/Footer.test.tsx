@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { navGroups, siteConfig } from "@/config/site";
+import { institutionalLinks, navGroups, siteConfig } from "@/config/site";
 import Footer from "./Footer";
 
 describe("Footer", () => {
@@ -41,5 +41,15 @@ describe("Footer", () => {
     expect(
       screen.getByRole("link", { name: "Perguntas frequentes" }).getAttribute("href"),
     ).toMatch(/^\/faq\/?$/);
+  });
+
+  it("links to every published institutional page", () => {
+    render(<Footer />);
+
+    for (const item of institutionalLinks) {
+      expect(screen.getByRole("link", { name: item.label }).getAttribute("href")).toMatch(
+        new RegExp(`^${item.href.replace(/\/$/, "")}/?$`),
+      );
+    }
   });
 });

@@ -1,0 +1,140 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.main {
+  @include container;
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+  padding-block: $space-8 $space-12;
+}
+
+.hero {
+  display: flex;
+  max-width: 50rem;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.eyebrow,
+.indexTitle {
+  @include eyebrow;
+}
+
+.eyebrow {
+  color: var(--brand-accent);
+}
+
+.title {
+  font-size: $font-2xl;
+
+  @media (min-width: $bp-sm) {
+    font-size: $font-3xl;
+  }
+}
+
+.description {
+  max-width: 65ch;
+  color: var(--text-muted);
+  font-size: $font-lg;
+}
+
+.updatedAt {
+  font-size: $font-sm;
+  color: var(--text-muted);
+}
+
+.layout {
+  display: grid;
+  align-items: start;
+  gap: $space-8;
+
+  @media (min-width: $bp-md) {
+    grid-template-columns: minmax(12rem, 0.35fr) minmax(0, 1fr);
+  }
+}
+
+.index {
+  padding-block: $space-4;
+  border-block: 1px solid var(--border);
+
+  @media (min-width: $bp-md) {
+    position: sticky;
+    top: $space-6;
+  }
+}
+
+.indexList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin: $space-4 0 0;
+  padding-left: $space-5;
+  color: var(--text-muted);
+}
+
+.indexLink {
+  @include focus-ring;
+
+  font-size: $font-sm;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+
+  &:hover {
+    color: var(--brand-accent);
+    text-decoration-color: currentColor;
+  }
+}
+
+.article {
+  display: flex;
+  max-width: 48rem;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.section {
+  scroll-margin-top: $space-6;
+  padding-block: $space-8;
+  border-top: 1px solid var(--border);
+
+  &:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+.sectionTitle {
+  font-size: $font-xl;
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  margin-top: $space-4;
+  color: var(--text-muted);
+
+  strong {
+    color: var(--text-primary);
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    margin: 0;
+    padding-left: $space-6;
+  }
+
+  a {
+    @include focus-ring;
+
+    color: var(--brand-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}

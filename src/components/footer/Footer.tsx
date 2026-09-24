@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { navGroups, siteConfig } from "@/config/site";
+import { institutionalLinks, navGroups, siteConfig } from "@/config/site";
 import styles from "./Footer.module.scss";
 
 const currentYear = new Date().getFullYear();
@@ -48,6 +48,19 @@ export default function Footer() {
                 Perguntas frequentes
               </Link>
             </li>
+          </ul>
+        </nav>
+
+        <nav className={styles.column} aria-label="Institucional">
+          <h2 className={styles.columnTitle}>Institucional</h2>
+          <ul className={styles.list}>
+            {institutionalLinks.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className={styles.link}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>

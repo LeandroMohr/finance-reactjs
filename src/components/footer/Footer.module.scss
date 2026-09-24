@@ -16,7 +16,11 @@
   grid-template-columns: 1fr;
 
   @media (min-width: $bp-md) {
-    grid-template-columns: 1.4fr repeat(3, 1fr);
+    grid-template-columns: 1.4fr repeat(2, 1fr);
+  }
+
+  @media (min-width: $bp-lg) {
+    grid-template-columns: 1.4fr repeat(4, 1fr);
   }
 }
 

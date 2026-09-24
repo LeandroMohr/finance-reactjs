@@ -4,7 +4,12 @@ export const siteConfig = {
   description:
     "Simuladores e calculadoras financeiras eficientes para planejamento e tomadas de decisão.",
   author: "Leandro Mohr",
+  contactEmail: "contato@lemohr.com.br",
 } as const;
+
+export const institutionalLinks = [
+  { href: "/politica-de-privacidade/", label: "Política de privacidade" },
+] as const;
 
 export type NavItem = {
   slug: string;
