@@ -8,6 +8,7 @@ export const siteConfig = {
 } as const;
 
 export const institutionalLinks = [
+  { href: "/sobre-nos/", label: "Sobre nós" },
   { href: "/politica-de-privacidade/", label: "Política de privacidade" },
   { href: "/termos-de-uso/", label: "Termos de uso" },
 ] as const;
