@@ -124,3 +124,14 @@ O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitário
 ## Próximo passo
 
 Adicionar novas ferramentas ao catálogo em `src/config/site.ts` e criar a rota correspondente em `src/app/<slug>/page.tsx`.
+
+### Critério de classificação do catálogo
+
+- **Calculadoras:** cálculos, conversões e indicadores, como juros compostos,
+  conversão de taxas, impostos e preço médio. O foco é obter um resultado numérico.
+- **Ferramentas:** planejamento de objetivos e comparação de cenários, produtos
+  ou estratégias, como Simulador de Metas, Primeiro Milhão e SAC x Price.
+- As seções internas agrupam por assunto (investimentos, planejamento, crédito,
+  trabalho, negócios e compras), não pelo formato do produto.
+- Alterar a categoria não altera a URL nem a disponibilidade. Menus, contadores
+  e breadcrumbs usam o catálogo; mantenha FAQ e `public/llms.txt` alinhados.

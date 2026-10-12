@@ -35,7 +35,7 @@ export const navGroups: NavGroup[] = [
     id: "calculadoras",
     label: "Calculadoras",
     description:
-      "Simule cálculos financeiros completos — aportes, taxas e prazos — para planejar suas decisões com mais segurança.",
+      "Calcule valores, taxas, impostos e indicadores financeiros a partir dos dados informados.",
     emptyMessage: "Novas calculadoras em breve.",
     items: [
       {
@@ -47,59 +47,11 @@ export const navGroups: NavGroup[] = [
         available: true,
       },
       {
-        slug: "goal-planner",
-        title: "Simulador de Metas",
-        description:
-          "Descubra quanto guardar por mês para atingir um objetivo em determinado prazo.",
-        section: "Planejamento financeiro",
-        available: false,
-      },
-      {
-        slug: "financing-sac-price",
-        title: "Financiamento SAC x Price",
-        description:
-          "Compare parcelas, juros e saldo devedor nos dois principais sistemas de amortização.",
-        section: "Crédito e financiamento",
-        available: false,
-      },
-      {
-        slug: "fixed-income-comparison",
-        title: "Comparador de Renda Fixa",
-        description:
-          "Compare CDB, LCI, LCA, Tesouro Direto e poupança considerando prazo, taxas e impostos.",
-        section: "Investimentos",
-        available: false,
-      },
-      {
-        slug: "emergency-fund",
-        title: "Reserva de Emergência",
-        description:
-          "Calcule o valor ideal da sua reserva e quanto guardar por mês para construí-la.",
-        section: "Planejamento financeiro",
-        available: false,
-      },
-      {
-        slug: "primeiro-milhao",
-        title: "Primeiro Milhão",
-        description:
-          "Descubra quanto investir por mês e por quanto tempo para alcançar seu primeiro milhão.",
-        section: "Investimentos",
-        available: true,
-      },
-      {
         slug: "present-future-value",
         title: "Valor Presente e Valor Futuro",
         description:
           "Compare o valor do dinheiro hoje e no futuro considerando juros e prazo.",
         section: "Investimentos",
-        available: false,
-      },
-      {
-        slug: "financial-independence",
-        title: "Independência Financeira",
-        description:
-          "Estime o patrimônio necessário para sustentar seu custo de vida com renda dos investimentos.",
-        section: "Planejamento financeiro",
         available: false,
       },
       {
@@ -116,30 +68,6 @@ export const navGroups: NavGroup[] = [
         description:
           "Estime o salário após descontos de INSS, IRRF e outros valores recorrentes.",
         section: "Trabalho e renda",
-        available: false,
-      },
-      {
-        slug: "clt-vs-pj",
-        title: "CLT x PJ",
-        description:
-          "Compare salário, benefícios, impostos e custos para avaliar os dois regimes de contratação.",
-        section: "Trabalho e renda",
-        available: false,
-      },
-      {
-        slug: "buy-or-rent",
-        title: "Comprar ou Alugar Imóvel",
-        description:
-          "Compare o custo de financiar um imóvel com o aluguel e o investimento da diferença.",
-        section: "Planejamento financeiro",
-        available: false,
-      },
-      {
-        slug: "amortize-or-invest",
-        title: "Amortizar ou Investir",
-        description:
-          "Compare a economia ao antecipar uma dívida com o retorno potencial de um investimento.",
-        section: "Crédito e financiamento",
         available: false,
       },
       {
@@ -167,38 +95,13 @@ export const navGroups: NavGroup[] = [
         available: false,
       },
       {
-        slug: "debt-payoff-strategy",
-        title: "Bola de Neve x Avalanche de Dívidas",
-        description:
-          "Compare estratégias de quitação por menor saldo ou maior taxa de juros.",
-        section: "Crédito e financiamento",
-        available: false,
-      },
-      {
         slug: "monthly-income",
         title: "Calculadora de Renda Mensal",
         description:
           "Descubra quanto precisa ter investido para buscar a renda mensal desejada.",
-        section: "Planejamento financeiro",
+        section: "Investimentos",
         available: false,
       },
-      {
-        slug: "retirement-planner",
-        title: "Planejador de Aposentadoria",
-        description:
-          "Projete patrimônio, aportes e renda para planejar sua aposentadoria.",
-        section: "Planejamento financeiro",
-        available: false,
-      },
-    ],
-  },
-  {
-    id: "ferramentas",
-    label: "Ferramentas",
-    description:
-      "Converta taxas, ajuste valores e resolva outros cálculos financeiros pontuais, direto no navegador.",
-    emptyMessage: "Ferramentas em desenvolvimento.",
-    items: [
       {
         slug: "conversor-de-taxas",
         title: "Conversor de Taxas",
@@ -214,19 +117,11 @@ export const navGroups: NavGroup[] = [
         available: false,
       },
       {
-        slug: "cash-vs-installments",
-        title: "À Vista ou Parcelado",
-        description:
-          "Compare desconto à vista, parcelamento e rendimento possível do dinheiro no período.",
-        section: "Comparações financeiras",
-        available: false,
-      },
-      {
         slug: "loan-total-cost",
         title: "Custo Efetivo Total (CET)",
         description:
           "Calcule o custo real de um empréstimo incluindo juros, tarifas, seguros e encargos.",
-        section: "Crédito e vendas",
+        section: "Crédito e financiamento",
         available: false,
       },
       {
@@ -242,7 +137,112 @@ export const navGroups: NavGroup[] = [
         title: "Taxa de Maquininha de Cartão",
         description:
           "Calcule taxas, antecipação e preço de venda para preservar sua margem no cartão.",
-        section: "Crédito e vendas",
+        section: "Negócios",
+        available: false,
+      },
+    ],
+  },
+  {
+    id: "ferramentas",
+    label: "Ferramentas",
+    description:
+      "Planeje objetivos financeiros e compare cenários, produtos e estratégias para apoiar suas decisões.",
+    emptyMessage: "Ferramentas em desenvolvimento.",
+    items: [
+      {
+        slug: "goal-planner",
+        title: "Simulador de Metas",
+        description:
+          "Descubra quanto guardar por mês para atingir um objetivo em determinado prazo.",
+        section: "Planejamento financeiro",
+        available: false,
+      },
+      {
+        slug: "primeiro-milhao",
+        title: "Primeiro Milhão",
+        description:
+          "Descubra quanto investir por mês e por quanto tempo para alcançar seu primeiro milhão.",
+        section: "Planejamento financeiro",
+        available: true,
+      },
+      {
+        slug: "emergency-fund",
+        title: "Reserva de Emergência",
+        description:
+          "Calcule o valor ideal da sua reserva e quanto guardar por mês para construí-la.",
+        section: "Planejamento financeiro",
+        available: false,
+      },
+      {
+        slug: "financial-independence",
+        title: "Independência Financeira",
+        description:
+          "Estime o patrimônio necessário para sustentar seu custo de vida com renda dos investimentos.",
+        section: "Planejamento financeiro",
+        available: false,
+      },
+      {
+        slug: "retirement-planner",
+        title: "Planejador de Aposentadoria",
+        description:
+          "Projete patrimônio, aportes e renda para planejar sua aposentadoria.",
+        section: "Planejamento financeiro",
+        available: false,
+      },
+      {
+        slug: "buy-or-rent",
+        title: "Comprar ou Alugar Imóvel",
+        description:
+          "Compare o custo de financiar um imóvel com o aluguel e o investimento da diferença.",
+        section: "Planejamento financeiro",
+        available: false,
+      },
+      {
+        slug: "fixed-income-comparison",
+        title: "Comparador de Renda Fixa",
+        description:
+          "Compare CDB, LCI, LCA, Tesouro Direto e poupança considerando prazo, taxas e impostos.",
+        section: "Investimentos",
+        available: false,
+      },
+      {
+        slug: "financing-sac-price",
+        title: "Financiamento SAC x Price",
+        description:
+          "Compare parcelas, juros e saldo devedor nos dois principais sistemas de amortização.",
+        section: "Crédito e financiamento",
+        available: false,
+      },
+      {
+        slug: "amortize-or-invest",
+        title: "Amortizar ou Investir",
+        description:
+          "Compare a economia ao antecipar uma dívida com o retorno potencial de um investimento.",
+        section: "Crédito e financiamento",
+        available: false,
+      },
+      {
+        slug: "debt-payoff-strategy",
+        title: "Bola de Neve x Avalanche de Dívidas",
+        description:
+          "Compare estratégias de quitação por menor saldo ou maior taxa de juros.",
+        section: "Crédito e financiamento",
+        available: false,
+      },
+      {
+        slug: "clt-vs-pj",
+        title: "CLT x PJ",
+        description:
+          "Compare salário, benefícios, impostos e custos para avaliar os dois regimes de contratação.",
+        section: "Trabalho e renda",
+        available: false,
+      },
+      {
+        slug: "cash-vs-installments",
+        title: "À Vista ou Parcelado",
+        description:
+          "Compare desconto à vista, parcelamento e rendimento possível do dinheiro no período.",
+        section: "Compras e pagamentos",
         available: false,
       },
     ],

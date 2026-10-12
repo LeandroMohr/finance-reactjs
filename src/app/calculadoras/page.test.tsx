@@ -27,5 +27,8 @@ describe("CalculadorasPage", () => {
     for (const item of group.items) {
       expect(screen.getByRole("heading", { name: item.title })).toBeInTheDocument();
     }
+    expect(screen.getByRole("link", { name: /Conversor de Taxas/ }).getAttribute("href")).toMatch(/^\/conversor-de-taxas\/?$/);
+    expect(screen.queryByRole("heading", { name: "Simulador de Metas" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Primeiro Milhão" })).not.toBeInTheDocument();
   });
 });

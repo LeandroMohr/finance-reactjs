@@ -27,5 +27,8 @@ describe("FerramentasPage", () => {
     for (const item of group.items) {
       expect(screen.getByRole("heading", { name: item.title })).toBeInTheDocument();
     }
+    expect(screen.getByRole("heading", { name: "Simulador de Metas" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Primeiro Milhão/ }).getAttribute("href")).toMatch(/^\/primeiro-milhao\/?$/);
+    expect(screen.queryByRole("heading", { name: "Conversor de Taxas" })).not.toBeInTheDocument();
   });
 });

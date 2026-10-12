@@ -8,6 +8,12 @@ correspondente em `src/config/site.ts`.
 
 ## Status atual
 
+O catálogo distingue **Calculadoras** (cálculos, conversões e indicadores) de
+**Ferramentas** (planejamento de objetivos e comparação de cenários ou estratégias).
+Simulador de Metas, Primeiro Milhão e Planejador de Aposentadoria são ferramentas;
+Conversor de Taxas e Correção pela Inflação são calculadoras. A seção interna
+identifica o assunto, sem alterar o slug ou o status de implementação.
+
 | Ferramenta | Slug | Status |
 | --- | --- | --- |
 | Juros Compostos | `juros-compostos` | ✅ Implementada |

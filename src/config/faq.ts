@@ -152,13 +152,13 @@ export const faqSections: FaqSection[] = [
   },
   {
     id: "primeiro-milhao",
-    category: "Calculadoras",
+    category: "Ferramentas",
     title: "Primeiro milhão",
     items: firstMillionFaqItems,
   },
   {
     id: "ferramentas",
-    category: "Ferramentas",
+    category: "Calculadoras",
     title: "Conversor de taxas",
     items: rateConverterFaqItems,
   },

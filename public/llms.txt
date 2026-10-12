@@ -7,12 +7,12 @@ Use os resultados como simulações educacionais, não como recomendação finan
 ## Calculadoras
 
 - [Calculadora de Juros Compostos](https://lemohr.com.br/juros-compostos/): Simula a evolução de um investimento com valor inicial, aportes mensais, taxa de juros e prazo.
-- [Calculadora do Primeiro Milhão](https://lemohr.com.br/primeiro-milhao/): Estima o tempo até R$ 1 milhão ou o aporte mensal necessário para alcançar a meta, com taxa efetiva e aportes ao final do mês.
+- [Conversor de Taxas](https://lemohr.com.br/conversor-de-taxas/): Converte taxas de juros equivalentes entre períodos mensais e anuais.
 - [Catálogo de Calculadoras](https://lemohr.com.br/calculadoras/): Lista as calculadoras financeiras disponíveis no site.
 
 ## Ferramentas
 
-- [Conversor de Taxas](https://lemohr.com.br/conversor-de-taxas/): Converte taxas de juros equivalentes entre períodos mensais e anuais.
+- [Primeiro Milhão](https://lemohr.com.br/primeiro-milhao/): Planeja o tempo até R$ 1 milhão ou o aporte mensal necessário para alcançar a meta, com taxa efetiva e aportes ao final do mês.
 - [Catálogo de Ferramentas](https://lemohr.com.br/ferramentas/): Lista as ferramentas financeiras disponíveis no site.
 
 ## Optional
