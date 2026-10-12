@@ -20,6 +20,7 @@ identifica o assunto, sem alterar o slug ou o status de implementação.
 | Primeiro Milhão | `primeiro-milhao` | ✅ Implementada |
 | Conversor de Taxas | `conversor-de-taxas` | ✅ Implementada |
 | Comprar x Alugar Imóvel | `comprar-ou-alugar` | ✅ Implementada |
+| Investir em Imóvel x FII de Tijolo | `imovel-ou-fii` | ✅ Implementada |
 
 ---
 
@@ -94,7 +95,7 @@ identifica o assunto, sem alterar o slug ou o status de implementação.
   Taxas e custos são hipóteses; a realização pessoal não é reduzida a um número.
   Formulário e custos separados por cenário, gráfico de patrimônio e reforma
   quinquenal como percentual do imóvel na data. A comparação de casa/apartamento
-  para renda versus FII de tijolo será uma ferramenta separada.
+  para renda versus FII de tijolo está na ferramenta separada `/imovel-ou-fii/`.
   Valores consultados dentro do gráfico por ponteiro/toque e teclado, sem
   barra de meses; exemplos percentuais explicados nos tooltips e editáveis.
 

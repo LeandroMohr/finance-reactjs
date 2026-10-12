@@ -155,6 +155,27 @@ O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitário
   desta ferramenta. Testes cobrem recursos iguais, quitação, taxas zero, custos,
   prazos distintos, validação e preservação do conteúdo educativo.
 
+## Investir em Imóvel x FII de Tijolo
+
+- `/imovel-ou-fii/` compara aquisição à vista de casa/apartamento para aluguel
+  com cotas de FII de tijolo, sem misturar essa análise com moradia.
+- Capital inicial igual: preço do imóvel mais custos da aquisição. FII desconta
+  custos de negociação desse orçamento. Nenhum fundo ou oferta real é recomendado.
+- Renda líquida e valorização são separadas. Vacância média reduz o aluguel;
+  administração, manutenção, custos do proprietário, reformas e IR são explícitos.
+- Reinvestir: aluguel líquido compõe uma reserva financeira; rendimentos de FII
+  compram cotas. Retirar: acumula rendas positivas sem capitalização posterior.
+- Déficits usam a reserva do imóvel e depois capital adicional. O mesmo aporte
+  externo vai às cotas ou à reserva no cenário FII e é subtraído do resultado
+  econômico de ambos. Não há empréstimo implícito nem patrimônio fictício.
+- Resultado econômico: ativos líquidos de venda e impostos estimados, mais
+  renda retirada, menos capital adicional. Retirada gasta não é patrimônio atual.
+- IR é parametrizado e simplificado: não apura Carnê-Leão/DARF, faixas, isenções
+  nem compensação de perdas externas. Zero de IR nos rendimentos do FII é apenas
+  hipótese de enquadramento legal. Valores nominais e taxas constantes.
+- Gráfico mensal acessível, consulta direta por ponteiro/toque ou teclado e
+  tabela anual. Matemática SVG compartilhada com a comparação de moradia.
+
 ## Próximo passo
 
 Adicionar novas ferramentas ao catálogo em `src/config/site.ts` e criar a rota correspondente em `src/app/<slug>/page.tsx`.

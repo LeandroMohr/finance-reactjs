@@ -206,6 +206,14 @@ export const navGroups: NavGroup[] = [
         available: false,
       },
       {
+        slug: "imovel-ou-fii",
+        title: "Investir em Imóvel x FII de Tijolo",
+        description:
+          "Compare imóvel à vista para aluguel com FII de tijolo: renda líquida, custos, riscos e patrimônio, retirando ou reinvestindo rendimentos.",
+        section: "Investimentos",
+        available: true,
+      },
+      {
         slug: "financing-sac-price",
         title: "Financiamento SAC x Price",
         description:

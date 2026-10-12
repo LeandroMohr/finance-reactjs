@@ -368,7 +368,7 @@ export default function BuyOrRent({ breadcrumb }: { breadcrumb?: ReactNode }) {
         </Accordion>
       </section>
       <Faq items={buyOrRentFaqItems} />
-      <RelatedTools slugs={["juros-compostos", "primeiro-milhao", "conversor-de-taxas"]} />
+      <RelatedTools slugs={["imovel-ou-fii", "juros-compostos", "primeiro-milhao", "conversor-de-taxas"]} />
       <ShareContent path="/comprar-ou-alugar/" title="Comprar x Alugar Imóvel" />
     </main>
   );

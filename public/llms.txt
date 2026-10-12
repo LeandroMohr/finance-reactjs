@@ -14,6 +14,7 @@ Use os resultados como simulações educacionais, não como recomendação finan
 
 - [Primeiro Milhão](https://lemohr.com.br/primeiro-milhao/): Planeja o tempo até R$ 1 milhão ou o aporte mensal necessário para alcançar a meta, com taxa efetiva e aportes ao final do mês.
 - [Comprar x Alugar Imóvel](https://lemohr.com.br/comprar-ou-alugar/): Compara compra à vista ou financiada (SAC/Price) com aluguel e investimento das sobras, usando recursos iguais e considerando custos, dívida e fatores pessoais.
+- [Investir em Imóvel x FII de Tijolo](https://lemohr.com.br/imovel-ou-fii/): Compara compra à vista para aluguel com cotas de FII de tijolo, usando capital igual, despesas, tributação estimada e opção de retirar ou reinvestir rendimentos.
 - [Catálogo de Ferramentas](https://lemohr.com.br/ferramentas/): Lista as ferramentas financeiras disponíveis no site.
 
 ## Optional

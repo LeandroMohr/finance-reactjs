@@ -172,6 +172,29 @@ export const buyOrRentFaqItems: FaqItem[] = [
   },
 ];
 
+export const propertyVsFiiFaqItems: FaqItem[] = [
+  {
+    question: "A comparação usa o mesmo dinheiro nos dois cenários?",
+    answer: "Sim. O capital inicial é o preço do imóvel mais seus custos de aquisição. Esse mesmo orçamento compra cotas, descontando custos de negociação. Se faltarem recursos para despesas do imóvel, o modelo registra capital adicional igual nos dois cenários e o desconta do resultado econômico.",
+  },
+  {
+    question: "Como funciona reinvestir ou retirar a renda?",
+    answer: "Reinvestir envia o aluguel líquido para uma reserva financeira e usa rendimentos do FII para comprar mais cotas. Retirar acumula as receitas positivas como renda usada, sem rendimento posterior. Renda retirada não é patrimônio disponível se já foi gasta. Custos do imóvel podem exigir reserva ou aportes adicionais.",
+  },
+  {
+    question: "Rendimento do FII é igual à valorização da cota?",
+    answer: "Não. Rendimento é o dinheiro distribuído pelo fundo; valorização é a mudança do preço da cota. Informe os dois separadamente e não use uma taxa de retorno total como valorização, pois isso contaria os rendimentos duas vezes. Ambos podem mudar e não são garantidos.",
+  },
+  {
+    question: "O imposto mostrado é uma apuração oficial?",
+    answer: "Não. O IR do aluguel usa uma taxa efetiva estimada, sem tabela progressiva ou deduções automáticas. IR da venda usa um cálculo simplificado sobre ganho positivo, sem faixas, isenções ou compensações externas. Rendimentos do FII só podem ser tratados como isentos quando os requisitos legais se aplicam. Confirme sua situação com a Receita ou um profissional.",
+  },
+  {
+    question: "O imóvel com maior projeção é sempre o melhor investimento?",
+    answer: "Não. A conta não mede tempo de gestão, liquidez, concentração, conforto com risco ou objetivos pessoais. Imóveis podem ficar vazios e demorar para vender; FIIs têm riscos de mercado, gestão e vacância. Use cenários alternativos e não interprete a projeção como recomendação.",
+  },
+];
+
 export const faqSections: FaqSection[] = [
   {
     id: "geral",
@@ -202,5 +225,11 @@ export const faqSections: FaqSection[] = [
     category: "Ferramentas",
     title: "Comprar x Alugar Imóvel",
     items: buyOrRentFaqItems,
+  },
+  {
+    id: "imovel-ou-fii",
+    category: "Ferramentas",
+    title: "Investir em Imóvel x FII de Tijolo",
+    items: propertyVsFiiFaqItems,
   },
 ];
