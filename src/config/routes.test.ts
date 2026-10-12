@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import sitemap from "../app/sitemap";
 import { getStaticRoutes } from "./routes";
 import { allNavItems } from "./site";
 
@@ -29,6 +30,16 @@ describe("getStaticRoutes", () => {
     for (const route of routes) {
       expect(route.lastModified).toBeInstanceOf(Date);
       expect(Number.isNaN(route.lastModified.getTime())).toBe(false);
+    }
+  });
+
+  it("uses the production domain for every sitemap URL", () => {
+    const entries = sitemap();
+
+    expect(entries).toHaveLength(routes.length);
+
+    for (const entry of entries) {
+      expect(new URL(entry.url).origin).toBe("https://lemohr.com.br");
     }
   });
 });
