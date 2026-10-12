@@ -9,6 +9,7 @@ Este diretório reúne as referências de produto, design e planejamento do proj
 - DESIGN.md: identidade visual, branding, paleta e diretrizes de acessibilidade.
 - PLAN.md: arquitetura, estratégia de SEO, monetização e roadmap inicial.
 - ROADMAP.md: lista de calculadoras e ferramentas planejadas para as próximas entregas.
+- [OPERACAO-E-MONETIZACAO.md](OPERACAO-E-MONETIZACAO.md): guia de e-mail personalizado, analytics de interações, dashboards de BI e AdSense, sem homologação ou fluxo de PR nesta etapa.
 - README.md: instruções rápidas de instalação, scripts e uso do projeto no repositório raiz.
 
 ## Convenções
