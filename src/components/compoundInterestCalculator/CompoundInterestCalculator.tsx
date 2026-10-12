@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
@@ -263,6 +264,7 @@ const defaultValues: FormValues = {
 
 type Field = {
   label: string;
+  tooltipText: string;
   key: AmountKey;
   type: FieldType;
   placeholder: string;
@@ -274,10 +276,13 @@ type Field = {
 };
 
 const fields: Field[] = [
-  { label: "Aporte inicial", key: "initialAmount", type: "currency", placeholder: "R$ 0,00" },
-  { label: "Aporte mensal", key: "monthlyContribution", type: "currency", placeholder: "R$ 0,00" },
+  { label: "Aporte inicial", key: "initialAmount", type: "currency", placeholder: "R$ 0,00",
+    tooltipText: "Valor aplicado no início da simulação, além dos aportes mensais. Se você ainda não tem dinheiro investido, deixe R$ 0,00." },
+  { label: "Aporte mensal", key: "monthlyContribution", type: "currency", placeholder: "R$ 0,00",
+    tooltipText: "Valor que você pretende investir ao final de cada mês. O primeiro aporte mensal rende a partir do mês seguinte. Se não pretende fazer novos aportes, deixe R$ 0,00." },
   {
     label: "Taxa de juros (%)",
+    tooltipText: "Informe a taxa esperada em porcentagem, sem o símbolo %. Exemplo: 12,25. Escolha Mensal ou Anual conforme a taxa informada. Nesta calculadora, a taxa anual é dividida por 12. Para simular sem rendimento, use 0.",
     key: "interestRate",
     type: "decimal",
     placeholder: "12,25",
@@ -292,6 +297,7 @@ const fields: Field[] = [
   },
   {
     label: "Tempo",
+    tooltipText: "Período durante o qual o dinheiro ficará investido. Escolha Meses ou Anos; você pode usar vírgula para frações, como 1,5 ano. O prazo é arredondado para meses inteiros, com limite de 100 anos. Use 0 para mostrar apenas o capital inicial.",
     key: "duration",
     type: "decimal",
     placeholder: "1,8",
@@ -364,14 +370,12 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
           <h2 className={styles.sectionTitle}>Descubra seu crescimento</h2>
 
           <div className={styles.fields}>
-            {fields.map(({ label, key, type, placeholder, unit }) => {
+            {fields.map(({ label, tooltipText, key, type, placeholder, unit }) => {
               const error = key === "interestRate" || key === "duration" ? errors[key] : undefined;
 
               return (
                 <div key={key} className={styles.field}>
-                  <label className={styles.fieldLabel} htmlFor={key}>
-                    {label}
-                  </label>
+                  <FieldLabel htmlFor={key} label={label} tooltipText={tooltipText} />
                   <div className={styles.inputGroup}>
                     <input
                       id={key}
@@ -380,13 +384,14 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
                       inputMode="decimal"
                       placeholder={placeholder}
                       aria-invalid={error ? true : undefined}
-                      aria-describedby={error ? `${key}-error` : undefined}
+                      aria-describedby={`${key}-tooltip${error ? ` ${key}-error` : ""}`}
                       value={values[key]}
                       onChange={(event) => handleChange(key, type, event.target.value)}
                     />
                     {unit ? (
                       <select
                         aria-label={unit.label}
+                        aria-describedby={`${key}-tooltip`}
                         className={styles.unitSelect}
                         value={values[unit.key]}
                         onChange={(event) => handleUnitChange(unit.key, event.target.value)}
@@ -414,18 +419,21 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
           <p className={styles.eyebrow}>Resultado</p>
 
           <div className={styles.highlight}>
-            <p className={styles.metricLabel}>Valor final</p>
-            <p className={styles.highlightValue}>{currency.format(result.finalAmount)}</p>
+            <FieldLabel id="compound-final" label="Valor final"
+              tooltipText="Montante ao fim do prazo: soma do aporte inicial, aportes mensais e juros acumulados. É uma projeção nominal, sem descontar impostos, tarifas ou inflação." />
+            <p className={styles.highlightValue} aria-describedby="compound-final-tooltip">{currency.format(result.finalAmount)}</p>
           </div>
 
           <div className={styles.metrics}>
             <div className={styles.metric}>
-              <p className={styles.metricLabel}>Total aportado</p>
-              <p className={styles.metricValue}>{currency.format(result.totalContributed)}</p>
+              <FieldLabel id="compound-contributed" label="Total aportado"
+                tooltipText="Dinheiro colocado por você: aporte inicial mais todos os aportes mensais do prazo. Não inclui os rendimentos." />
+              <p className={styles.metricValue} aria-describedby="compound-contributed-tooltip">{currency.format(result.totalContributed)}</p>
             </div>
             <div className={styles.metric}>
-              <p className={styles.metricLabel}>Retorno</p>
-              <p className={`${styles.metricValue} ${styles.metricPositive}`}>
+              <FieldLabel id="compound-returns" label="Retorno"
+                tooltipText="Juros acumulados na simulação: valor final menos total aportado. Inclui juros sobre juros, mas não representa lucro líquido após impostos e custos." />
+              <p className={`${styles.metricValue} ${styles.metricPositive}`} aria-describedby="compound-returns-tooltip">
                 {currency.format(result.totalReturns)}
               </p>
             </div>
@@ -538,10 +546,14 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>{tableMode === "years" ? "Ano" : "Mês"}</th>
-                <th>Aporte</th>
-                <th>Juros</th>
-                <th>Saldo</th>
+                <th><FieldLabel id="compound-table-time" label={tableMode === "years" ? "Ano" : "Mês"}
+                  tooltipText="Período contado desde o início da simulação. Linhas agrupadas somam os movimentos dos meses do intervalo, incluindo o último período parcial." /></th>
+                <th><FieldLabel id="compound-table-contribution" label="Aporte"
+                  tooltipText="Soma dos aportes mensais feitos neste período. O aporte inicial já compõe o saldo de partida e não é repetido aqui." /></th>
+                <th><FieldLabel id="compound-table-interest" label="Juros"
+                  tooltipText="Rendimentos gerados neste período sobre o saldo anterior. Em linhas agrupadas, corresponde à soma dos juros de cada mês." /></th>
+                <th><FieldLabel id="compound-table-balance" label="Saldo"
+                  tooltipText="Patrimônio acumulado ao fim do período, incluindo capital inicial, aportes e rendimentos até esse momento." /></th>
               </tr>
             </thead>
             <tbody>

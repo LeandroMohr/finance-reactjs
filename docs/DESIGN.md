@@ -6,6 +6,20 @@ Este documento define paleta de cores, tipografia e diretrizes de identidade/mas
 
 ## Por que tema escuro + verde faz sentido aqui
 
+### Ajuda nos campos das ferramentas
+
+- Todo campo de entrada deve ter orientação própria da ferramenta, usando o componente
+  `FieldLabel`: rótulo associado ao controle e botão de ajuda com tooltip.
+- Explique o significado do valor, unidade/periodicidade, exemplo, uso do zero e limites
+  relevantes. Não reutilize textos se as premissas de cálculo forem diferentes.
+- O tooltip abre com mouse, foco de teclado ou toque; fecha ao sair, perder foco ou
+  pressionar Escape. Seu conteúdo é associado ao campo por `aria-describedby`.
+- Mantenha erros e premissas essenciais visíveis; tooltips complementam, não substituem,
+  mensagens de validação. Não use apenas o atributo `title` como ajuda.
+- Resultados e cabeçalhos de tabelas também devem explicar a composição do valor,
+  período, arredondamento e custos excluídos. Use `FieldLabel` com `id` (sem `htmlFor`)
+  para textos não associados a entradas; associe o valor ao tooltip por `aria-describedby`.
+
 - **Verde já é o significante universal de dinheiro/positivo** (saldo positivo, "no verde", crescimento) — reforça o significado sem precisar de explicação.
 - **Dark mode é o padrão de facto em ferramentas financeiras modernas** (ex: apps de investimento, dashboards, corretoras) — percebido como "sério"/"tech", reduz fadiga visual em sessões longas de simulação (o usuário fica testando vários cenários, mexendo em inputs).
 - Menor OLED/consumo de bateria em mobile, relevante já que o objetivo é acesso pelo celular.

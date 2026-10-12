@@ -2,6 +2,7 @@
 
 import { useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
@@ -77,23 +78,31 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
               onChange={() => setMode("contribution")} /> Descobrir o aporte mensal</label>
           </fieldset>
           <div className={styles.fields}>
-            <label className={styles.field} htmlFor="million-initial">Patrimônio inicial
+            <div className={styles.field}>
+              <FieldLabel htmlFor="million-initial" label="Patrimônio inicial"
+                tooltipText="Valor que você já tem investido ou aplicará no início do plano, separado dos aportes mensais. Se estiver começando do zero, deixe R$ 0,00. Se já tiver R$ 1 milhão, a meta será considerada alcançada." />
               <input id="million-initial" className={styles.input} inputMode="decimal"
+                aria-describedby="million-initial-tooltip"
                 value={initialAmount} onChange={(event) => setInitialAmount(maskCurrency(event.target.value))} />
-            </label>
+            </div>
             {mode === "time" ? (
-              <label className={styles.field} htmlFor="million-contribution">Aporte mensal
+              <div className={styles.field}>
+                <FieldLabel htmlFor="million-contribution" label="Aporte mensal"
+                  tooltipText="Quantia que você pretende investir ao final de cada mês até alcançar R$ 1 milhão. Informe um valor que possa manter regularmente. Deixe R$ 0,00 para simular apenas o crescimento do patrimônio inicial." />
                 <input id="million-contribution" className={styles.input} inputMode="decimal"
+                  aria-describedby="million-contribution-tooltip"
                   value={contribution} onChange={(event) => setContribution(maskCurrency(event.target.value))} />
-              </label>
+              </div>
             ) : (
               <div className={styles.field}>
-                <label htmlFor="million-duration">Prazo desejado</label>
+                <FieldLabel htmlFor="million-duration" label="Prazo desejado"
+                  tooltipText="Em quanto tempo você deseja alcançar R$ 1 milhão. Informe um número inteiro e escolha Anos ou Meses. Para 1 ano e 6 meses, selecione Meses e digite 18. O limite é de 100 anos ou 1200 meses; o prazo deve ser maior que zero." />
                 <div className={styles.inputGroup}>
                   <input id="million-duration" className={styles.input} inputMode="numeric"
                     value={duration} onChange={(event) => setDuration(event.target.value)}
-                    aria-invalid={Boolean(durationError)} aria-describedby={durationError ? "million-duration-error" : undefined} />
+                    aria-invalid={Boolean(durationError)} aria-describedby={`million-duration-tooltip${durationError ? " million-duration-error" : ""}`} />
                   <select className={styles.input} aria-label="Unidade do prazo" value={durationUnit}
+                    aria-describedby="million-duration-tooltip"
                     onChange={(event) => setDurationUnit(event.target.value === "years" ? "years" : "months")}>
                     <option value="years">Anos</option><option value="months">Meses</option>
                   </select>
@@ -102,12 +111,14 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
               </div>
             )}
             <div className={styles.field}>
-              <label htmlFor="million-rate">Taxa de juros (%)</label>
+              <FieldLabel htmlFor="million-rate" label="Taxa de juros (%)"
+                tooltipText="Rentabilidade efetiva estimada, sem o símbolo %. Exemplo: 10 para 10% ao ano, selecionando Anual. A taxa anual é convertida para a mensal equivalente, não dividida por 12. Use 0 para simular sem juros. A projeção usa taxa constante entre 0% e 100% e não desconta impostos, tarifas ou inflação." />
               <div className={styles.inputGroup}>
                 <input id="million-rate" className={styles.input} inputMode="decimal" value={rate}
                   onChange={(event) => setRate(event.target.value)} aria-invalid={Boolean(rateError)}
-                  aria-describedby={rateError ? "million-rate-error" : "million-rate-help"} />
+                  aria-describedby={`million-rate-tooltip million-rate-help${rateError ? " million-rate-error" : ""}`} />
                 <select className={styles.input} aria-label="Periodicidade da taxa" value={ratePeriod}
+                  aria-describedby="million-rate-tooltip"
                   onChange={(event) => setRatePeriod(event.target.value === "annual" ? "annual" : "monthly")}>
                   <option value="annual">Anual</option><option value="monthly">Mensal</option>
                 </select>
@@ -126,8 +137,12 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
           {!result ? <p>Corrija os campos indicados para ver o resultado.</p> : (
             <>
               <div className={styles.highlight}>
-                <h2>{mode === "time" ? "Tempo até o primeiro milhão" : "Aporte mensal necessário"}</h2>
-                <p className={styles.highlightValue}>
+                <h2><FieldLabel id="million-main-result"
+                  label={mode === "time" ? "Tempo até o primeiro milhão" : "Aporte mensal necessário"}
+                  tooltipText={mode === "time"
+                    ? "Primeiro mês em que o patrimônio chega a R$ 1 milhão ou o ultrapassa. Se a meta já foi alcançada, o tempo é zero. Cenários impossíveis ou acima do limite de 100 anos são indicados explicitamente."
+                    : "Aporte fixo no fim de cada mês necessário para chegar a R$ 1 milhão dentro do prazo escolhido, arredondado para cima em centavos. Pode ser zero quando o patrimônio inicial já é suficiente ou cresce até a meta sem novos aportes."} /></h2>
+                <p className={styles.highlightValue} aria-describedby="million-main-result-tooltip">
                   {result.status === "reached"
                     ? mode === "time" ? formatDuration(result.months) : currency.format(result.monthlyContribution)
                     : result.status === "unreachable" ? "Meta não alcançável neste cenário" : "Meta não atingida em 100 anos"}
@@ -138,9 +153,15 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
                 {result.status === "limit" && <p>Aumente o aporte ou revise a taxa estimada para alcançar a meta no limite simulado.</p>}
               </div>
               <dl className={styles.metrics}>
-                <div><dt>Patrimônio projetado</dt><dd>{currency.format(result.finalAmount)}</dd></div>
-                <div><dt>Total investido</dt><dd>{currency.format(result.totalContributed)}</dd></div>
-                <div><dt>Rendimentos estimados</dt><dd>{currency.format(result.totalReturns)}</dd></div>
+                <div><dt><FieldLabel id="million-final" label="Patrimônio projetado"
+                  tooltipText="Saldo ao fim da simulação, somando capital, aportes e juros. Pode ultrapassar R$ 1 milhão porque o cálculo usa meses completos. Quando a meta não é atingida, mostra o saldo do cenário simulado." /></dt>
+                  <dd aria-describedby="million-final-tooltip">{currency.format(result.finalAmount)}</dd></div>
+                <div><dt><FieldLabel id="million-invested" label="Total investido"
+                  tooltipText="Soma do patrimônio inicial com os aportes mensais até o fim da simulação. É o dinheiro investido por você, sem incluir os rendimentos." /></dt>
+                  <dd aria-describedby="million-invested-tooltip">{currency.format(result.totalContributed)}</dd></div>
+                <div><dt><FieldLabel id="million-returns" label="Rendimentos estimados"
+                  tooltipText="Diferença entre o patrimônio projetado e o total investido. Representa os juros acumulados, sem descontar impostos, tarifas ou inflação e sem garantia de retorno." /></dt>
+                  <dd aria-describedby="million-returns-tooltip">{currency.format(result.totalReturns)}</dd></div>
               </dl>
             </>
           )}
@@ -208,7 +229,14 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
           <div className={styles.tableWrapper}>
             <table>
               <caption>Marcos do patrimônio no cenário simulado</caption>
-              <thead><tr><th scope="col">Marco</th><th scope="col">Tempo</th><th scope="col">Total investido</th></tr></thead>
+              <thead><tr>
+                <th scope="col"><FieldLabel id="million-table-milestone" label="Marco"
+                  tooltipText="Etapas de patrimônio de R$ 100 mil até R$ 1 milhão. Cada linha mostra quando o saldo atinge ou ultrapassa essa etapa." /></th>
+                <th scope="col"><FieldLabel id="million-table-time" label="Tempo"
+                  tooltipText="Primeiro mês em que o marco é alcançado. Já alcançado indica que o patrimônio inicial cobre essa etapa; Não atingido indica que ela fica fora do cenário simulado." /></th>
+                <th scope="col"><FieldLabel id="million-table-invested" label="Total investido"
+                  tooltipText="Capital inicial mais os aportes feitos até alcançar o marco desta linha, sem incluir os rendimentos." /></th>
+              </tr></thead>
               <tbody>{Array.from({ length: 10 }, (_, index) => (index + 1) * 100_000).map((target) => {
                 const point = result.evolution.find((entry) => entry.balance >= target);
                 return <tr key={target}><th scope="row">{currency.format(target)}</th>

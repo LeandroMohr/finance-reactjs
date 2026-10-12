@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
@@ -148,9 +149,8 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
 
           <div className={styles.fields}>
             <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="rate">
-                Taxa de juros (%)
-              </label>
+              <FieldLabel htmlFor="rate" label="Taxa de juros (%)"
+                tooltipText="Digite a taxa que deseja converter, sem o símbolo %. Exemplo: 12 para 12%. Ao lado, selecione o período original: Diário, Mensal ou Anual. Use 0 para uma taxa sem juros. A conversão usa juros compostos e a convenção de 30 dias por mês e 360 por ano." />
               <div className={styles.inputGroup}>
                 <input
                   id="rate"
@@ -159,12 +159,13 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
                   inputMode="decimal"
                   placeholder="1,25"
                   aria-invalid={error ? true : undefined}
-                  aria-describedby={error ? "rate-error" : undefined}
+                  aria-describedby={`rate-tooltip${error ? " rate-error" : ""}`}
                   value={values.rate}
                   onChange={(event) => handleRateChange(event.target.value)}
                 />
                 <select
                   aria-label="Periodicidade da taxa"
+                  aria-describedby="rate-tooltip"
                   className={styles.unitSelect}
                   value={values.fromPeriod}
                   onChange={(event) => handlePeriodChange("fromPeriod", event.target.value)}
@@ -184,13 +185,13 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
             </div>
 
             <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="toPeriod">
-                Converter para
-              </label>
+              <FieldLabel htmlFor="toPeriod" label="Converter para"
+                tooltipText="Escolha o período em que deseja expressar a taxa equivalente: Diário, Mensal ou Anual. A taxa resultante mantém o mesmo efeito de capitalização. O botão ao lado inverte os períodos de origem e destino." />
               <div className={styles.inputGroup}>
                 <select
                   id="toPeriod"
                   aria-label="Converter para"
+                  aria-describedby="toPeriod-tooltip"
                   className={styles.unitSelect}
                   value={values.toPeriod}
                   onChange={(event) => handlePeriodChange("toPeriod", event.target.value)}
@@ -213,12 +214,12 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
             </div>
 
             <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="amount">
-                Valor de exemplo
-              </label>
+              <FieldLabel htmlFor="amount" label="Valor de exemplo"
+                tooltipText="Quantia usada apenas para ilustrar o rendimento das taxas sobre um mesmo capital, sem aportes. Esse valor não altera a conversão da taxa. Se quiser ver apenas as porcentagens, deixe R$ 0,00." />
               <div className={styles.inputGroup}>
                 <input
                   id="amount"
+                  aria-describedby="amount-tooltip"
                   className={styles.input}
                   type="text"
                   inputMode="decimal"
@@ -235,24 +236,26 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
           <p className={styles.eyebrow}>Resultado</p>
 
           <div className={styles.highlight}>
-            <p className={styles.metricLabel}>
-              Taxa {PERIOD_LABELS[values.toPeriod].toLowerCase()} equivalente
-            </p>
-            <p className={styles.highlightValue}>{percent.format(convertedRate)}%</p>
+            <FieldLabel id="converter-equivalent" label={`Taxa ${PERIOD_LABELS[values.toPeriod].toLowerCase()} equivalente`}
+              tooltipText="Taxa no período escolhido que mantém o mesmo crescimento acumulado da taxa original, considerando juros compostos e a convenção 30/360. A exibição é arredondada para duas casas decimais." />
+            <p className={styles.highlightValue} aria-describedby="converter-equivalent-tooltip">{percent.format(convertedRate)}%</p>
           </div>
 
           <div className={styles.metrics}>
             <div className={styles.metric}>
-              <p className={styles.metricLabel}>Juros no dia</p>
-              <p className={styles.metricValue}>{currency.format(dailyInterest)}</p>
+              <FieldLabel id="converter-day" label="Juros no dia"
+                tooltipText="Rendimento do valor de exemplo durante um dia, usando a taxa diária equivalente. Não inclui novos aportes, impostos ou tarifas." />
+              <p className={styles.metricValue} aria-describedby="converter-day-tooltip">{currency.format(dailyInterest)}</p>
             </div>
             <div className={styles.metric}>
-              <p className={styles.metricLabel}>Juros no mês</p>
-              <p className={styles.metricValue}>{currency.format(monthlyInterest)}</p>
+              <FieldLabel id="converter-month" label="Juros no mês"
+                tooltipText="Rendimento do valor de exemplo durante um mês comercial de 30 dias, usando a taxa mensal equivalente. Não inclui novos aportes, impostos ou tarifas." />
+              <p className={styles.metricValue} aria-describedby="converter-month-tooltip">{currency.format(monthlyInterest)}</p>
             </div>
             <div className={styles.metric}>
-              <p className={styles.metricLabel}>Juros no ano</p>
-              <p className={styles.metricValue}>{currency.format(annualInterest)}</p>
+              <FieldLabel id="converter-year" label="Juros no ano"
+                tooltipText="Rendimento do valor de exemplo durante um ano comercial de 360 dias. Considera a capitalização contida na taxa anual equivalente, sem novos aportes, impostos ou tarifas." />
+              <p className={styles.metricValue} aria-describedby="converter-year-tooltip">{currency.format(annualInterest)}</p>
             </div>
           </div>
         </aside>
@@ -266,8 +269,10 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>Período</th>
-                <th>Taxa equivalente</th>
+                <th><FieldLabel id="converter-table-period" label="Período"
+                  tooltipText="Periodicidade em que a taxa é expressa: um dia, um mês de 30 dias ou um ano de 360 dias." /></th>
+                <th><FieldLabel id="converter-table-rate" label="Taxa equivalente"
+                  tooltipText="Porcentagem equivalente à taxa original em cada período, calculada com juros compostos. Os valores exibidos são arredondados para duas casas decimais." /></th>
               </tr>
             </thead>
             <tbody>
