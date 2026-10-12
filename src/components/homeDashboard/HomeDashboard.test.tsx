@@ -5,7 +5,7 @@ import HomeDashboard from "./HomeDashboard";
 
 const items: NavItem[] = [
   {
-    slug: "compound-interest",
+    slug: "juros-compostos",
     title: "Juros Compostos",
     description: "Simule o crescimento do seu patrimônio.",
     section: "Investimentos",
@@ -25,7 +25,7 @@ describe("HomeDashboard", () => {
     render(<HomeDashboard items={items} />);
 
     expect(screen.getByRole("link", { name: /Juros Compostos/ }).getAttribute("href")).toMatch(
-      /^\/compound-interest\/?$/,
+      /^\/juros-compostos\/?$/,
     );
     expect(screen.queryByRole("link", { name: /Simulador de Metas/ })).not.toBeInTheDocument();
   });

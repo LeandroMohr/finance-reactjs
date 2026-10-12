@@ -151,7 +151,7 @@ export const faqSections: FaqSection[] = [
     items: compoundInterestFaqItems,
   },
   {
-    id: "first-million",
+    id: "primeiro-milhao",
     category: "Calculadoras",
     title: "Primeiro milhão",
     items: firstMillionFaqItems,

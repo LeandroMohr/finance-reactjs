@@ -9,7 +9,7 @@ describe("FirstMillionCalculator", () => {
     expect(screen.getByRole("heading", { level: 1, name: /primeiro milhão/ })).toBeVisible();
     expect(screen.getByRole("img", { name: /Patrimônio projetado/ })).toBeInTheDocument();
     expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(11);
-    expect(screen.getByRole("link", { name: /Juros Compostos/ }).getAttribute("href")).toMatch(/^\/compound-interest\/?$/);
+    expect(screen.getByRole("link", { name: /Juros Compostos/ }).getAttribute("href")).toMatch(/^\/juros-compostos\/?$/);
     expect(screen.getByRole("button", { name: /Copiar link/ })).toBeInTheDocument();
   });
 

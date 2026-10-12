@@ -10,6 +10,17 @@ describe("getStaticRoutes", () => {
     expect(routes.map((route) => route.path)).toContain("/");
   });
 
+  it("uses Portuguese paths without keeping the old public routes", () => {
+    const paths = routes.map((route) => route.path);
+    for (const path of ["/juros-compostos/", "/primeiro-milhao/", "/conversor-de-taxas/", "/perguntas-frequentes/"]) {
+      expect(paths).toContain(path);
+    }
+    for (const path of ["/compound-interest/", "/first-million/", "/rate-converter/", "/faq/"]) {
+      expect(paths).not.toContain(path);
+      expect(sitemap().some((entry) => new URL(entry.url).pathname === path)).toBe(false);
+    }
+  });
+
   it("discovers a route for every available tool", () => {
     const paths = routes.map((route) => route.path);
 

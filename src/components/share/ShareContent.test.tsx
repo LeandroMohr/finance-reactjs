@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { siteConfig } from "@/config/site";
 import ShareContent from "./ShareContent";
 
-const path = "/compound-interest/";
+const path = "/juros-compostos/";
 const title = "Calculadora de Juros Compostos";
 const url = `${siteConfig.url}${path}`;
 

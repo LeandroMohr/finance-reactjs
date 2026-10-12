@@ -237,8 +237,8 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
           Reavalie seu plano periodicamente. Esta ferramenta é educativa e não recomenda investimentos.</p>
       </section>
       <Faq items={firstMillionFaqItems} />
-      <RelatedTools slugs={["compound-interest", "rate-converter", "goal-planner"]} />
-      <ShareContent path="/first-million/" title="Calculadora do primeiro milhão" />
+      <RelatedTools slugs={["juros-compostos", "conversor-de-taxas", "goal-planner"]} />
+      <ShareContent path="/primeiro-milhao/" title="Calculadora do primeiro milhão" />
     </main>
   );
 }

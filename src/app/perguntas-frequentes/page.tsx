@@ -6,7 +6,7 @@ import { faqSections } from "@/config/faq";
 import { siteConfig } from "@/config/site";
 import styles from "./page.module.scss";
 
-const canonical = "/faq/";
+const canonical = "/perguntas-frequentes/";
 const description =
   "Respostas sobre o Lemo Finance, calculadoras financeiras e ferramentas disponíveis.";
 

@@ -56,7 +56,7 @@ src/
     not-found.module.scss
     robots.ts
     sitemap.ts                          # gerado a partir das rotas existentes
-    compound-interest/
+    juros-compostos/
       page.tsx
   components/
     header/
@@ -94,6 +94,9 @@ O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitário
 - `yarn build` roda os testes automaticamente (`prebuild`) antes de gerar o bundle.
 - A saída estática é gerada em `build/` (`distDir` no [next.config.ts](next.config.ts)).
 - Para pular os testes em um build pontual, use `yarn build:skip-tests`.
+- As URLs públicas usam português, sem acentos: `/juros-compostos/`,
+  `/primeiro-milhao/`, `/conversor-de-taxas/` e `/perguntas-frequentes/`.
+  Os antigos caminhos em inglês foram removidos, sem redirecionamentos.
 
 ## Próximo passo
 

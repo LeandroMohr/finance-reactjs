@@ -36,10 +36,10 @@ describe("discovery files", () => {
     const content = readFileSync(join(process.cwd(), "public", "llms.txt"), "utf8");
 
     expect(content).toMatch(/^# Lemo Finance/m);
-    expect(content).toContain(`${siteConfig.url}/compound-interest/`);
-    expect(content).toContain(`${siteConfig.url}/first-million/`);
-    expect(content).toContain(`${siteConfig.url}/rate-converter/`);
-    expect(content).toContain(`${siteConfig.url}/faq/`);
+    expect(content).toContain(`${siteConfig.url}/juros-compostos/`);
+    expect(content).toContain(`${siteConfig.url}/primeiro-milhao/`);
+    expect(content).toContain(`${siteConfig.url}/conversor-de-taxas/`);
+    expect(content).toContain(`${siteConfig.url}/perguntas-frequentes/`);
     expect(content).toContain(`${siteConfig.url}/sitemap.xml`);
   });
 });

@@ -40,7 +40,7 @@ describe("Footer", () => {
 
     expect(
       screen.getByRole("link", { name: "Perguntas frequentes" }).getAttribute("href"),
-    ).toMatch(/^\/faq\/?$/);
+    ).toMatch(/^\/perguntas-frequentes\/?$/);
   });
 
   it("links to every published institutional page", () => {

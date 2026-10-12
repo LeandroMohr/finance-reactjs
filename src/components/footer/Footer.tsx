@@ -44,7 +44,7 @@ export default function Footer() {
           <h2 className={styles.columnTitle}>Ajuda</h2>
           <ul className={styles.list}>
             <li>
-              <Link href="/faq/" className={styles.link}>
+              <Link href="/perguntas-frequentes/" className={styles.link}>
                 Perguntas frequentes
               </Link>
             </li>

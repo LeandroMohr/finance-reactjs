@@ -124,7 +124,7 @@ const sections: InstitutionalSection[] = [
           <a href="/ferramentas/">Ferramentas</a> para converter e comparar informações.
         </li>
         <li>
-          <a href="/faq/">Perguntas frequentes</a> sobre funcionamento e resultados.
+          <a href="/perguntas-frequentes/">Perguntas frequentes</a> sobre funcionamento e resultados.
         </li>
       </ul>
     ),

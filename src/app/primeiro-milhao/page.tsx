@@ -3,7 +3,7 @@ import dynamicImport from "next/dynamic";
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 import { allNavItems, findToolGroup, siteConfig } from "@/config/site";
 
-const tool = allNavItems.find((item) => item.slug === "first-million")!;
+const tool = allNavItems.find((item) => item.slug === "primeiro-milhao")!;
 const group = findToolGroup(tool.slug)!;
 const canonical = `/${tool.slug}/`;
 const FirstMillionCalculator = dynamicImport(

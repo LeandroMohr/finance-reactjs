@@ -318,9 +318,9 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
         </div>
       </Accordion>
 
-      <RelatedTools slugs={["compound-interest", "real-interest-rate", "loan-total-cost"]} />
+      <RelatedTools slugs={["juros-compostos", "real-interest-rate", "loan-total-cost"]} />
       <Faq items={rateConverterFaqItems} />
-      <ShareContent path="/rate-converter/" title="Conversor de Taxas de Juros" />
+      <ShareContent path="/conversor-de-taxas/" title="Conversor de Taxas de Juros" />
     </main>
   );
 }

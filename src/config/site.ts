@@ -39,7 +39,7 @@ export const navGroups: NavGroup[] = [
     emptyMessage: "Novas calculadoras em breve.",
     items: [
       {
-        slug: "compound-interest",
+        slug: "juros-compostos",
         title: "Juros Compostos",
         description:
           "Simule o crescimento do seu patrimônio com aportes iniciais, aportes mensais e taxa de juros ao longo do tempo.",
@@ -79,7 +79,7 @@ export const navGroups: NavGroup[] = [
         available: false,
       },
       {
-        slug: "first-million",
+        slug: "primeiro-milhao",
         title: "Primeiro Milhão",
         description:
           "Descubra quanto investir por mês e por quanto tempo para alcançar seu primeiro milhão.",
@@ -200,7 +200,7 @@ export const navGroups: NavGroup[] = [
     emptyMessage: "Ferramentas em desenvolvimento.",
     items: [
       {
-        slug: "rate-converter",
+        slug: "conversor-de-taxas",
         title: "Conversor de Taxas",
         description: "Converta taxas anuais em mensais (e vice-versa) com precisão.",
         section: "Taxas e correções",

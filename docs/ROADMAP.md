@@ -10,9 +10,9 @@ correspondente em `src/config/site.ts`.
 
 | Ferramenta | Slug | Status |
 | --- | --- | --- |
-| Juros Compostos | `compound-interest` | ✅ Implementada |
-| Primeiro Milhão | `first-million` | ✅ Implementada |
-| Conversor de Taxas | `rate-converter` | ✅ Implementada |
+| Juros Compostos | `juros-compostos` | ✅ Implementada |
+| Primeiro Milhão | `primeiro-milhao` | ✅ Implementada |
+| Conversor de Taxas | `conversor-de-taxas` | ✅ Implementada |
 
 ---
 
@@ -21,7 +21,7 @@ correspondente em `src/config/site.ts`.
 | Ferramenta | Slug sugerido | Observação |
 | --- | --- | --- |
 | Simulador de Metas | `goal-planner` | "Quanto guardar por mês para chegar em X" |
-| Conversor de Taxas | `rate-converter` | Anual ↔ mensal ↔ diária; base para as demais |
+| Conversor de Taxas | `conversor-de-taxas` | Anual ↔ mensal ↔ diária; base para as demais |
 | Correção pela Inflação | `inflation-adjuster` | Requer série do IPCA |
 | Calculadora de Poupança | `savings-calculator` | Muito buscada no Brasil |
 | Rendimento do CDI | `cdi-yield` | % do CDI, líquido de IR |

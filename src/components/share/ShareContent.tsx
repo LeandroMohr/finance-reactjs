@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 import styles from "./ShareContent.module.scss";
 
 type ShareContentProps = {
-  /** Path of the page being shared, e.g. `/compound-interest/`. */
+  /** Path of the page being shared, e.g. `/juros-compostos/`. */
   path: string;
   /** Text used as the shared message on networks that accept one. */
   title: string;

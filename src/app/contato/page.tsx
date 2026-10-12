@@ -47,7 +47,7 @@ const sections: InstitutionalSection[] = [
     content: (
       <>
         <p>
-          A página de <a href="/faq/">Perguntas frequentes</a> reúne respostas sobre funcionamento,
+          A página de <a href="/perguntas-frequentes/">Perguntas frequentes</a> reúne respostas sobre funcionamento,
           privacidade dos valores informados e diferenças entre simulações e resultados de
           instituições financeiras.
         </p>
