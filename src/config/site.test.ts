@@ -11,7 +11,7 @@ const expectedGroups = {
   ],
   ferramentas: [
     "goal-planner", "primeiro-milhao", "emergency-fund", "financial-independence",
-    "retirement-planner", "buy-or-rent", "fixed-income-comparison", "financing-sac-price",
+    "retirement-planner", "comprar-ou-alugar", "fixed-income-comparison", "financing-sac-price",
     "amortize-or-invest", "debt-payoff-strategy", "clt-vs-pj", "cash-vs-installments",
   ],
 };
@@ -27,7 +27,7 @@ describe("product catalog", () => {
     expect(allNavItems).toHaveLength(25);
     expect(new Set(allNavItems.map((item) => item.slug)).size).toBe(25);
     expect(allNavItems.filter((item) => item.available).map((item) => item.slug).sort()).toEqual([
-      "conversor-de-taxas", "juros-compostos", "primeiro-milhao",
+      "comprar-ou-alugar", "conversor-de-taxas", "juros-compostos", "primeiro-milhao",
     ]);
     expect(findToolGroup("not-a-product")).toBeUndefined();
   });
@@ -45,6 +45,7 @@ describe("product catalog", () => {
       ["juros-compostos", "Juros compostos"],
       ["primeiro-milhao", "Primeiro milhão"],
       ["conversor-de-taxas", "Conversor de taxas"],
+      ["comprar-ou-alugar", "Comprar x Alugar Imóvel"],
     ]) {
       expect(faqSections.find((section) => section.title === faqTitle)?.category).toBe(
         findToolGroup(itemsSlug)?.label,

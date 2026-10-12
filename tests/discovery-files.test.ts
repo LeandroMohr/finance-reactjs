@@ -41,6 +41,7 @@ describe("discovery files", () => {
     expect(content).toContain(`${siteConfig.url}/conversor-de-taxas/`);
     expect(content).toContain(`${siteConfig.url}/perguntas-frequentes/`);
     expect(content).toContain(`${siteConfig.url}/glossario/`);
+    expect(content).toContain(`${siteConfig.url}/comprar-ou-alugar/`);
     expect(content).toContain(`${siteConfig.url}/sitemap.xml`);
   });
 });

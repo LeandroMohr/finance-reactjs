@@ -190,12 +190,12 @@ export const navGroups: NavGroup[] = [
         available: false,
       },
       {
-        slug: "buy-or-rent",
-        title: "Comprar ou Alugar Imóvel",
+        slug: "comprar-ou-alugar",
+        title: "Comprar x Alugar Imóvel",
         description:
-          "Compare o custo de financiar um imóvel com o aluguel e o investimento da diferença.",
+          "Compare compra financiada e aluguel com investimento das sobras, sem deixar de considerar suas prioridades pessoais.",
         section: "Planejamento financeiro",
-        available: false,
+        available: true,
       },
       {
         slug: "fixed-income-comparison",

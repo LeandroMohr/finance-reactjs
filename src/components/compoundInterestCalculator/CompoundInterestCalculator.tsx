@@ -648,7 +648,7 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
         </div>
       </Accordion>
 
-      <RelatedTools slugs={["conversor-de-taxas", "primeiro-milhao"]} />
+      <RelatedTools slugs={["conversor-de-taxas", "primeiro-milhao", "comprar-ou-alugar"]} />
       <Faq items={compoundInterestFaqItems} />
       <ShareContent path="/juros-compostos/" title="Calculadora de Juros Compostos" />
     </main>

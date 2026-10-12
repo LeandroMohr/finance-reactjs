@@ -137,6 +137,41 @@ export const rateConverterFaqItems: FaqItem[] = [
   },
 ];
 
+export const buyOrRentFaqItems: FaqItem[] = [
+  {
+    question: "Se a conta favorece alugar, significa que não devo comprar?",
+    answer: "Não. O resultado compara patrimônio sob hipóteses, não mede realização pessoal, estabilidade, liberdade ou conforto. A melhor decisão matemática pode não ser a sua melhor escolha. Use as informações de hoje, reconheça as incertezas e reveja o plano quando necessário.",
+  },
+  {
+    question: "Como a comparação usa o mesmo orçamento?",
+    answer: "Os dois cenários começam com o mesmo capital: o maior entre entrada mais custos da compra e caução. Na locação, o restante fica investido. A cada mês, o orçamento é o maior custo de moradia dos dois cenários; o cenário mais barato investe a sobra ao final do mês. Após a quitação, a compra também pode gerar sobras para investir.",
+  },
+  {
+    question: "O patrimônio da compra desconta a dívida?",
+    answer: "Sim. O valor projetado do imóvel é reduzido pelo saldo devedor e pelo custo estimado de venda; depois somamos a carteira de investimentos. O imóvel não é dinheiro disponível imediatamente. A locação soma investimentos e caução restituída.",
+  },
+  {
+    question: "SAC e Price usam a mesma taxa de juros?",
+    answer: "Sim, a taxa e o prazo informados são usados no sistema escolhido. SAC amortiza um valor constante e tem prestação decrescente; Price mantém a prestação de principal e juros constante. Taxa nominal anual é dividida por 12; taxa efetiva anual é convertida para a mensal equivalente. Seguros e tarifas ficam separados.",
+  },
+  {
+    question: "ITBI e caução são despesas mensais?",
+    answer: "Não. ITBI e custos de aquisição são desembolsos iniciais da compra. A caução em dinheiro é um valor bloqueado, não aluguel: a projeção presume devolução integral com o rendimento estimado. IPTU anual e manutenção são distribuídos mensalmente para organizar o orçamento.",
+  },
+  {
+    question: "Como entra a reforma a cada cinco anos?",
+    answer: "A compra recebe uma despesa adicional nos meses 60, 120 e assim por diante, inclusive se a data coincidir com o fim da comparação. O valor é o percentual informado sobre o preço projetado do imóvel naquele mês. Use zero para excluir e não repita a mesma obra na manutenção recorrente. A reforma não aumenta automaticamente o preço do imóvel. Como o orçamento é igual, a locação investe a sobra desse desembolso no mesmo mês.",
+  },
+  {
+    question: "Esta página compara investir em imóveis com FIIs?",
+    answer: "Não. O objetivo é escolher entre comprar e alugar para morar no mesmo tipo de imóvel. Investimos as sobras apenas para comparar o uso do dinheiro nos dois cenários. A análise de casa ou apartamento para renda versus FII de tijolo é outro objetivo e não faz parte desta ferramenta.",
+  },
+  {
+    question: "A simulação garante valorização ou retorno dos investimentos?",
+    answer: "Não. Todas as taxas são hipóteses constantes e os valores são nominais. Informe retorno líquido de impostos e taxas. A ferramenta não calcula automaticamente TR, subsídios, FGTS, tributação da venda ou mudanças de vida. Use cenários diferentes, inclusive desvalorização e retornos menores.",
+  },
+];
+
 export const faqSections: FaqSection[] = [
   {
     id: "geral",
@@ -161,5 +196,11 @@ export const faqSections: FaqSection[] = [
     category: "Calculadoras",
     title: "Conversor de taxas",
     items: rateConverterFaqItems,
+  },
+  {
+    id: "comprar-ou-alugar",
+    category: "Ferramentas",
+    title: "Comprar x Alugar Imóvel",
+    items: buyOrRentFaqItems,
   },
 ];

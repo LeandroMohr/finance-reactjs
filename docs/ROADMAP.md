@@ -19,6 +19,7 @@ identifica o assunto, sem alterar o slug ou o status de implementação.
 | Juros Compostos | `juros-compostos` | ✅ Implementada |
 | Primeiro Milhão | `primeiro-milhao` | ✅ Implementada |
 | Conversor de Taxas | `conversor-de-taxas` | ✅ Implementada |
+| Comprar x Alugar Imóvel | `comprar-ou-alugar` | ✅ Implementada |
 
 ---
 
@@ -80,12 +81,22 @@ identifica o assunto, sem alterar o slug ou o status de implementação.
 | Divisão de Conta | `bill-split` | |
 | Reserva de Emergência | `emergency-fund` | |
 | Independência Financeira (FIRE) | `financial-independence` | |
-| Aluguel × Compra | `rent-vs-buy` | Ótimo conteúdo, cálculo mais complexo |
+| Comprar x Alugar Imóvel | `comprar-ou-alugar` | Implementada: SAC/Price, aluguel e investimento das sobras |
 | Custo por Quilômetro | `cost-per-km` | Útil para motoristas de app |
 
 ---
 
 ## Notas de implementação
+
+- Comprar x Alugar é uma comparação de moradia, não de renda com aluguel.
+  Usa capital inicial e orçamento mensal iguais nos dois cenários, com aportes
+  das sobras, dívida descontada do patrimônio e restituição da caução.
+  Taxas e custos são hipóteses; a realização pessoal não é reduzida a um número.
+  Formulário e custos separados por cenário, gráfico de patrimônio e reforma
+  quinquenal como percentual do imóvel na data. A comparação de casa/apartamento
+  para renda versus FII de tijolo será uma ferramenta separada.
+  Valores consultados dentro do gráfico por ponteiro/toque e teclado, sem
+  barra de meses; exemplos percentuais explicados nos tooltips e editáveis.
 
 - Primeiro Milhão oferece cálculo do tempo até R$ 1 milhão e do aporte mensal para um prazo.
   Usa taxa anual efetiva convertida para mensal equivalente, aportes ao fim do mês e horizonte

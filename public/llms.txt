@@ -13,6 +13,7 @@ Use os resultados como simulações educacionais, não como recomendação finan
 ## Ferramentas
 
 - [Primeiro Milhão](https://lemohr.com.br/primeiro-milhao/): Planeja o tempo até R$ 1 milhão ou o aporte mensal necessário para alcançar a meta, com taxa efetiva e aportes ao final do mês.
+- [Comprar x Alugar Imóvel](https://lemohr.com.br/comprar-ou-alugar/): Compara compra à vista ou financiada (SAC/Price) com aluguel e investimento das sobras, usando recursos iguais e considerando custos, dívida e fatores pessoais.
 - [Catálogo de Ferramentas](https://lemohr.com.br/ferramentas/): Lista as ferramentas financeiras disponíveis no site.
 
 ## Optional

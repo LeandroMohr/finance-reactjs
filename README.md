@@ -121,6 +121,40 @@ O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitário
   come-cotas precisam de ressalvas. Perfis de investidores e autores são educativos,
   não recomendações de produtos ou de carteiras.
 
+## Comprar x Alugar Imóvel
+
+- `/comprar-ou-alugar/` compara moradia própria (à vista ou SAC/Price) com aluguel.
+  O catálogo a classifica como Ferramenta de planejamento financeiro.
+- Ambos os cenários usam o mesmo capital inicial e orçamento mensal: o maior custo
+  de moradia define o orçamento e a diferença é investida em qualquer dos cenários.
+- Compra: imóvel menos dívida e custo estimado de venda, mais investimentos.
+  Aluguel: investimentos mais caução restituída, com rendimento separado.
+- ITBI e aquisição são custos iniciais; juros, amortização, seguros, condomínio,
+  IPTU e reserva de manutenção são separados. Juros podem ser nominais ou efetivos.
+- O formulário separa Compra, Aluguel do mesmo imóvel e Premissas. Condomínio e
+  IPTU têm campos independentes por cenário, sem copiar alterações entre eles.
+- Reforma adicional a cada 5 anos: percentual editável (exemplo inicial de 5%)
+  do valor projetado do imóvel no mês 60, 120 etc., inclusive no término.
+  Não gera valorização extra automática. Use zero para excluir e evite duplicar
+  a obra na manutenção recorrente. O orçamento igual contempla esse desembolso.
+- Gráfico com duas séries mensais de patrimônio líquido, incluindo valores
+  negativos e valores no próprio gráfico. Consulta por ponteiro/toque ou setas,
+  Home/End com foco no SVG, sem barra de meses. Coordenadas têm precisão fixa
+  para evitar diferenças de hidratação entre servidor e navegador.
+- Exemplos editáveis: entrada de 20%, aluguel de 0,6% do preço, caução de três
+  aluguéis, juros nominais de 4,5%, ITBI de 2,7% e custos iniciais adicionais de 5%.
+  O retorno de 0,7% mensal equivale a aproximadamente 8,731066% anual.
+  Tooltips explicam bases e cálculos, distinguindo hipóteses de regras;
+  valores em reais não mudam automaticamente ao editar o preço do imóvel.
+- Prazos: financiamento de 1 a 35 anos, comparação de 1 a 50 anos. Reajustes de
+  aluguel e despesas são anuais; rendimentos e valorização usam taxas mensais equivalentes.
+- Não calcula TR, FGTS, subsídios ou IR da venda automaticamente. Retorno da carteira
+  deve ser informado líquido; custos de saída são estimados. Valores são nominais.
+- Os resultados não são recomendações: realização pessoal, estabilidade e
+  flexibilidade são parte da decisão. A análise de imóvel para renda não faz parte
+  desta ferramenta. Testes cobrem recursos iguais, quitação, taxas zero, custos,
+  prazos distintos, validação e preservação do conteúdo educativo.
+
 ## Próximo passo
 
 Adicionar novas ferramentas ao catálogo em `src/config/site.ts` e criar a rota correspondente em `src/app/<slug>/page.tsx`.
