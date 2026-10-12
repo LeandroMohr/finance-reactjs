@@ -6,16 +6,16 @@ Use os resultados como simulações educacionais, não como recomendação finan
 
 ## Calculadoras
 
-- [Calculadora de Juros Compostos](https://calc.lemohr.com.br/compound-interest/): Simula a evolução de um investimento com valor inicial, aportes mensais, taxa de juros e prazo.
-- [Catálogo de Calculadoras](https://calc.lemohr.com.br/calculadoras/): Lista as calculadoras financeiras disponíveis no site.
+- [Calculadora de Juros Compostos](https://lemohr.com.br/compound-interest/): Simula a evolução de um investimento com valor inicial, aportes mensais, taxa de juros e prazo.
+- [Catálogo de Calculadoras](https://lemohr.com.br/calculadoras/): Lista as calculadoras financeiras disponíveis no site.
 
 ## Ferramentas
 
-- [Conversor de Taxas](https://calc.lemohr.com.br/rate-converter/): Converte taxas de juros equivalentes entre períodos mensais e anuais.
-- [Catálogo de Ferramentas](https://calc.lemohr.com.br/ferramentas/): Lista as ferramentas financeiras disponíveis no site.
+- [Conversor de Taxas](https://lemohr.com.br/rate-converter/): Converte taxas de juros equivalentes entre períodos mensais e anuais.
+- [Catálogo de Ferramentas](https://lemohr.com.br/ferramentas/): Lista as ferramentas financeiras disponíveis no site.
 
 ## Optional
 
-- [Perguntas Frequentes](https://calc.lemohr.com.br/faq/): Respostas gerais e dúvidas sobre as calculadoras e ferramentas publicadas.
-- [Página inicial](https://calc.lemohr.com.br/): Visão geral da Lemo Finance e acesso às categorias.
-- [Sitemap XML](https://calc.lemohr.com.br/sitemap.xml): Relação completa das páginas públicas e indexáveis.
+- [Perguntas Frequentes](https://lemohr.com.br/faq/): Respostas gerais e dúvidas sobre as calculadoras e ferramentas publicadas.
+- [Página inicial](https://lemohr.com.br/): Visão geral da Lemo Finance e acesso às categorias.
+- [Sitemap XML](https://lemohr.com.br/sitemap.xml): Relação completa das páginas públicas e indexáveis.
