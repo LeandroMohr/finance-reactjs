@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
@@ -5,6 +6,11 @@ import FieldLabel from "./FieldLabel";
 import CompoundInterestCalculator from "@/components/compoundInterestCalculator/CompoundInterestCalculator";
 import FirstMillionCalculator from "@/components/firstMillionCalculator/FirstMillionCalculator";
 import RateConverter from "@/components/rateConverter/RateConverter";
+import AdvertisingProvider from "@/components/advertising/AdvertisingProvider";
+
+function renderCalculator(ui: ReactNode) {
+  return render(ui, { wrapper: AdvertisingProvider });
+}
 
 function renderField() {
   return render(
@@ -26,7 +32,7 @@ describe("FieldLabel", () => {
 
   describe("tool-specific field guidance", () => {
     it("explains every compound-interest field and its proportional annual rate", () => {
-      render(<CompoundInterestCalculator />);
+      renderCalculator(<CompoundInterestCalculator />);
       for (const label of ["Aporte inicial", "Aporte mensal", "Taxa de juros (%)", "Tempo"]) {
         expect(screen.getByLabelText(label)).toHaveAccessibleDescription();
         expect(screen.getByRole("button", { name: `Ajuda: ${label}` })).toBeVisible();
@@ -37,7 +43,7 @@ describe("FieldLabel", () => {
     });
 
     it("explains both first-million modes and the equivalent annual rate", () => {
-      render(<FirstMillionCalculator />);
+      renderCalculator(<FirstMillionCalculator />);
       expect(screen.getByLabelText("Patrimônio inicial")).toHaveAccessibleDescription(/começando do zero/);
       expect(screen.getByLabelText("Aporte mensal")).toHaveAccessibleDescription(/final de cada mês/);
       expect(screen.getByLabelText("Taxa de juros (%)")).toHaveAccessibleDescription(/não dividida por 12/);
@@ -47,7 +53,7 @@ describe("FieldLabel", () => {
     });
 
     it("explains the converter's periods and optional example amount", () => {
-      render(<RateConverter />);
+      renderCalculator(<RateConverter />);
       expect(screen.getByLabelText("Taxa de juros (%)")).toHaveAccessibleDescription(/360 por ano/);
       expect(screen.getByLabelText("Periodicidade da taxa")).toHaveAccessibleDescription(/período original/);
       expect(screen.getByLabelText("Converter para")).toHaveAccessibleDescription(/taxa equivalente/);
@@ -96,20 +102,20 @@ describe("FieldLabel", () => {
     [RateConverter, "Juros no ano", /360 dias/],
     [FirstMillionCalculator, "Rendimentos estimados", /sem garantia de retorno/],
   ])("explains result metrics for each tool", (Calculator, label, expected) => {
-    render(<Calculator />);
+    renderCalculator(<Calculator />);
     fireEvent.click(within(screen.getByRole("complementary")).getByRole("button", { name: `Ajuda: ${label}` }));
     expect(screen.getByRole("tooltip")).toHaveTextContent(expected);
   });
 
   it("explains the contribution result after switching first-million modes", () => {
-    render(<FirstMillionCalculator />);
+    renderCalculator(<FirstMillionCalculator />);
     fireEvent.click(screen.getByLabelText("Descobrir o aporte mensal"));
     fireEvent.click(screen.getByRole("button", { name: "Ajuda: Aporte mensal necessário" }));
     expect(screen.getByRole("tooltip")).toHaveTextContent(/arredondado para cima em centavos/);
   });
 
   it("supports help in table headers without creating form labels", () => {
-    render(<RateConverter />);
+    renderCalculator(<RateConverter />);
     const table = screen.getByRole("table");
     fireEvent.click(within(table).getByRole("button", { name: "Ajuda: Taxa equivalente" }));
     expect(screen.getByRole("tooltip")).toHaveTextContent(/duas casas decimais/);
