@@ -6,6 +6,7 @@ import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
 import { compoundInterestFaqItems } from "@/config/faq";
+import { currency, formatCompactCurrency, maskCurrency, parseCurrency } from "@/utils/currency";
 import styles from "./CompoundInterestCalculator.module.scss";
 
 type CompoundInterestInput = {
@@ -91,18 +92,6 @@ type ParsedDecimal =
 const MAX_YEARS = 100;
 const MAX_MONTHS = MAX_YEARS * MONTHS_PER_YEAR;
 const DECIMAL_PATTERN = /^\d+(?:[.,]\d{1,6})?$/;
-
-const currency = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
-
-const compactCurrency = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-  notation: "compact",
-  maximumFractionDigits: 1,
-});
 
 const CHART = {
   width: 640,
@@ -211,16 +200,6 @@ function buildTimeAxis(points: ChartPoint[]) {
   }
 
   return { unit: "anos", ticks };
-}
-
-function maskCurrency(raw: string) {
-  const digitsAsCents = raw.replace(/\D/g, "").slice(0, 13);
-
-  return currency.format(Number(digitsAsCents) / 100);
-}
-
-function parseCurrency(masked: string) {
-  return Number(masked.replace(/\D/g, "")) / 100;
 }
 
 function parseDecimal(raw: string): ParsedDecimal {
@@ -484,7 +463,7 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
                       y={tick.y + 4}
                       textAnchor="end"
                     >
-                      {compactCurrency.format(tick.value)}
+                      {formatCompactCurrency(tick.value)}
                     </text>
                   </g>
                 ))}

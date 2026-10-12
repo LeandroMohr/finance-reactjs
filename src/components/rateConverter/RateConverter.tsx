@@ -6,6 +6,7 @@ import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
 import { rateConverterFaqItems } from "@/config/faq";
+import { currency, maskCurrency, parseCurrency } from "@/utils/currency";
 import styles from "./RateConverter.module.scss";
 
 type RatePeriod = "daily" | "monthly" | "annual";
@@ -84,21 +85,6 @@ const percent = new Intl.NumberFormat("pt-BR", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
-
-const currency = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
-
-function maskCurrency(raw: string) {
-  const digitsAsCents = raw.replace(/\D/g, "").slice(0, 13);
-
-  return currency.format(Number(digitsAsCents) / 100);
-}
-
-function parseCurrency(masked: string) {
-  return Number(masked.replace(/\D/g, "")) / 100;
-}
 
 const defaultValues: FormValues = {
   rate: "2,8",
