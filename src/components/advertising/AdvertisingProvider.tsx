@@ -67,7 +67,7 @@ export function AdvertisingPreferencesButton({ className }: { className?: string
   const { openPreferences } = useAdvertising();
   return (
     <button type="button" className={className} onClick={openPreferences}>
-      Preferências de publicidade
+      Preferências de privacidade
     </button>
   );
 }
@@ -118,7 +118,7 @@ export default function AdvertisingProvider({ children }: { children: ReactNode 
   const showPreferences = initialized && (preferencesOpen || (isProduction && consent === null));
   const refusalRequiresReload = canRequestAds || scriptStatus !== "idle";
   const preferenceError = storageError || (snapshot === "unavailable"
-    ? "Não foi possível ler suas preferências. A publicidade está bloqueada."
+    ? "Não foi possível ler suas preferências. A publicidade e a análise de uso estão bloqueadas."
     : "");
 
   useEffect(() => {
@@ -143,6 +143,35 @@ export default function AdvertisingProvider({ children }: { children: ReactNode 
       },
     }}>
       {children}
+      {canRequestAds && (
+        <>
+          <Script id="google-analytics-init" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                analytics_storage: 'granted',
+                ad_storage: 'granted',
+                ad_user_data: 'granted',
+                ad_personalization: 'granted'
+              });
+              gtag('js', new Date());
+              gtag('config', '${advertisingConfig.analyticsMeasurementId}', {
+                allow_google_signals: false,
+                allow_ad_personalization_signals: false
+              });
+            `}
+          </Script>
+          <Script
+            id="google-analytics"
+            src={`https://www.googletagmanager.com/gtag/js?id=${advertisingConfig.analyticsMeasurementId}`}
+            strategy="afterInteractive"
+            onError={(error) => {
+              console.error("Unable to load Google Analytics.", error);
+            }}
+          />
+        </>
+      )}
       {canRequestAds && (
         <Script
           id="google-adsense"
@@ -171,11 +200,12 @@ export default function AdvertisingProvider({ children }: { children: ReactNode 
           }}
         >
           <div className={styles.content}>
-            <h2 id="advertising-preferences-title">Publicidade e sua privacidade</h2>
+            <h2 id="advertising-preferences-title">Publicidade, análise e sua privacidade</h2>
             <p>
-              Com sua autorização, carregamos anúncios do Google AdSense, que pode usar cookies
-              e dados do dispositivo para exibir, personalizar e medir publicidade.
-              Recusar não limita o uso das calculadoras.
+              Com sua autorização, carregamos o Google Analytics para medir visitas e navegação
+              e o Google AdSense para exibir, personalizar e medir publicidade. Esses serviços
+              podem usar cookies e dados do dispositivo. Uma única escolha vale para ambos.
+              Não enviamos os valores das simulações. Recusar não limita o uso das calculadoras.
             </p>
             <p>
               Você pode mudar sua escolha no rodapé.{" "}
@@ -184,17 +214,17 @@ export default function AdvertisingProvider({ children }: { children: ReactNode 
             {refusalRequiresReload && (
               <p>
                 Ao recusar, esta página será recarregada para interromper os scripts de
-                publicidade. Os valores preenchidos serão reiniciados.
+                publicidade e análise de uso. Os valores preenchidos serão reiniciados.
               </p>
             )}
             {preferenceError && <p role="alert">{preferenceError}</p>}
           </div>
           <div className={styles.actions}>
             <button type="button" onClick={() => saveConsent("denied")}>
-              {refusalRequiresReload ? "Recusar e recarregar" : "Recusar publicidade"}
+              {refusalRequiresReload ? "Recusar e recarregar" : "Recusar publicidade e análise"}
             </button>
             <button type="button" onClick={() => saveConsent("granted")}>
-              Aceitar publicidade
+              Aceitar publicidade e análise
             </button>
             {consent !== null && (
               <button type="button" onClick={closePreferences}>Fechar preferências</button>

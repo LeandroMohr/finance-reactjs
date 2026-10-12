@@ -55,8 +55,8 @@ describe("Footer", () => {
     }
   });
 
-  it("allows visitors to review advertising preferences", () => {
+  it("allows visitors to review privacy preferences", () => {
     render(<AdvertisingProvider><Footer /></AdvertisingProvider>);
-    expect(screen.getByRole("button", { name: "Preferências de publicidade" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Preferências de privacidade" })).toBeInTheDocument();
   });
 });

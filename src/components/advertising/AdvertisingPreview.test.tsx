@@ -6,19 +6,21 @@ import AdvertisingProvider, { AdvertisingPreferencesButton } from "./Advertising
 import AdSlot from "./AdSlot";
 
 vi.mock("next/script", () => ({
-  default: () => <div data-testid="adsense-script" />,
+  default: ({ id }: { id: string }) => <div data-testid={id} />,
 }));
 
 afterEach(() => localStorage.clear());
 
 describe("Advertising in preview deployments", () => {
-  it("does not load ads even with stored consent and allows reviewing preferences", () => {
+  it("does not load ads or analytics even with stored consent and allows reviewing preferences", () => {
     localStorage.setItem(advertisingConfig.consentStorageKey, "granted");
     render(<AdvertisingProvider><AdSlot /><AdvertisingPreferencesButton /></AdvertisingProvider>);
     expect(window.location.origin).not.toBe(advertisingConfig.productionOrigin);
-    expect(screen.queryByTestId("adsense-script")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("google-adsense")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("google-analytics")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("google-analytics-init")).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Publicidade" })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Preferências de publicidade" }));
-    expect(screen.getByRole("button", { name: "Recusar publicidade" })).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Preferências de privacidade" }));
+    expect(screen.getByRole("button", { name: "Recusar publicidade e análise" })).toBeVisible();
   });
 });
