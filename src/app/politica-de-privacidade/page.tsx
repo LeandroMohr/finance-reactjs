@@ -62,8 +62,15 @@ const sections: InstitutionalSection[] = [
             no dispositivo por meio de <code>localStorage</code>.
           </li>
           <li>
-            <strong>Preferência de publicidade:</strong> sua escolha de aceitar ou recusar anúncios,
-            salva localmente no navegador. Não é necessário informar nome ou e-mail para escolher.
+            <strong>Preferência de privacidade:</strong> sua escolha conjunta de aceitar ou recusar
+            publicidade e análise de uso, salva localmente no navegador. Não é necessário informar
+            nome ou e-mail para escolher.
+          </li>
+          <li>
+            <strong>Análise de uso autorizada:</strong> o Google Analytics pode tratar identificadores
+            de cookies, dados do navegador e dispositivo, páginas visitadas, origem das visitas e
+            informações de navegação para medir audiência e uso do site. Não enviamos os valores
+            das simulações ao Analytics.
           </li>
           <li>
             <strong>Publicidade autorizada:</strong> o Google AdSense e seus parceiros podem tratar
@@ -88,7 +95,8 @@ const sections: InstitutionalSection[] = [
           Com seu consentimento, carregar publicidade para financiar o site, incluindo sua
           exibição e medição. Personalização depende das preferências e regras aplicáveis.
         </li>
-        <li>Guardar a preferência de publicidade para respeitar sua escolha nas próximas visitas.</li>
+        <li>Com seu consentimento, medir visitas e navegação para entender e melhorar o uso do site.</li>
+        <li>Guardar a preferência de privacidade para respeitar sua escolha nas próximas visitas.</li>
       </ul>
     ),
   },
@@ -98,24 +106,26 @@ const sections: InstitutionalSection[] = [
     content: (
       <>
         <p>
-          O tema visual e a preferência de publicidade são guardados em <code>localStorage</code>.
+          O tema visual e a preferência de privacidade são guardados em <code>localStorage</code>.
           Essas preferências não são cookies publicitários e permanecem até serem alteradas
           ou até você limpar o armazenamento do navegador.
         </p>
         <p>
-          O código do Google AdSense só é carregado no domínio de produção após você aceitar
-          publicidade. Sem uma escolha ou ao recusar, ele não é carregado e as calculadoras
-          continuam funcionando. Este ajuste não instala Google Analytics.
+          O código do Google AdSense e do Google Analytics só é carregado no domínio de produção
+          após você aceitar publicidade e análise de uso em uma única escolha. Sem uma escolha
+          ou ao recusar, nenhum desses serviços é carregado e as calculadoras continuam funcionando.
+          Uma autorização anterior que abrangia apenas publicidade não autoriza o Analytics:
+          nesse caso, solicitamos uma nova escolha para ambos os serviços.
         </p>
         <p>
           Após a autorização, o Google e seus parceiros podem utilizar cookies e armazenamento
-          local para publicidade, inclusive anúncios não personalizados. Quando aplicável,
+          local para análise de uso e publicidade, inclusive anúncios não personalizados. Quando aplicável,
           suas próprias mensagens de consentimento também precisam ser respeitadas.
         </p>
         <p>
-          Use <strong>Preferências de publicidade</strong>, no rodapé, para revisar ou retirar
-          sua autorização. Se o código de anúncios já tiver sido solicitado, a recusa recarrega
-          a página para interromper sua execução; os valores preenchidos nas calculadoras
+          Use <strong>Preferências de privacidade</strong>, no rodapé, para revisar ou retirar
+          sua autorização conjunta. Se os scripts já tiverem sido solicitados, a recusa recarrega
+          a página para interromper a publicidade e a análise de uso; os valores preenchidos nas calculadoras
           serão reiniciados. Essa alteração também pode recarregar outras abas abertas do site.
         </p>
         <p>
@@ -141,8 +151,8 @@ const sections: InstitutionalSection[] = [
           serviços com medidas adequadas de segurança e proteção de dados.
         </p>
         <p>
-          Quando a publicidade é autorizada, dados também podem ser tratados pelo Google
-          e seus parceiros de publicidade, inclusive fora do Brasil, conforme as preferências
+          Quando a publicidade e a análise de uso são autorizadas, dados também podem ser tratados
+          pelo Google e seus parceiros, inclusive fora do Brasil, conforme as preferências
           aplicáveis. Consulte{" "}
           <a href="https://policies.google.com/technologies/partner-sites">
             como o Google usa informações de sites parceiros
@@ -160,8 +170,9 @@ const sections: InstitutionalSection[] = [
         <p>
           Mensagens de contato são mantidas pelo tempo necessário para responder à solicitação e
           cumprir obrigações aplicáveis. Registros técnicos seguem os prazos definidos pelo provedor
-          de infraestrutura e pela legislação. A retenção de dados publicitários pelo Google
-          e seus parceiros segue suas respectivas políticas.
+          de infraestrutura e pela legislação. A retenção dos dados de análise de uso depende
+          das configurações da propriedade no Google Analytics. A retenção de dados publicitários
+          pelo Google e seus parceiros segue suas respectivas políticas.
         </p>
         <p>
           Adotamos medidas razoáveis para reduzir riscos de acesso não autorizado, perda ou alteração.
@@ -214,7 +225,7 @@ export default function PrivacyPolicyPage() {
     <InstitutionalPage
       eyebrow="Privacidade e transparência"
       title="Política de privacidade"
-      description="Saiba como funcionam os dados de navegação, as preferências e a publicidade opcional."
+      description="Saiba como funcionam os dados de navegação, as preferências, a análise de uso e a publicidade opcionais."
       updatedAt="12 de outubro de 2026"
       sections={sections}
     />

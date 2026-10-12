@@ -176,15 +176,23 @@ O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitário
 - Gráfico mensal acessível, consulta direta por ponteiro/toque ou teclado e
   tabela anual. Matemática SVG compartilhada com a comparação de moradia.
 
-## Publicidade
+## Publicidade e Google Analytics
 
 - A conta AdSense é verificada pela metatag no layout e por [public/ads.txt](public/ads.txt).
-- [src/config/advertising.ts](src/config/advertising.ts) centraliza a conta e o bloco
-  responsivo usado depois dos resultados das cinco ferramentas disponíveis.
-- O script só carrega em `https://lemohr.com.br` após aceitar publicidade. Localhost
-  e previews não solicitam anúncios. A recusa não limita as calculadoras.
-- O rodapé permite revisar a escolha. Revogar após o carregamento recarrega a página
+- [src/config/advertising.ts](src/config/advertising.ts) centraliza a conta, o bloco
+  responsivo usado depois dos resultados das cinco ferramentas disponíveis e o
+  ID de medição do GA4 `G-NJ1DY9YD2D`.
+- Os scripts só carregam em `https://lemohr.com.br` após aceitar publicidade e
+  análise de uso em um clique. Localhost e previews não carregam nenhum deles.
+  A recusa não limita as calculadoras.
+- A chave de consentimento foi versionada para `lemo-finance:advertising-analytics-consent:v2`;
+  visitantes que autorizaram apenas publicidade precisam fazer uma nova escolha.
+- O rodapé permite revisar a escolha em **Preferências de privacidade**. Revogar recarrega a página
   para interromper scripts já executados, reiniciando os valores da simulação.
+- O GA4 usa visualizações automáticas, sem eventos manuais duplicados nem envio de valores
+  das calculadoras. No painel, mantenha habilitada a medição de alterações de página pelo
+  histórico do navegador e desative medição automática de formulários.
+- Google Signals e sinais de personalização publicitária estão desativados na tag do GA4.
 - O controle local não substitui uma CMP certificada para regiões que a exigem.
   Aprovação e consentimento no painel ainda precisam ser configurados.
 - Mantenha anúncios automáticos desativados para preservar as posições manuais.

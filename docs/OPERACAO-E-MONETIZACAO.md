@@ -4,8 +4,8 @@ Referencia: 11/10/2026. Interfaces, precos e politicas podem mudar; confirme as 
 
 ## 1. Escopo e recomendacao
 
-Este guia descreve configuracoes operacionais e futuras. A integracao tecnica do AdSense foi
-adicionada em 12/10/2026; aprovacao, deploy e configuracoes do painel continuam sendo etapas externas.
+Este guia descreve configuracoes operacionais e futuras. As integracoes tecnicas do AdSense e
+do GA4 foram adicionadas em 12/10/2026; aprovacao, deploy e configuracoes do painel continuam sendo etapas externas.
 Nao significa que os demais servicos abaixo ja estejam habilitados.
 
 - Site de producao: https://lemohr.com.br/.
@@ -126,12 +126,13 @@ Recomendacao conservadora inicial: bloquear coleta de analytics nao essencial e 
 
 1. Atualize a politica de privacidade: finalidade, ferramentas, categorias de dados, compartilhamento, retencao, contato e direitos.
 2. Escolha uma plataforma de gestao de consentimento (CMP) ou implementacao adequada ao escopo; confira precos e cobertura.
-3. Separe pelo menos preferencias de analytics e publicidade.
+3. O site usa uma escolha conjunta explicita para analytics e publicidade, por decisao do responsavel.
+   Separar as categorias e uma alternativa futura; avaliar a adequacao da escolha conjunta com apoio juridico.
 4. Ofereca aceitar, recusar e gerenciar preferencias, sem escolhas previamente aceitas para categorias opcionais.
 5. Disponibilize reabertura das preferencias e revogacao.
 6. Configure o estado antes de inicializar tags. Se usar Google Consent Mode, alinhe `analytics_storage`, `ad_storage`, `ad_user_data` e `ad_personalization`.
 7. Comece com comportamento de bloqueio basico: nao carregar tags opcionais antes da autorizacao. O modo avancado pode enviar sinais sem cookies e exige avaliacao especifica.
-8. Teste aceite, recusa, aceite parcial, revogacao e recarregamento.
+8. Teste aceite conjunto, recusa, revogacao e recarregamento.
 
 Consent Mode transmite preferencias; nao substitui o banner/CMP nem cria por si so uma base legal. Uma mensagem regional do AdSense nao deve ser presumida como gestora completa do GA4 e das preferencias brasileiras.
 
@@ -155,17 +156,25 @@ Ferramentas: [Google Analytics](https://analytics.google.com/) e [guia de config
 
 ### 3.5. Instalar no projeto Next.js
 
-Esta etapa exige codigo futuro; este guia nao instala tags.
+Implementado em [AdvertisingProvider](../src/components/advertising/AdvertisingProvider.tsx),
+compartilhado pelo layout: tag direta `G-NJ1DY9YD2D`, centralizada em
+[src/config/advertising.ts](../src/config/advertising.ts), usando `next/script` com `afterInteractive`.
+O [Tag Manager](https://tagmanager.google.com/) nao foi instalado.
 
-Recomendacao inicial: tag direta, carregada de forma central e condicionada ao consentimento, usando as APIs de script da versao instalada do Next. O [Tag Manager](https://tagmanager.google.com/) e uma alternativa para administrar varias tags, mas adiciona outra camada de configuracao.
-
-1. Defina o ID publico na configuracao ou em `NEXT_PUBLIC_GA_MEASUREMENT_ID` nas variaveis de build do Pages.
-2. Restrinja coleta a `lemohr.com.br` e `www.lemohr.com.br`. Nao enviar eventos de localhost, `pages.dev` ou deployments temporarios.
-3. Carregue a tag uma unica vez no ponto compartilhado da aplicacao, respeitando as preferencias.
-4. Se a variavel publica mudar, gere outro build: na exportacao estatica, o valor e incorporado aos arquivos.
-5. Configure page views nas navegacoes internas do Next, nao apenas no primeiro carregamento.
-6. Escolha uma estrategia para `page_view`: medicao automatica por historico ou envio manual. Nao executar ambas para a mesma navegacao.
-7. Valide mudancas de rota, voltar/avancar e recarregamento. Caminho, titulo e referencia precisam representar a pagina atual.
+1. As tags do GA4 e AdSense so carregam em `https://lemohr.com.br`, apos uma escolha conjunta
+   de aceitar publicidade e analise. Localhost, `pages.dev`, previews e outros origins ficam bloqueados.
+2. A chave `lemo-finance:advertising-analytics-consent:v2` exige nova escolha de visitantes
+   que autorizaram apenas publicidade na versao anterior. Nao ha aceite presumido.
+3. A inicializacao define Consent Mode antes do comando de configuracao. Google Signals
+   e sinais de personalizacao publicitaria estao desativados na tag do GA4.
+4. As visualizacoes de pagina usam a medicao automatica do GA4; nao ha envio manual de `page_view`.
+   No fluxo Web, mantenha **Metrica otimizada > Visualizacoes de pagina > Alteracoes de pagina
+   com base em eventos do historico do navegador** habilitada para medir navegacoes do Next.
+5. Desative inicialmente a medicao automatica de formularios e busca interna. Nao ha eventos
+   personalizados das calculadoras nem envio de valores financeiros implementados.
+6. Valide mudancas de rota, voltar/avancar e recarregamento em Tempo real/DebugView.
+   Caminho, titulo e referencia precisam representar a pagina atual, sem visualizacoes duplicadas.
+7. Se o ID publico mudar, gere outro build: na exportacao estatica, ele e incorporado aos arquivos.
 8. Se usar CSP, permitir apenas os destinos realmente necessarios de scripts e coleta, sem liberar indiscriminadamente todas as origens.
 
 Referencia: [medicao de navegacao SPA no GA4](https://developers.google.com/analytics/devguides/collection/ga4/single-page-applications).
@@ -369,9 +378,12 @@ GTM, GA4 e AdSense nao sao a mesma coisa. GA4 mede suas interacoes; AdSense repo
 - A inicializacao espera o script estar pronto e a unidade ter largura positiva; acontece
   uma vez por elemento, inclusive na navegacao client-side. Ha reserva de altura e
   falhas sao registradas sem interromper os calculos.
-- A preferencia local fica na chave versionada `lemo-finance:advertising-consent:v1`.
-  Recusar ou nao decidir nao solicita o script, nem mesmo anuncios nao personalizados.
+- A preferencia conjunta de publicidade e analise fica na chave versionada
+  `lemo-finance:advertising-analytics-consent:v2`.
+  Recusar ou nao decidir nao solicita os scripts do AdSense e GA4, nem mesmo anuncios nao personalizados.
   Falhas de armazenamento sao exibidas ao visitante, sem presumir aceite.
+  O rodape permite reabrir **Preferencias de privacidade**. Revogar recarrega a pagina
+  para interromper os scripts ja solicitados e reinicia os valores das simulacoes.
 
 Antes de considerar a monetizacao ativa:
 
@@ -418,8 +430,9 @@ Rotina semanal: acompanhar erros e conclusoes de simulacao, paginas de entrada, 
 - [ ] Escolher encaminhamento ou caixa postal com envio pelo dominio.
 - [ ] Configurar e testar `contato@lemohr.com.br`.
 - [ ] Habilitar Cloudflare Web Analytics e conferir o proximo deploy.
-- [ ] Definir politica e preferencias de privacidade antes de tags opcionais.
-- [ ] Criar GA4, registrar o ID e implementar coleta condicionada.
+- [x] Atualizar politica e implementar escolha conjunta antes de tags opcionais.
+- [x] Registrar o ID GA4 `G-NJ1DY9YD2D` e implementar coleta condicionada no codigo.
+- [ ] Publicar a integracao e revisar metrica otimizada e retencao no painel GA4.
 - [ ] Instrumentar eventos de produto sem entradas financeiras ou dados pessoais.
 - [ ] Validar page views e deduplicacao em DebugView.
 - [ ] Criar dashboard privado no Data Studio.
