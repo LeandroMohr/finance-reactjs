@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import FirstMillionCalculator, { formatDuration } from "./FirstMillionCalculator";
 import { currency } from "@/utils/currency";
 
@@ -71,6 +71,27 @@ describe("FirstMillionCalculator", () => {
     expect(screen.getByText("Meta não atingida em 100 anos")).toBeVisible();
   });
 
+  it("shows monthly values on hover, clears on leave and on input changes", () => {
+    render(<FirstMillionCalculator />);
+    fireEvent.change(screen.getByLabelText("Aporte mensal"), { target: { value: "10000000" } });
+    fireEvent.change(screen.getByLabelText("Taxa de juros (%)"), { target: { value: "0" } });
+    const chart = screen.getByRole("img");
+    vi.spyOn(chart, "getBoundingClientRect").mockReturnValue({
+      ...new DOMRect(), left: 0, width: 760,
+    });
+    fireEvent.pointerMove(chart, { clientX: 420 });
+    expect(screen.getByRole("tooltip")).toHaveTextContent("5 meses");
+    expect(screen.getByRole("tooltip")).toHaveTextContent(/Montante: R\$\s500\.000,00/);
+    fireEvent.pointerMove(chart, { clientX: 760 });
+    expect(screen.getByRole("tooltip")).toHaveTextContent("10 meses");
+    expect(screen.getByRole("tooltip")).toHaveTextContent(/Montante: R\$\s1\.000\.000,00/);
+    fireEvent.pointerLeave(chart);
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    fireEvent.pointerMove(chart, { clientX: 110 });
+    expect(screen.getByRole("tooltip")).toHaveTextContent("Início");
+    fireEvent.change(screen.getByLabelText("Taxa de juros (%)"), { target: { value: "1" } });
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+  });
 });
 
 describe("formatDuration", () => {

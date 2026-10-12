@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
 import { firstMillionFaqItems } from "@/config/faq";
-import { currency, maskCurrency, parseCurrency } from "@/utils/currency";
+import { currency, formatCompactCurrency, maskCurrency, parseCurrency } from "@/utils/currency";
 import { calculateFirstMillion, MILLION, MAX_MONTHS, type FirstMillionInput } from "./calculateFirstMillion";
 import styles from "./FirstMillionCalculator.module.scss";
+import { buildFirstMillionChart, CHART } from "./firstMillionChart";
 
 export function formatDuration(months: number) {
   if (months === 0) return "Meta já alcançada";
@@ -28,6 +29,7 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
   const [ratePeriod, setRatePeriod] = useState<"annual" | "monthly">("annual");
   const [duration, setDuration] = useState("20");
   const [durationUnit, setDurationUnit] = useState<"years" | "months">("years");
+  const [hoveredMonth, setHoveredMonth] = useState<number | null>(null);
 
   const rateValue = Number(rate.replace(",", "."));
   const rateError = !/^\d+(?:[.,]\d{1,6})?$/.test(rate.trim()) || !Number.isFinite(rateValue) ||
@@ -43,12 +45,16 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
       ? { ...common, mode, monthlyContribution: parseCurrency(contribution) }
       : { ...common, mode, months },
   );
-  const points = result?.evolution.filter((point) =>
-    point.month % 12 === 0 || point.month === result.months) ?? [];
-  const chartMaximum = Math.max(MILLION, result?.finalAmount ?? 0);
-  const chartLine = points.map((point) =>
-    `${80 + (point.month / Math.max(1, result?.months ?? 1)) * 530},${210 - point.balance / chartMaximum * 180}`,
-  ).join(" ");
+  const chart = result ? buildFirstMillionChart(result.evolution) : null;
+  const hoveredPoint = hoveredMonth === null ? null : chart?.points[hoveredMonth];
+  const handleChartPointerMove = (event: PointerEvent<SVGSVGElement>) => {
+    const { left, width } = event.currentTarget.getBoundingClientRect();
+    if (!result || width === 0) return;
+    const x = (event.clientX - left) / width * CHART.width;
+    const month = Math.round((x - CHART.left) /
+      (CHART.width - CHART.left - CHART.right) * result.months);
+    setHoveredMonth(Math.min(result.months, Math.max(0, month)));
+  };
 
   return (
     <main className={styles.main}>
@@ -60,7 +66,7 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
       </p>
 
       <section className={styles.simulation} aria-label="Simulação do primeiro milhão">
-        <div className={styles.form}>
+        <div className={styles.form} onChange={() => setHoveredMonth(null)}>
           <p className={styles.eyebrow}>Sua estratégia</p>
           <h2>Como você quer planejar?</h2>
           <fieldset className={styles.mode}>
@@ -141,22 +147,63 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
         </aside>
       </section>
 
-      {result && result.months > 0 && (
+      {result && chart && result.months > 0 && (
         <section className={styles.evolution} aria-labelledby="million-evolution">
           <p className={styles.eyebrow}>Evolução do patrimônio</p>
-          <h2 id="million-evolution">Seu caminho até a meta</h2>
+          <h2 id="million-evolution">Montante x Tempo</h2>
           <figure className={styles.chart}>
-            <svg viewBox="0 0 640 260" role="img"
-              aria-label={`Patrimônio projetado ao longo de ${result.months} meses: ${currency.format(result.finalAmount)}`}>
-              <line className={styles.goalLine} x1="80" x2="610"
-                y1={210 - MILLION / chartMaximum * 180} y2={210 - MILLION / chartMaximum * 180} />
-              <text x="80" y="20">Meta: R$ 1 milhão</text>
-              <line className={styles.axis} x1="80" x2="610" y1="210" y2="210" />
-              <polyline className={styles.chartLine} points={chartLine} />
-              <text x="80" y="240">Início</text>
-              <text x="610" y="240" textAnchor="end">{formatDuration(result.months)}</text>
-            </svg>
-            <figcaption>Projeção com taxa e aportes constantes, não uma garantia de retorno.</figcaption>
+            <div className={styles.chartCanvas}>
+              <svg viewBox={`0 0 ${CHART.width} ${CHART.height}`} role="img"
+                aria-label={`Patrimônio projetado ao longo de ${result.months} meses: ${currency.format(result.finalAmount)}`}
+                onPointerMove={handleChartPointerMove} onPointerLeave={() => setHoveredMonth(null)}>
+                {chart.valueTicks.map((tick) => (
+                  <g key={tick.value}>
+                    <line className={styles.axis} x1={CHART.left} x2={CHART.width - CHART.right}
+                      y1={tick.y} y2={tick.y} />
+                    <text x={CHART.left - 10} y={tick.y + 4} textAnchor="end">
+                      {formatCompactCurrency(tick.value)}
+                    </text>
+                  </g>
+                ))}
+                <line className={styles.goalLine} x1={CHART.left} x2={CHART.width - CHART.right}
+                  y1={chart.goalY} y2={chart.goalY} />
+                <text x={CHART.left} y="18">Meta: R$ 1 milhão</text>
+                <polyline className={styles.chartLine} points={chart.line} />
+                {hoveredPoint && (
+                  <g>
+                    <line className={styles.goalLine} x1={hoveredPoint.x} x2={hoveredPoint.x}
+                      y1={CHART.top} y2={CHART.baseline} />
+                    <circle className={styles.chartMarker} cx={hoveredPoint.x} cy={hoveredPoint.y} r="5" />
+                  </g>
+                )}
+                {chart.ticks.map((tick) => (
+                  <text key={tick.month} x={tick.x} y={tick.y}
+                    textAnchor={tick.month === result.months ? "end" : tick.month === 0 ? "start" : "middle"}>
+                    {tick.label}
+                  </text>
+                ))}
+                <text x="18" y="145" textAnchor="middle" transform="rotate(-90 18 145)">Montante (R$)</text>
+                <text x={(CHART.left + CHART.width - CHART.right) / 2} y="310" textAnchor="middle">
+                  Tempo ({chart.unit})
+                </text>
+              </svg>
+              {hoveredPoint && (
+                <div role="tooltip" className={styles.chartTooltip}
+                  style={{
+                    left: `${hoveredPoint.x / CHART.width * 100}%`,
+                    top: `${hoveredPoint.y / CHART.height * 100}%`,
+                    transform: `translate(${hoveredPoint.month > result.months / 2 ? "-100%" : "0"}, -110%)`,
+                  }}>
+                  <span>{hoveredPoint.month === 0 ? "Início" : formatDuration(hoveredPoint.month)}</span>
+                  <strong>Montante: {currency.format(hoveredPoint.balance)}</strong>
+                  <span>Total investido: {currency.format(hoveredPoint.contributed)}</span>
+                </div>
+              )}
+            </div>
+            <figcaption>
+              Montante (R$) x Tempo ({chart.unit}). Passe o mouse sobre a curva para ver os valores mensais.
+              Projeção com taxa e aportes constantes, não uma garantia de retorno.
+            </figcaption>
           </figure>
           <div className={styles.tableWrapper}>
             <table>

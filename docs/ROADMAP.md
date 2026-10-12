@@ -84,6 +84,9 @@ correspondente em `src/config/site.ts`.
 - Primeiro Milhão oferece cálculo do tempo até R$ 1 milhão e do aporte mensal para um prazo.
   Usa taxa anual efetiva convertida para mensal equivalente, aportes ao fim do mês e horizonte
   máximo de 100 anos. Não desconta inflação, impostos ou custos.
+  O gráfico mostra valores mensais ao passar o mouse e eixos de montante e tempo.
+  Até 10 anos, marca a cada ano; até 20 anos, a cada 2; acima disso, a cada 5,
+  sempre incluindo o prazo final real. Períodos inferiores a um ano usam meses.
 
 - Ferramentas que dependem de dados externos (IPCA, CDI, Selic, câmbio) precisam de decisão
   prévia: embutir série histórica no build ou consumir API em runtime. A segunda opção conflita
