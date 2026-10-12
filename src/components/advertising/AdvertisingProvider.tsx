@@ -221,10 +221,10 @@ export default function AdvertisingProvider({ children }: { children: ReactNode 
           </div>
           <div className={styles.actions}>
             <button type="button" onClick={() => saveConsent("denied")}>
-              {refusalRequiresReload ? "Recusar e recarregar" : "Recusar publicidade e análise"}
+              Recusar
             </button>
             <button type="button" onClick={() => saveConsent("granted")}>
-              Aceitar publicidade e análise
+              Aceitar
             </button>
             {consent !== null && (
               <button type="button" onClick={closePreferences}>Fechar preferências</button>

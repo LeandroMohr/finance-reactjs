@@ -21,6 +21,7 @@ describe("Advertising in preview deployments", () => {
     expect(screen.queryByTestId("google-analytics-init")).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Publicidade" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Preferências de privacidade" }));
-    expect(screen.getByRole("button", { name: "Recusar publicidade e análise" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Recusar", exact: true })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Aceitar", exact: true })).toBeVisible();
   });
 });
