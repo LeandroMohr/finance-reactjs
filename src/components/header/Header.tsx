@@ -120,6 +120,9 @@ export default function Header() {
               </div>
             );
           })}
+          <Link href="/glossario/" className={styles.navLink} onClick={closeNav}>
+            Glossário
+          </Link>
         </nav>
 
         <div className={styles.actions}>

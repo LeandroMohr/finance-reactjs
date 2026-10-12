@@ -1,0 +1,97 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.main {
+  @include container;
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  padding-block: $space-8 $space-12;
+}
+.eyebrow { @include eyebrow; }
+.hero {
+  display: grid;
+  gap: $space-3;
+  h1 { font-size: $font-2xl; @media (min-width: $bp-sm) { font-size: $font-3xl; } }
+  p:not(.eyebrow) { max-width: 75ch; color: var(--text-muted); }
+}
+.search {
+  @include surface;
+  display: grid;
+  gap: $space-3;
+  padding: $space-5;
+  p { font-size: $font-sm; color: var(--text-muted); }
+}
+.searchRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+  input {
+    @include focus-ring;
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 220px;
+    padding: $space-3;
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font: inherit;
+  }
+  button {
+    @include focus-ring;
+    padding: $space-3;
+    border: 1px solid var(--border);
+    border-radius: $radius-md;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font: inherit;
+    cursor: pointer;
+  }
+}
+.alphabet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  a, span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 36px;
+    min-height: 40px;
+    border: 1px solid var(--border);
+    border-radius: $radius-sm;
+    font-weight: 600;
+  }
+  a {
+    @include focus-ring;
+    color: var(--brand-primary);
+    background: var(--bg-card);
+    &:hover { background: var(--bg-surface); border-color: var(--brand-primary); }
+  }
+  span { color: var(--text-muted); opacity: 0.5; }
+}
+.notice, .empty { color: var(--text-muted); }
+.letterSection {
+  scroll-margin-top: 100px;
+  h2 { border-bottom: 1px solid var(--border); padding-bottom: $space-3; margin-bottom: $space-4; font-size: $font-2xl; }
+}
+.terms { display: grid; gap: $space-4; }
+.term {
+  @include card;
+  display: grid;
+  gap: $space-3;
+  padding: $space-5;
+  scroll-margin-top: 100px;
+  overflow-wrap: anywhere;
+  h3 { font-size: $font-xl; a { @include focus-ring; color: var(--text-primary); } }
+}
+.aliases { color: var(--text-muted); font-size: $font-sm; }
+.formula { background: var(--bg-surface); border-radius: $radius-sm; padding: $space-3; }
+.example { padding-left: $space-3; border-left: 3px solid var(--brand-primary); }
+.caution { color: var(--text-muted); }
+.sources {
+  p { color: var(--text-muted); }
+  ul { padding-left: $space-5; }
+  a { @include focus-ring; color: var(--brand-primary); }
+}

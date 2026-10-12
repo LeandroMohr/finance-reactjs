@@ -41,6 +41,7 @@ describe("Footer", () => {
     expect(
       screen.getByRole("link", { name: "Perguntas frequentes" }).getAttribute("href"),
     ).toMatch(/^\/perguntas-frequentes\/?$/);
+    expect(screen.getByRole("link", { name: "Glossário financeiro" }).getAttribute("href")).toMatch(/^\/glossario\/?$/);
   });
 
   it("links to every published institutional page", () => {

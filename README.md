@@ -98,6 +98,29 @@ O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitário
   `/primeiro-milhao/`, `/conversor-de-taxas/` e `/perguntas-frequentes/`.
   Os antigos caminhos em inglês foram removidos, sem redirecionamentos.
 
+## Glossário financeiro
+
+- `/glossario/` reúne conceitos de planejamento, crédito, Tesouro Direto, fundos,
+  índices brasileiros e internacionais, criptoativos, metas, riscos, moradia, tributos
+  e negociação em bolsa,
+  com busca sem
+  distinção de acentos, caixa ou siglas, índice A–Z e âncoras por letra e termo.
+- Cadastre termos em [src/config/glossary.ts](src/config/glossary.ts), com `id` estável,
+  definição original e, quando aplicável, fórmula, exemplo numérico e ressalvas.
+- Use linguagem acessível: explique termos técnicos na própria definição, mostre o
+  significado dos números e informe unidades e conversão de percentuais nas fórmulas.
+  Nos exemplos de ON, PN, units, ETFs e FIIs, mantenha apenas tickers e composição.
+- A busca ocorre no navegador e não envia consultas a um servidor. Todos os termos são
+  renderizados no HTML inicial e a rota entra automaticamente no sitemap.
+- As referências estão no fim da página. Não copie definições de terceiros.
+- Mantenha os verbetes concisos, sem cotações datadas ou promessas de retorno.
+  Grupos de criptoativos devem explicar sua função e incluir exemplos de moedas ou tokens.
+- Em tributação e negociação, indique o escopo das regras e confira fontes oficiais:
+  tabelas de renda fixa não valem para todos os ativos, e ordens não garantem execução.
+- Previdência distingue PGBL/VGBL e regimes progressivo/regressivo; deduções e
+  come-cotas precisam de ressalvas. Perfis de investidores e autores são educativos,
+  não recomendações de produtos ou de carteiras.
+
 ## Próximo passo
 
 Adicionar novas ferramentas ao catálogo em `src/config/site.ts` e criar a rota correspondente em `src/app/<slug>/page.tsx`.

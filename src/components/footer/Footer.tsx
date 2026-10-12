@@ -48,6 +48,9 @@ export default function Footer() {
                 Perguntas frequentes
               </Link>
             </li>
+            <li>
+              <Link href="/glossario/" className={styles.link}>Glossário financeiro</Link>
+            </li>
           </ul>
         </nav>
 
