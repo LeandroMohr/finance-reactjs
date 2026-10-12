@@ -8,6 +8,9 @@ describe("FaqPage", () => {
     render(<FaqPage />);
 
     expect(screen.getByRole("heading", { name: "Perguntas frequentes" })).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { level: 2 })).toHaveLength(
+      new Set(faqSections.map((section) => section.category)).size + 1,
+    );
 
     for (const section of faqSections) {
       expect(screen.getByRole("heading", { name: section.category })).toBeInTheDocument();

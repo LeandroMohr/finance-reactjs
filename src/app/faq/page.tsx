@@ -24,6 +24,7 @@ export const metadata: Metadata = {
 
 export default function FaqPage() {
   const items = faqSections.flatMap((section) => section.items);
+  const categories = [...new Set(faqSections.map((section) => section.category))];
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -49,25 +50,29 @@ export default function FaqPage() {
       </header>
 
       <div className={styles.sections}>
-        {faqSections.map((section) => (
-          <section
-            key={section.id}
-            className={styles.category}
-            aria-labelledby={`category-${section.id}`}
-          >
-            <h2 id={`category-${section.id}`} className={styles.categoryTitle}>
-              {section.category}
-            </h2>
-            <Faq
-              items={section.items}
-              eyebrow="Dúvidas sobre"
-              title={section.title}
-              headingId={`faq-${section.id}`}
-              headingLevel={3}
-              includeStructuredData={false}
-            />
-          </section>
-        ))}
+        {categories.map((category) => {
+          const sections = faqSections.filter((section) => section.category === category);
+          const headingId = `category-${sections[0].id}`;
+
+          return (
+            <section key={category} className={styles.category} aria-labelledby={headingId}>
+              <h2 id={headingId} className={styles.categoryTitle}>
+                {category}
+              </h2>
+              {sections.map((section) => (
+                <Faq
+                  key={section.id}
+                  items={section.items}
+                  eyebrow="Dúvidas sobre"
+                  title={section.title}
+                  headingId={`faq-${section.id}`}
+                  headingLevel={3}
+                  includeStructuredData={false}
+                />
+              ))}
+            </section>
+          );
+        })}
       </div>
 
       <ShareContent path={canonical} title="Perguntas frequentes" />

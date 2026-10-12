@@ -37,6 +37,7 @@ describe("discovery files", () => {
 
     expect(content).toMatch(/^# Lemo Finance/m);
     expect(content).toContain(`${siteConfig.url}/compound-interest/`);
+    expect(content).toContain(`${siteConfig.url}/first-million/`);
     expect(content).toContain(`${siteConfig.url}/rate-converter/`);
     expect(content).toContain(`${siteConfig.url}/faq/`);
     expect(content).toContain(`${siteConfig.url}/sitemap.xml`);

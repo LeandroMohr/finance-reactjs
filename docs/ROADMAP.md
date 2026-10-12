@@ -11,6 +11,7 @@ correspondente em `src/config/site.ts`.
 | Ferramenta | Slug | Status |
 | --- | --- | --- |
 | Juros Compostos | `compound-interest` | ✅ Implementada |
+| Primeiro Milhão | `first-million` | ✅ Implementada |
 | Conversor de Taxas | `rate-converter` | ✅ Implementada |
 
 ---
@@ -79,6 +80,10 @@ correspondente em `src/config/site.ts`.
 ---
 
 ## Notas de implementação
+
+- Primeiro Milhão oferece cálculo do tempo até R$ 1 milhão e do aporte mensal para um prazo.
+  Usa taxa anual efetiva convertida para mensal equivalente, aportes ao fim do mês e horizonte
+  máximo de 100 anos. Não desconta inflação, impostos ou custos.
 
 - Ferramentas que dependem de dados externos (IPCA, CDI, Selic, câmbio) precisam de decisão
   prévia: embutir série histórica no build ou consumir API em runtime. A segunda opção conflita

@@ -84,7 +84,7 @@ export const navGroups: NavGroup[] = [
         description:
           "Descubra quanto investir por mês e por quanto tempo para alcançar seu primeiro milhão.",
         section: "Investimentos",
-        available: false,
+        available: true,
       },
       {
         slug: "present-future-value",

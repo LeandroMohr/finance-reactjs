@@ -76,6 +76,34 @@ export const compoundInterestFaqItems: FaqItem[] = [
   },
 ];
 
+export const firstMillionFaqItems: FaqItem[] = [
+  {
+    question: "Quanto tempo leva para juntar o primeiro milhão?",
+    answer:
+      "Depende do patrimônio inicial, dos aportes e da rentabilidade. A simulação encontra o primeiro mês em que o saldo alcança R$ 1 milhão, mantendo os aportes e a taxa constantes por até 100 anos.",
+  },
+  {
+    question: "Quanto preciso investir por mês para alcançar R$ 1 milhão?",
+    answer:
+      "Escolha Descobrir o aporte mensal e informe seu capital, taxa e prazo. A ferramenta calcula o aporte fixo no fim do mês e arredonda para cima em centavos. Se o capital inicial sozinho for suficiente, o aporte necessário é zero.",
+  },
+  {
+    question: "Posso simular sem juros ou sem aportes?",
+    answer:
+      "Sim. Com juros zero, o patrimônio cresce apenas pelos aportes. Sem aportes, é preciso capital inicial e rendimento positivo, a menos que você já tenha R$ 1 milhão. Sem capital e sem aportes, a meta não pode ser alcançada.",
+  },
+  {
+    question: "A taxa anual é dividida por 12?",
+    answer:
+      "Não nesta ferramenta. Usamos a taxa mensal equivalente: (1 + taxa anual / 100)^(1/12) − 1. Ela preserva a rentabilidade anual informada após 12 meses de capitalização.",
+  },
+  {
+    question: "O primeiro milhão considera inflação e impostos?",
+    answer:
+      "Não. A meta é nominal e a simulação não desconta inflação, impostos ou custos. O poder de compra pode diminuir com o tempo. Os rendimentos são estimativas, não garantias nem recomendações de investimento.",
+  },
+];
+
 export const rateConverterFaqItems: FaqItem[] = [
   {
     question: "Qual é a diferença entre taxa proporcional e taxa equivalente?",
@@ -121,6 +149,12 @@ export const faqSections: FaqSection[] = [
     category: "Calculadoras",
     title: "Juros compostos",
     items: compoundInterestFaqItems,
+  },
+  {
+    id: "first-million",
+    category: "Calculadoras",
+    title: "Primeiro milhão",
+    items: firstMillionFaqItems,
   },
   {
     id: "ferramentas",
