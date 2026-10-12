@@ -1,0 +1,68 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.preferences {
+  position: fixed;
+  inset: auto $space-4 $space-4;
+  z-index: 60;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-5;
+  max-width: $container-width;
+  max-height: calc(100dvh - 2rem);
+  margin-inline: auto;
+  padding: $space-5;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 25%);
+
+  @include surface;
+  @include focus-ring;
+}
+
+.content {
+  flex: 1 1 30rem;
+
+  h2 {
+    margin: 0 0 $space-2;
+    font-size: $font-lg;
+  }
+
+  p {
+    margin: $space-2 0 0;
+    color: var(--text-muted);
+    font-size: $font-sm;
+  }
+
+  a {
+    text-decoration: underline;
+
+    @include focus-ring;
+  }
+}
+
+.actions {
+  display: flex;
+  flex: 1 1 18rem;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: $space-3;
+
+  button {
+    flex: 1 1 10rem;
+    min-height: 2.75rem;
+    padding: $space-3 $space-4;
+    border: 1px solid var(--border);
+    border-radius: $radius-sm;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: $font-sm;
+    cursor: pointer;
+
+    @include focus-ring;
+
+    &:hover {
+      border-color: var(--brand-accent);
+    }
+  }
+}

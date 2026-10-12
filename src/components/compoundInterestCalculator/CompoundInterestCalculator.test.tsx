@@ -3,6 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import CompoundInterestCalculator, { calculateCompoundInterest } from "./CompoundInterestCalculator";
 
+vi.mock("@/components/advertising/AdSlot", () => ({ default: () => null }));
+
 function getInput(label: string): HTMLInputElement {
   return screen.getByLabelText(label) as HTMLInputElement;
 }

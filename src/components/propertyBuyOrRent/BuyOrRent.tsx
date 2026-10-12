@@ -2,6 +2,7 @@
 
 import { useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import AdSlot from "@/components/advertising/AdSlot";
 import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
@@ -305,6 +306,8 @@ export default function BuyOrRent({ breadcrumb }: { breadcrumb?: ReactNode }) {
           </Accordion>
         </section>
       )}
+
+      <AdSlot />
 
       <section className={styles.content} aria-labelledby="housing-tradeoffs">
         <h2 id="housing-tradeoffs">Além da matemática: o que pesa para você?</h2>

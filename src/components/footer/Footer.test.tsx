@@ -2,10 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { institutionalLinks, navGroups, siteConfig } from "@/config/site";
 import Footer from "./Footer";
+import AdvertisingProvider from "@/components/advertising/AdvertisingProvider";
 
 describe("Footer", () => {
   it("renders a navigation column for every group", () => {
-    render(<Footer />);
+    render(<AdvertisingProvider><Footer /></AdvertisingProvider>);
 
     for (const group of navGroups) {
       expect(screen.getByRole("navigation", { name: group.label })).toBeInTheDocument();
@@ -13,7 +14,7 @@ describe("Footer", () => {
   });
 
   it("links available items and marks unavailable ones as disabled", () => {
-    render(<Footer />);
+    render(<AdvertisingProvider><Footer /></AdvertisingProvider>);
 
     const items = navGroups.flatMap((group) => group.items);
     const available = items.find((item) => item.available)!;
@@ -28,7 +29,7 @@ describe("Footer", () => {
   });
 
   it("shows the current year and the author", () => {
-    render(<Footer />);
+    render(<AdvertisingProvider><Footer /></AdvertisingProvider>);
 
     expect(
       screen.getByText(new RegExp(`${new Date().getFullYear()}.*${siteConfig.author}`)),
@@ -36,7 +37,7 @@ describe("Footer", () => {
   });
 
   it("links to the FAQ page", () => {
-    render(<Footer />);
+    render(<AdvertisingProvider><Footer /></AdvertisingProvider>);
 
     expect(
       screen.getByRole("link", { name: "Perguntas frequentes" }).getAttribute("href"),
@@ -45,12 +46,17 @@ describe("Footer", () => {
   });
 
   it("links to every published institutional page", () => {
-    render(<Footer />);
+    render(<AdvertisingProvider><Footer /></AdvertisingProvider>);
 
     for (const item of institutionalLinks) {
       expect(screen.getByRole("link", { name: item.label }).getAttribute("href")).toMatch(
         new RegExp(`^${item.href.replace(/\/$/, "")}/?$`),
       );
     }
+  });
+
+  it("allows visitors to review advertising preferences", () => {
+    render(<AdvertisingProvider><Footer /></AdvertisingProvider>);
+    expect(screen.getByRole("button", { name: "Preferências de publicidade" })).toBeInTheDocument();
   });
 });

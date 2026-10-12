@@ -176,6 +176,22 @@ O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitário
 - Gráfico mensal acessível, consulta direta por ponteiro/toque ou teclado e
   tabela anual. Matemática SVG compartilhada com a comparação de moradia.
 
+## Publicidade
+
+- A conta AdSense é verificada pela metatag no layout e por [public/ads.txt](public/ads.txt).
+- [src/config/advertising.ts](src/config/advertising.ts) centraliza a conta e o bloco
+  responsivo usado depois dos resultados das cinco ferramentas disponíveis.
+- O script só carrega em `https://lemohr.com.br` após aceitar publicidade. Localhost
+  e previews não solicitam anúncios. A recusa não limita as calculadoras.
+- O rodapé permite revisar a escolha. Revogar após o carregamento recarrega a página
+  para interromper scripts já executados, reiniciando os valores da simulação.
+- O controle local não substitui uma CMP certificada para regiões que a exigem.
+  Aprovação e consentimento no painel ainda precisam ser configurados.
+- Mantenha anúncios automáticos desativados para preservar as posições manuais.
+
+Veja o fluxo de publicação e as pendências em
+[docs/OPERACAO-E-MONETIZACAO.md](docs/OPERACAO-E-MONETIZACAO.md#57-integracao-implementada-e-pendencias-do-painel).
+
 ## Próximo passo
 
 Adicionar novas ferramentas ao catálogo em `src/config/site.ts` e criar a rota correspondente em `src/app/<slug>/page.tsx`.

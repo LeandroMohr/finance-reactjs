@@ -2,6 +2,7 @@
 
 import { useMemo, useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import AdSlot from "@/components/advertising/AdSlot";
 import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
@@ -613,6 +614,8 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
           </div>
         ) : null}
       </section>
+
+      <AdSlot />
 
       <Accordion summary="Entenda como funciona o cálculo">
         <div className={styles.introText}>

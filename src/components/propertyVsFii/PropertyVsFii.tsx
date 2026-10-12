@@ -2,6 +2,7 @@
 
 import { useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import AdSlot from "@/components/advertising/AdSlot";
 import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
@@ -205,6 +206,7 @@ export default function PropertyVsFii({ breadcrumb }: { breadcrumb?: ReactNode }
         </table></div>
       </Accordion>
     </section>}
+    <AdSlot />
     <section className={styles.card} aria-labelledby="investment-risks"><h2 id="investment-risks">O que o número não mostra</h2>
       <div className={styles.comparison}><section><h3>Imóvel direto</h3>
         <ul><li>Controle do imóvel e decisões de locação, mas trabalho de administrar contratos, reformas e cobranças.</li>

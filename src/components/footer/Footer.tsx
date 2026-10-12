@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdvertisingPreferencesButton } from "@/components/advertising/AdvertisingProvider";
 import { institutionalLinks, navGroups, siteConfig } from "@/config/site";
 import styles from "./Footer.module.scss";
 
@@ -64,6 +65,9 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <AdvertisingPreferencesButton className={styles.preferencesButton} />
+            </li>
           </ul>
         </nav>
       </div>

@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 import FirstMillionCalculator, { formatDuration } from "./FirstMillionCalculator";
 import { currency } from "@/utils/currency";
 
+vi.mock("@/components/advertising/AdSlot", () => ({ default: () => null }));
+
 describe("FirstMillionCalculator", () => {
   it("renders the default simulation, chart, milestones and related tools", () => {
     render(<FirstMillionCalculator />);

@@ -61,6 +61,16 @@ const sections: InstitutionalSection[] = [
             <strong>Preferência de tema:</strong> escolha entre tema claro e escuro, salva localmente
             no dispositivo por meio de <code>localStorage</code>.
           </li>
+          <li>
+            <strong>Preferência de publicidade:</strong> sua escolha de aceitar ou recusar anúncios,
+            salva localmente no navegador. Não é necessário informar nome ou e-mail para escolher.
+          </li>
+          <li>
+            <strong>Publicidade autorizada:</strong> o Google AdSense e seus parceiros podem tratar
+            endereço IP, identificadores de cookies, informações do dispositivo, páginas visitadas
+            e interações com anúncios. O site não envia os valores das simulações como eventos
+            de publicidade.
+          </li>
         </ul>
       </>
     ),
@@ -74,6 +84,11 @@ const sections: InstitutionalSection[] = [
         <li>Manter o site disponível, estável e protegido contra uso indevido.</li>
         <li>Cumprir obrigações legais e resguardar direitos, quando necessário.</li>
         <li>Preservar a preferência visual escolhida no dispositivo.</li>
+        <li>
+          Com seu consentimento, carregar publicidade para financiar o site, incluindo sua
+          exibição e medição. Personalização depende das preferências e regras aplicáveis.
+        </li>
+        <li>Guardar a preferência de publicidade para respeitar sua escolha nas próximas visitas.</li>
       </ul>
     ),
   },
@@ -83,13 +98,30 @@ const sections: InstitutionalSection[] = [
     content: (
       <>
         <p>
-          Atualmente, o {siteConfig.name} não utiliza cookies de publicidade ou de análise. A única
-          preferência persistida pelo próprio site é o tema visual, por meio do armazenamento local
-          do navegador.
+          O tema visual e a preferência de publicidade são guardados em <code>localStorage</code>.
+          Essas preferências não são cookies publicitários e permanecem até serem alteradas
+          ou até você limpar o armazenamento do navegador.
         </p>
         <p>
-          Caso ferramentas de análise, anúncios ou outros cookies sejam adotados no futuro, esta
-          política será atualizada e, quando exigido, será solicitado consentimento antes da coleta.
+          O código do Google AdSense só é carregado no domínio de produção após você aceitar
+          publicidade. Sem uma escolha ou ao recusar, ele não é carregado e as calculadoras
+          continuam funcionando. Este ajuste não instala Google Analytics.
+        </p>
+        <p>
+          Após a autorização, o Google e seus parceiros podem utilizar cookies e armazenamento
+          local para publicidade, inclusive anúncios não personalizados. Quando aplicável,
+          suas próprias mensagens de consentimento também precisam ser respeitadas.
+        </p>
+        <p>
+          Use <strong>Preferências de publicidade</strong>, no rodapé, para revisar ou retirar
+          sua autorização. Se o código de anúncios já tiver sido solicitado, a recusa recarrega
+          a página para interromper sua execução; os valores preenchidos nas calculadoras
+          serão reiniciados. Essa alteração também pode recarregar outras abas abertas do site.
+        </p>
+        <p>
+          Retirar a autorização impede novos carregamentos, mas não desfaz tratamentos já
+          realizados nem apaga automaticamente cookies de terceiros. Você também pode
+          excluí-los nas configurações do navegador.
         </p>
       </>
     ),
@@ -108,6 +140,15 @@ const sections: InstitutionalSection[] = [
           Alguns fornecedores podem operar infraestrutura em outros países. Nesses casos, buscamos
           serviços com medidas adequadas de segurança e proteção de dados.
         </p>
+        <p>
+          Quando a publicidade é autorizada, dados também podem ser tratados pelo Google
+          e seus parceiros de publicidade, inclusive fora do Brasil, conforme as preferências
+          aplicáveis. Consulte{" "}
+          <a href="https://policies.google.com/technologies/partner-sites">
+            como o Google usa informações de sites parceiros
+          </a>{" "}
+          e sua <a href="https://policies.google.com/privacy">política de privacidade</a>.
+        </p>
       </>
     ),
   },
@@ -119,7 +160,8 @@ const sections: InstitutionalSection[] = [
         <p>
           Mensagens de contato são mantidas pelo tempo necessário para responder à solicitação e
           cumprir obrigações aplicáveis. Registros técnicos seguem os prazos definidos pelo provedor
-          de infraestrutura e pela legislação.
+          de infraestrutura e pela legislação. A retenção de dados publicitários pelo Google
+          e seus parceiros segue suas respectivas políticas.
         </p>
         <p>
           Adotamos medidas razoáveis para reduzir riscos de acesso não autorizado, perda ou alteração.
@@ -172,8 +214,8 @@ export default function PrivacyPolicyPage() {
     <InstitutionalPage
       eyebrow="Privacidade e transparência"
       title="Política de privacidade"
-      description="Informações claras sobre os poucos dados necessários para operar este site e atender você."
-      updatedAt="23 de setembro de 2026"
+      description="Saiba como funcionam os dados de navegação, as preferências e a publicidade opcional."
+      updatedAt="12 de outubro de 2026"
       sections={sections}
     />
   );

@@ -9,7 +9,12 @@ describe("PrivacyPolicyPage", () => {
 
     expect(screen.getByRole("heading", { name: "Política de privacidade" })).toBeInTheDocument();
     expect(screen.getByText(/processados no próprio navegador/)).toBeInTheDocument();
-    expect(screen.getByText(/não utiliza cookies de publicidade ou de análise/)).toBeInTheDocument();
+    expect(screen.getByText(/só é carregado no domínio de produção após você aceitar/)).toBeInTheDocument();
+    expect(screen.getByText(/não instala Google Analytics/)).toBeInTheDocument();
+    expect(screen.getByText(/não envia os valores das simulações como eventos/)).toBeInTheDocument();
+    expect(screen.getByText(/valores preenchidos nas calculadoras/)).toHaveTextContent(/reiniciados/);
+    expect(screen.getByRole("link", { name: "como o Google usa informações de sites parceiros" }))
+      .toHaveAttribute("href", "https://policies.google.com/technologies/partner-sites");
   });
 
   it("provides a channel for privacy requests", () => {

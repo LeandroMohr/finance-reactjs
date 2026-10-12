@@ -1,0 +1,29 @@
+@use "@/styles/variables" as *;
+
+.slot {
+  min-width: 0;
+  margin-block: $space-8;
+  padding-block: $space-5;
+  border-block: 1px solid var(--border);
+}
+
+.label {
+  margin: 0 0 $space-3;
+  color: var(--text-muted);
+  font-size: $font-xs;
+  text-align: center;
+}
+
+.space {
+  min-height: 280px;
+
+  @media (min-width: $bp-md) {
+    min-height: 320px;
+  }
+}
+
+.error {
+  color: var(--text-muted);
+  font-size: $font-sm;
+  text-align: center;
+}

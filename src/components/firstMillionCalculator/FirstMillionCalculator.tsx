@@ -2,6 +2,7 @@
 
 import { useState, type PointerEvent, type ReactNode } from "react";
 import Accordion from "@/components/accordion/Accordion";
+import AdSlot from "@/components/advertising/AdSlot";
 import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
@@ -247,6 +248,8 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
           </div>
         </section>
       )}
+
+      <AdSlot />
 
       <section className={styles.explanation} aria-labelledby="million-how">
         <h2 id="million-how">Como calculamos o primeiro milhão?</h2>

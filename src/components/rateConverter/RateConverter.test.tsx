@@ -1,7 +1,9 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import RateConverter, { convertRate } from "./RateConverter";
+
+vi.mock("@/components/advertising/AdSlot", () => ({ default: () => null }));
 
 describe("convertRate", () => {
   it("converts a monthly rate into the equivalent annual rate", () => {

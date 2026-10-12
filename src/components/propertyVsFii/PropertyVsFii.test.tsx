@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 import { currency } from "@/utils/currency";
 import PropertyVsFii from "./PropertyVsFii";
 
+vi.mock("@/components/advertising/AdSlot", () => ({ default: () => null }));
+
 describe("PropertyVsFii", () => {
   it("renders separate investment scenarios with an equal initial budget and risk caveats", () => {
     render(<PropertyVsFii />);

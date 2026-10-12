@@ -4,7 +4,9 @@ Referencia: 11/10/2026. Interfaces, precos e politicas podem mudar; confirme as 
 
 ## 1. Escopo e recomendacao
 
-Este guia descreve configuracoes futuras. Nao significa que os servicos abaixo ja estejam habilitados.
+Este guia descreve configuracoes operacionais e futuras. A integracao tecnica do AdSense foi
+adicionada em 12/10/2026; aprovacao, deploy e configuracoes do painel continuam sendo etapas externas.
+Nao significa que os demais servicos abaixo ja estejam habilitados.
 
 - Site de producao: https://lemohr.com.br/.
 - Hospedagem: Cloudflare Pages, projeto `finance-reactjs`, conectado ao GitHub.
@@ -302,11 +304,11 @@ As regras de AI Crawl Control da Cloudflare nao representam aprovacao do AdSense
 Referencia: [guia oficial de ads.txt](https://support.google.com/adsense/answer/7532444?hl=pt-BR).
 
 1. Copie a linha fornecida pela sua conta AdSense.
-2. Crie futuramente `public/ads.txt` no projeto Next.js, usando o publisher real.
-3. O formato abaixo e apenas um exemplo; nao publicar o ID ficticio:
+2. O projeto ja inclui `public/ads.txt`, usando o publisher fornecido pelo responsavel.
+3. A linha publicada deve ser:
 
 ```text
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+google.com, pub-6525518606220983, DIRECT, f08c47fec0942fa0
 ```
 
 4. Execute o build e publique pelo fluxo normal da `main`.
@@ -327,6 +329,17 @@ Para anuncios personalizados a visitantes do EEE, Reino Unido e Suica, o Google 
 
 Evite dois banners independentes e contraditorios. Centralize a gestao das escolhas ou integre explicitamente as ferramentas.
 
+O controle local implementado bloqueia o carregamento do AdSense ate a autorizacao e oferece
+recusa e revisao no rodape. Nao e uma CMP certificada pelo Google nem substitui a configuracao
+exigida para EEE, Reino Unido e Suica. Antes de veicular nessas regioes, configure e publique
+uma mensagem/CMP certificada em `Privacidade e mensagens` e valide a integracao real.
+A aprovacao do site, sozinha, nao comprova conformidade de consentimento.
+
+Ao retirar autorizacao depois que o script foi solicitado, a pagina recarrega para interromper
+JavaScript de terceiros ja executado; valores das calculadoras sao reiniciados. Mudancas de
+consentimento tambem sao sincronizadas entre abas. Cookies de terceiros ja existentes nao
+sao removidos automaticamente; o visitante pode limpa-los pelo navegador.
+
 ### 5.6. Exibir anuncios sem prejudicar as calculadoras
 
 1. Depois da aprovacao, escolha anuncios automaticos ou unidades manuais. Para este site, recomendo comecar com poucas unidades manuais para controlar posicao.
@@ -341,6 +354,37 @@ Evite dois banners independentes e contraditorios. Centralize a gestao das escol
 10. Nunca clique nos proprios anuncios, peca cliques, compre trafego artificial ou use automacao para gerar impressoes.
 
 GTM, GA4 e AdSense nao sao a mesma coisa. GA4 mede suas interacoes; AdSense reporta impressoes, cliques publicitarios e receita. Nao instrumentar cliques em iframes de anuncios nem tentar identificar o visitante que clicou.
+
+### 5.7. Integracao implementada e pendencias do painel
+
+- `src/config/advertising.ts` concentra `ca-pub-6525518606220983` e o bloco responsivo
+  `9529373130`, chamado "Calculadoras — apos o resultado".
+- A metatag `google-adsense-account` e herdada do layout por todas as paginas.
+- O script compartilhado usa `next/script`, `afterInteractive` e `crossOrigin="anonymous"`.
+  So carrega em `https://lemohr.com.br`, apos consentimento. Localhost, Cloudflare previews
+  e outros origins nao solicitam anuncios, mesmo com preferencia aceita.
+- Cada uma das cinco ferramentas disponiveis tem uma unidade depois dos resultados,
+  graficos/tabelas e antes do conteudo explicativo. Home, catalogos, glossario, FAQ
+  e paginas institucionais nao possuem blocos manuais.
+- A inicializacao espera o script estar pronto e a unidade ter largura positiva; acontece
+  uma vez por elemento, inclusive na navegacao client-side. Ha reserva de altura e
+  falhas sao registradas sem interromper os calculos.
+- A preferencia local fica na chave versionada `lemo-finance:advertising-consent:v1`.
+  Recusar ou nao decidir nao solicita o script, nem mesmo anuncios nao personalizados.
+  Falhas de armazenamento sao exibidas ao visitante, sem presumir aceite.
+
+Antes de considerar a monetizacao ativa:
+
+1. Publique o projeto e confira metatag e https://lemohr.com.br/ads.txt.
+2. Em `Sites`, verifique propriedade e solicite/acompanhe aprovacao.
+3. Mantenha **anuncios automaticos desativados** no painel; o site usa posicoes manuais.
+   Ativa-los pode inserir publicidade fora das posicoes previstas.
+4. Configure consentimento certificado para as regioes em que ele e exigido, conforme 5.5.
+5. Confira se o bloco `9529373130` pertence a conta correta e esta disponivel para veiculacao.
+6. Valide comportamento, privacidade e layout no site real, sem clicar nos proprios anuncios.
+
+Nao ha garantia de preenchimento de cada unidade: aprovacao pendente, recusa, bloqueadores
+ou falta de demanda podem impedir a exibicao. Nao gerar impressoes automatizadas para testar.
 
 ### 5.7. Receita, BI e pagamentos
 

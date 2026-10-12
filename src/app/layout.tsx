@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
 import BackToTop from "@/components/backToTop/BackToTop";
+import AdvertisingProvider from "@/components/advertising/AdvertisingProvider";
+import { advertisingConfig } from "@/config/advertising";
 import { siteConfig } from "@/config/site";
 import "@/styles/global.scss";
 
@@ -41,6 +43,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
   },
+  other: {
+    "google-adsense-account": advertisingConfig.clientId,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -53,10 +58,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Script id="theme-init" strategy="beforeInteractive">
           {`(function(){ try { const saved = localStorage.getItem('theme'); const theme = saved || 'dark'; document.documentElement.setAttribute('data-theme', theme); document.documentElement.style.colorScheme = theme; } catch (e) {} })();`}
         </Script>
-        <Header />
-        {children}
-        <Footer />
-        <BackToTop />
+        <AdvertisingProvider>
+          <Header />
+          {children}
+          <Footer />
+          <BackToTop />
+        </AdvertisingProvider>
       </body>
     </html>
   );
