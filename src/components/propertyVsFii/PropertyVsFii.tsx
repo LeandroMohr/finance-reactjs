@@ -7,6 +7,7 @@ import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
+import useCalculation from "@/hooks/useCalculation";
 import { propertyVsFiiFaqItems } from "@/config/faq";
 import { currency, formatCompactCurrency, maskCurrency, parseCurrency } from "@/utils/currency";
 import { buildComparisonChart, COMPARISON_CHART as CHART } from "@/utils/comparisonChart";
@@ -51,13 +52,16 @@ export default function PropertyVsFii({ breadcrumb }: { breadcrumb?: ReactNode }
   const [values, setValues] = useState(initialValues);
   const [mode, setMode] = useState<PropertyVsFiiInput["mode"]>("reinvest");
   const [month, setMonth] = useState<number | null>(null);
-  const input = fields.reduce((result, field) => {
+  const draftInput = fields.reduce((result, field) => {
     const raw = values[field.key];
     return { ...result, [field.key]: field.money ? parseCurrency(raw)
       : /^-?\d+(?:[.,]\d{1,6})?$/.test(raw.trim()) ? Number(raw.replace(",", ".")) : NaN };
   }, { ...propertyVsFiiDefaults, mode });
-  const errors = validatePropertyVsFii(input);
-  const result = Object.keys(errors).length ? null : calculatePropertyVsFii(input);
+  const errors = validatePropertyVsFii(draftInput);
+  const { result, calculatedInput: input, calculationError, runCalculation } = useCalculation({
+    input: draftInput, valid: Object.keys(errors).length === 0,
+    calculate: calculatePropertyVsFii, toolId: "imovel-ou-fii",
+  });
   const chart = result ? buildComparisonChart(result.evolution.map((point) => ({
     month: point.month, first: point.propertyTotal, second: point.fiiTotal,
   }))) : null;
@@ -83,7 +87,7 @@ export default function PropertyVsFii({ breadcrumb }: { breadcrumb?: ReactNode }
       {errors[field.key] && <p className={styles.error} id={`${id}-error`}>{errors[field.key]}</p>}
     </div>;
   })}</div>;
-  return <main className={styles.main}>
+  return <main className={styles.main} data-analytics-tool="imovel-ou-fii">
     {breadcrumb}
     <h1>Investir em Imóvel x FII de Tijolo</h1>
     <p>Compare comprar uma casa ou apartamento à vista para receber aluguel com investir em cotas
@@ -94,17 +98,17 @@ export default function PropertyVsFii({ breadcrumb }: { breadcrumb?: ReactNode }
         Uma projeção matemática favorável não determina a SUA melhor escolha: considere liquidez,
         trabalho de administrar, concentração, objetivos e conforto com o risco.</p>
     </section>
-    <section className={styles.card} aria-labelledby="investment-property">
+    <section className={styles.card} aria-labelledby="investment-property" data-analytics-input>
       <h2 id="investment-property">1. Casa ou apartamento para renda</h2>
       {renderFields(propertyFields)}
     </section>
-    <section className={styles.card} aria-labelledby="investment-fii">
+    <section className={styles.card} aria-labelledby="investment-fii" data-analytics-input>
       <h2 id="investment-fii">2. FII de tijolo</h2>
       <p>Usamos o mesmo capital total da compra, incluindo os custos de aquisição do imóvel.
         O rendimento informado deve refletir custos internos e riscos do fundo.</p>
       {renderFields(fiiFields)}
     </section>
-    <section className={styles.card} aria-labelledby="investment-common">
+    <section className={styles.card} aria-labelledby="investment-common" data-analytics-input>
       <h2 id="investment-common">3. Destino dos rendimentos e prazo</h2>
       <fieldset className={styles.mode}><legend>O que fazer com os rendimentos líquidos?</legend>
         <label><input type="radio" name="income-mode" checked={mode === "reinvest"}
@@ -116,6 +120,16 @@ export default function PropertyVsFii({ breadcrumb }: { breadcrumb?: ReactNode }
       <p>Reinvestir: aluguéis vão para uma reserva financeira; rendimentos do FII compram cotas.
         Retirar: receitas positivas são acumuladas como valores retirados, sem rendimento posterior.
         Déficits do imóvel são cobertos pela reserva ou por capital adicional.</p>
+      <div className="form-actions">
+        <button type="button" className="button-primary interactive" data-analytics-simulation-interaction
+          onClick={() => {
+            if (!runCalculation()) return;
+            setMonth(null);
+          }}>
+          Calcular
+        </button>
+        {calculationError && <p role="alert">{calculationError}</p>}
+      </div>
     </section>
     {Object.keys(errors).length > 0 && <p role="alert" className={styles.error}>Revise os campos:
       {" "}{fields.filter((field) => errors[field.key]).map((field) => `${field.label}: ${errors[field.key]}`).join(" ")}</p>}

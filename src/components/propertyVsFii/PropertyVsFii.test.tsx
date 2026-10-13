@@ -20,11 +20,13 @@ describe("PropertyVsFii", () => {
   it("switches to withdrawal and shows accumulated cash separately from assets", () => {
     render(<PropertyVsFii />);
     fireEvent.click(screen.getByLabelText("Retirar para usar"));
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     const property = screen.getByRole("region", { name: "Imóvel para renda" });
     const values = within(property).getByText("Renda retirada acumulada").parentElement;
     expect(values?.textContent).not.toMatch(/R\$\s0,00$/);
     expect(screen.getByText(/As retiradas não são patrimônio disponível/)).toBeVisible();
     fireEvent.click(screen.getByLabelText("Reinvestir"));
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(values?.textContent).toMatch(/R\$\s0,00$/);
   });
 
@@ -32,18 +34,23 @@ describe("PropertyVsFii", () => {
     render(<PropertyVsFii />);
     const before = screen.getByRole("status", { name: "Resultado do investimento" }).textContent;
     fireEvent.change(screen.getByLabelText("Valorização anual das cotas (%)"), { target: { value: "-20" } });
+    expect(screen.getByRole("status", { name: "Resultado do investimento" }).textContent).toBe(before);
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(screen.getByRole("status", { name: "Resultado do investimento" }).textContent).not.toBe(before);
     expect(screen.getByLabelText("Rendimento distribuído pelo FII (% ao mês)")).toHaveValue("0.7");
     fireEvent.change(screen.getByLabelText("Rendimento distribuído pelo FII (% ao mês)"), { target: { value: "0,5" } });
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
-  it.each(["", "0", "1.5", "51", "abc"])("rejects invalid deadlines without rendering successful results: %s", (value) => {
+  it.each(["", "0", "1.5", "51", "abc"])("rejects invalid deadlines without replacing the last calculation: %s", (value) => {
     render(<PropertyVsFii />);
     fireEvent.change(screen.getByLabelText("Prazo da comparação (anos)"), { target: { value } });
     expect(screen.getByRole("alert")).toBeVisible();
     expect(screen.getByLabelText("Prazo da comparação (anos)")).toHaveAttribute("aria-invalid", "true");
-    expect(screen.queryByRole("status", { name: "Resultado do investimento" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
+    expect(screen.getByRole("status", { name: "Resultado do investimento" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Comparação em 20 anos" })).toBeVisible();
+    expect(screen.queryByText(/Campos alterados/)).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "O que o número não mostra" })).toBeVisible();
   });
 
@@ -82,6 +89,7 @@ describe("PropertyVsFii", () => {
     render(<PropertyVsFii />);
     fireEvent.change(screen.getByLabelText("Prazo da comparação (anos)"), { target: { value: "1" } });
     fireEvent.change(screen.getByLabelText("Vacância e inadimplência média (%)"), { target: { value: "100" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(screen.getByText(/Capital adicional acumulado em cada cenário/)).toHaveTextContent(/R\$\s3\.000,00/);
     expect(screen.getByText(/Capital adicional acumulado em cada cenário/)).toHaveTextContent("descontado do resultado econômico dos dois cenários");
     expect(within(screen.getByRole("region", { name: "Imóvel para renda" })).getByText("Primeiro fluxo mensal líquido").parentElement).toHaveTextContent(/-R\$\s250,00/);
