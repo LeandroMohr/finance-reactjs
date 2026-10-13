@@ -193,6 +193,33 @@ O projeto usa **exclusivamente SCSS Modules**. Não há framework de utilitário
   das calculadoras. No painel, mantenha habilitada a medição de alterações de página pelo
   histórico do navegador e desative medição automática de formulários.
 - Google Signals e sinais de personalização publicitária estão desativados na tag do GA4.
+- As cinco calculadoras mantêm um exemplo inicial e atualizam os resultados somente ao clicar
+  em **Calcular**. Entradas inválidas preservam o último cálculo, com validação visível.
+- O botão **Calcular** fica abaixo dos inputs, alinhado à direita do painel, com texto
+  semibold (`600`), fundo verde escuro, texto claro e borda adaptada ao tema.
+  Não há mensagens instrutivas abaixo do botão.
+  Botões **Calcular**, atalhos grandes da home e cards disponíveis (catálogo e
+  ferramentas relacionadas) compartilham o hover com borda destacada, sombra e
+  elevação de 2 px, e o clique com sombra interna e deslocamento de 1 px para baixo.
+  O fundo verde escuro do botão é preservado. Cards **Em breve** não recebem efeitos
+  de interação. A preferência por movimento reduzido desativa as transições e o
+  deslocamento, preservando o feedback de borda e sombra.
+  Os efeitos são definidos pela classe global `interactive` em
+  [src/styles/global.scss](src/styles/global.scss), sem componente React para estilos.
+  Cada ferramenta define diretamente o texto e a ação de seu botão; `button-primary`
+  fornece a aparência e `form-actions` o alinhamento.
+- Os tooltips de campos e resultados abrem acima do ícone de ajuda, com largura
+  adaptada à tela e suporte a hover, teclado e toque.
+- [src/utils/analytics.ts](src/utils/analytics.ts) protege os eventos de simulação, busca do
+  glossário, compartilhamento, FAQ, contato, ferramentas relacionadas e menus. Não envia valores
+  financeiros, texto pesquisado nem o endereço de e-mail do contato.
+- Cliques nos links internos do menu superior e do rodapé registram `menu_click`, com
+  `menu_location` (`header`/`footer`) e `target_path` sem query string ou fragmento.
+  Abrir menus, alterar tema e abrir preferências de privacidade não contam como navegação.
+- A busca registra apenas quantidade de resultados e caracteres após 1,5 segundo sem digitação.
+  Confirmações repetidas do mesmo cálculo são deduplicadas até uma nova simulação diferente.
+- Cadastre as dimensões e métricas no GA4 conforme
+  [o guia de eventos](docs/OPERACAO-E-MONETIZACAO.md#36-eventos-implementados).
 - O controle local não substitui uma CMP certificada para regiões que a exigem.
   Aprovação e consentimento no painel ainda precisam ser configurados.
 - Mantenha anúncios automáticos desativados para preservar as posições manuais.

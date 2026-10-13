@@ -11,6 +11,7 @@ describe("PrivacyPolicyPage", () => {
     expect(screen.getByText(/processados no próprio navegador/)).toBeInTheDocument();
     expect(screen.getByText(/só é carregado no domínio de produção/)).toHaveTextContent(/uma única escolha/);
     expect(screen.getByText(/Não enviamos os valores/)).toHaveTextContent(/ao Analytics/);
+    expect(screen.getByText(/registramos início, confirmação e erros/)).toHaveTextContent(/sem enviar o texto pesquisado/);
     expect(screen.getByText(/Uma autorização anterior/)).toHaveTextContent(/solicitamos uma nova escolha/);
     expect(screen.getByText("Preferências de privacidade")).toBeInTheDocument();
     expect(screen.getByText(/não envia os valores das simulações como eventos/)).toBeInTheDocument();

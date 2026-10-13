@@ -73,6 +73,14 @@ const sections: InstitutionalSection[] = [
             das simulações ao Analytics.
           </li>
           <li>
+            <strong>Interações autorizadas:</strong> registramos início, confirmação e erros de
+            simulação por identificador da ferramenta, abertura de perguntas frequentes,
+            compartilhamento, cópia de link, clique em contato, acesso a ferramentas relacionadas
+            e cliques de navegação nos menus superior e do rodapé.
+            Na busca do glossário, registramos apenas a quantidade de caracteres e de resultados,
+            sem enviar o texto pesquisado, valores financeiros ou o endereço de e-mail do contato.
+          </li>
+          <li>
             <strong>Publicidade autorizada:</strong> o Google AdSense e seus parceiros podem tratar
             endereço IP, identificadores de cookies, informações do dispositivo, páginas visitadas
             e interações com anúncios. O site não envia os valores das simulações como eventos

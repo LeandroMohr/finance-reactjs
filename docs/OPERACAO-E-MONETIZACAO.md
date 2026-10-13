@@ -170,8 +170,8 @@ O [Tag Manager](https://tagmanager.google.com/) nao foi instalado.
 4. As visualizacoes de pagina usam a medicao automatica do GA4; nao ha envio manual de `page_view`.
    No fluxo Web, mantenha **Metrica otimizada > Visualizacoes de pagina > Alteracoes de pagina
    com base em eventos do historico do navegador** habilitada para medir navegacoes do Next.
-5. Desative inicialmente a medicao automatica de formularios e busca interna. Nao ha eventos
-   personalizados das calculadoras nem envio de valores financeiros implementados.
+5. Desative a medicao automatica de formularios e busca interna: o site usa eventos proprios
+   para simulacoes e busca no glossario, sem enviar valores financeiros ou termos digitados.
 6. Valide mudancas de rota, voltar/avancar e recarregamento em Tempo real/DebugView.
    Caminho, titulo e referencia precisam representar a pagina atual, sem visualizacoes duplicadas.
 7. Se o ID publico mudar, gere outro build: na exportacao estatica, ele e incorporado aos arquivos.
@@ -179,51 +179,116 @@ O [Tag Manager](https://tagmanager.google.com/) nao foi instalado.
 
 Referencia: [medicao de navegacao SPA no GA4](https://developers.google.com/analytics/devguides/collection/ga4/single-page-applications).
 
-### 3.6. Plano de eventos das ferramentas
+### 3.6. Eventos implementados
 
-Defina os eventos antes da implementacao. Use nomes estaveis e parametros de baixa cardinalidade.
+O helper [src/utils/analytics.ts](../src/utils/analytics.ts) verifica dominio, consentimento
+atual e disponibilidade da tag em cada envio. Falhas sao registradas sem interromper os calculos.
+Todos os eventos incluem `page_path` sem query string ou fragmento no parametro personalizado.
 
-| Evento | Quando registrar | Parametros sugeridos |
+| Evento | Quando registrar | Parametros enviados |
 | --- | --- | --- |
-| `tool_open` | Ferramenta carregada e pronta | `tool_id` |
-| `simulation_start` | Primeira interacao intencional com os campos na visita | `tool_id` |
-| `simulation_complete` | Resultado valido gerado apos acao intencional | `tool_id`, `rate_unit`, `period_unit` |
-| `simulation_error` | Validacao impede uma simulacao | `tool_id`, `error_code` com lista controlada |
-| `faq_open` | Usuario abre uma pergunta | `tool_id`, `faq_id` estavel |
-| `share` | Acao de compartilhamento acionada | `method`, `content_type`, `item_id` |
+| `simulation_start` | Primeira alteracao de campo ou acao de calculo na pagina | `tool_id` |
+| `simulation_complete` | Clique em Calcular com entradas e resultado validos | `tool_id` |
+| `simulation_error` | Clique em Calcular bloqueado por validacao ou resultado nao finito | `tool_id`, `error_code` |
+| `glossary_search` | Busca nao vazia apos 1,5 segundo sem novas alteracoes | `result_count`, `query_length` |
+| `faq_open` | Abertura de uma pergunta, nao fechamento | `faq_id`, derivado do texto editorial fixo, nao da posicao |
+| `share` | Clique em rede social ou copia de link bem-sucedida | `method`, `content_type=page`, `item_id` |
 | `contact_click` | Clique no contato | `contact_method`, sem endereco pessoal |
-| `related_tool_click` | Clique em ferramenta relacionada | `tool_id`, `target_tool_id` |
+| `related_tool_click` | Clique em ferramenta relacionada | `target_tool_id` |
+| `menu_click` | Clique em link interno do menu superior ou do rodape | `menu_location`, `target_path` |
 
-`share` e um evento recomendado do GA4; preferir nomes recomendados quando apropriados. Os demais sao exemplos de eventos personalizados de produto, nao promessas de coleta automatica.
+`share` e um evento recomendado do GA4. Os demais sao eventos personalizados do produto.
+Visualizacoes, rolagens, cliques externos e downloads continuam automaticos; nao sao reenviados
+pelo helper. Abertura de ferramenta pode ser analisada pelo caminho de `page_view`, sem `tool_open` duplicado.
 
-Como as calculadoras podem recalcular a cada digitacao, nao enviar `simulation_complete` em toda renderizacao, nem no resultado inicial com zeros. Definir um ponto de conclusao, como submit explicito; se nao houver submit, definir estabilizacao apos entrada valida com deduplicacao e testar essa regra. Nao mudar a interface apenas para analytics sem decidir o fluxo.
+`menu_location` identifica `header` (superior) ou `footer` (rodape). `target_path` contem
+somente o caminho interno do destino, sem dominio, query string ou fragmento. O evento inclui
+links da marca/Home, categorias, ferramentas, ajuda e paginas institucionais que existam nesses menus.
+Abrir/fechar menus, mudar tema, abrir preferencias de privacidade e itens "em breve" nao geram
+`menu_click`. Ativacao por teclado tambem conta; os eventos nao impedem a navegacao.
+Cliques de saida continuam na medicao automatica, sem duplicacao por `menu_click`.
 
-Exemplo conceitual de payload, somente depois de consentimento e inicializacao:
+Por decisao do responsavel, as cinco calculadoras atualizam os resultados somente ao clicar
+em **Calcular**, preservando o exemplo inicial. Edicoes nao recalculam graficos, tabelas ou totais.
+Entradas invalidas preservam o ultimo resultado, com erros de validacao visiveis.
+O exemplo inicial nao conta como conclusao. Cliques repetidos no mesmo conjunto de entradas
+na mesma instancia da calculadora nao duplicam `simulation_complete`; uma simulacao diferente
+permite nova conclusao. `simulation_start` ocorre uma vez por ferramenta na visita a pagina.
 
-```js
-gtag("event", "simulation_complete", {
-  tool_id: "juros-compostos",
-  rate_unit: "annual",
-  period_unit: "months",
-});
-```
-
-O exemplo nao deve ser colado isoladamente em componentes: implementar uma funcao central que verifica dominio, consentimento e disponibilidade da tag. Falhas de analytics nao podem interromper calculos.
+Os codigos de erro enviados sao `invalid_input` e `non_finite_result`, nunca mensagens ou valores
+digitados. O glossario envia apenas contagens: o texto pesquisado nao e enviado nem inserido na URL.
+IDs das perguntas derivam do texto editorial fixo, portanto reordenar perguntas nao muda o ID;
+alterar a redacao pode mudar o identificador.
 
 Clique em compartilhar nao prova que uma mensagem foi enviada. Clique em contato nao prova recebimento de e-mail. Nomear indicadores conforme o que realmente foi observado.
 
 ### 3.7. Configurar relatorios e validar a coleta
 
-1. Abra `Administrador > Definicoes personalizadas` e registre dimensoes de escopo evento para `tool_id`, `faq_id`, `method`, `rate_unit` e `period_unit`, conforme os relatorios necessarios.
-2. Registre parametros antes de depender deles nos dashboards: disponibilizacao nao e instantanea e nao ha garantia de retroatividade nos relatorios.
-3. Marque `simulation_complete` como evento principal, se for a principal acao de valor do produto.
-4. Use [Tag Assistant](https://tagassistant.google.com/), Tempo real e DebugView para inspecionar a coleta.
-5. Abra uma ferramenta, interaja, gere um resultado valido, abra FAQ e compartilhe.
-6. Confira que cada acao gera a quantidade definida de eventos, com a pagina correta e sem dados financeiros.
-7. Repita recusando consentimento: calculadora deve funcionar, mas coleta opcional deve permanecer bloqueada.
-8. Repita em celular e navegue sem recarregar a pagina.
-9. Configure exclusao de trafego interno se necessario. Teste filtros antes de ativa-los: exclusoes definitivas podem descartar dados irreversivelmente.
-10. Aguarde o processamento dos relatorios, que pode levar 24-48 horas. DebugView/Tempo real sao melhores para testes imediatos.
+#### Cadastrar dimensoes
+
+1. Selecione a propriedade do site `lemohr.com.br` (o fluxo Web usa `G-NJ1DY9YD2D`).
+   E necessario ter permissao de Editor ou Administrador.
+2. Abra `Administrador > Exibicao de dados > Definicoes personalizadas`.
+3. Na aba **Dimensoes personalizadas**, clique em **Criar dimensao personalizada**.
+4. Preencha **Nome da dimensao** com o nome de exibicao da tabela abaixo,
+   selecione **Escopo: Evento** e informe **Parametro de evento** exatamente como indicado.
+   O nome de exibicao e livre; o parametro e sensivel a maiusculas/minusculas.
+5. Salve e repita para cada linha, sem criar duplicatas caso o parametro ja esteja cadastrado.
+
+| Nome da dimensao | Parametro de evento | Para analisar |
+| --- | --- | --- |
+| Ferramenta | `tool_id` | Inicio, conclusao e erro por calculadora |
+| Codigo do erro | `error_code` | Tipo de bloqueio da simulacao |
+| Pergunta frequente | `faq_id` | Perguntas abertas |
+| Ferramenta relacionada | `target_tool_id` | Destinos da secao de ferramentas relacionadas |
+| Meio de contato | `contact_method` | Intencao de contato por e-mail |
+| Local do menu | `menu_location` | Menu superior (`header`) versus rodape (`footer`) |
+| Destino do menu | `target_path` | Caminho escolhido no menu |
+
+Para compartilhamento, cadastre dimensoes de escopo **Evento** para `method`
+(Meio de compartilhamento), `content_type` (Tipo de conteudo) e `item_id` (Pagina compartilhada)
+se precisar desses parametros nos relatorios e nao houver uma dimensao predefinida adequada.
+Use a dimensao nativa de caminho da pagina para a origem da navegacao, evitando cadastrar
+`page_path` por padrao e consumir cota para uma informacao ja disponivel.
+
+O codigo ja envia os eventos e parametros. Cadastrar uma dimensao apenas os disponibiliza
+nos relatorios: **nao crie eventos derivados no console com os mesmos nomes**.
+
+#### Cadastrar metricas do glossario
+
+Na mesma tela, abra **Metricas personalizadas > Criar metrica personalizada**.
+Use unidade **Padrao**; essas metricas sao de escopo **Evento**, nao dimensoes.
+
+| Nome da metrica | Parametro de evento | Unidade |
+| --- | --- | --- |
+| Resultados da busca | `result_count` | Padrao |
+| Caracteres da busca | `query_length` | Padrao |
+
+Registre as definicoes antes de depender delas nos dashboards. Os relatorios podem levar
+24-48 horas para disponibilizar os dados e nao ha garantia de retroatividade.
+O GA4 agrega valores numericos; para avaliar a media por busca, considere tambem a quantidade
+de eventos `glossary_search`, em vez de interpretar a soma como tamanho de uma unica busca.
+
+#### Publicar e validar
+
+1. Marque `simulation_complete` como evento principal, se for a principal acao de valor do produto.
+2. Apos o deploy, use [Tag Assistant](https://tagassistant.google.com/) para habilitar a sessao
+   de debug e inspecione Tempo real/DebugView. A coleta intencionalmente nao ocorre em localhost.
+3. Aceite o banner em producao. Altere campos, clique em Calcular, repita o clique
+   sem mudar os valores (nao deve duplicar a conclusao), teste um campo invalido, abra FAQ,
+   compartilhe/copie o link e pesquise no glossario.
+4. Escolha links no menu superior e no rodape: cada clique deve gerar um `menu_click`,
+   com a origem em `page_path`, o menu em `menu_location` e o destino em `target_path`.
+   Abrir o menu sem escolher um link nao deve gerar esse evento. Teste tambem Enter no link.
+5. Confira a quantidade de eventos e parametros, sem valores financeiros ou termos pesquisados.
+   Verifique `page_view` ao navegar, voltar/avancar e recarregar, sem duplicacoes.
+6. Repita recusando consentimento: ferramentas e menus devem funcionar sem coleta opcional.
+7. Repita em celular e navegue sem recarregar a pagina.
+8. Configure exclusao de trafego interno se necessario. Teste filtros antes de ativa-los:
+   exclusoes definitivas podem descartar dados irreversivelmente.
+
+Referencias oficiais: [dimensoes e metricas personalizadas](https://support.google.com/analytics/answer/14240153?hl=pt-BR)
+e [criacao de metricas personalizadas](https://support.google.com/analytics/answer/14239619?hl=pt-BR).
 
 Bloqueadores, recusa de consentimento e dispositivos diferentes reduzem ou fragmentam a medicao. Usuarios nao equivalem necessariamente a pessoas unicas; contagens Cloudflare e GA4 nao precisam coincidir.
 
@@ -250,7 +315,7 @@ O conector GA4 tem quotas e pode mostrar indisponibilidade com consultas excessi
 
 | Indicador | Definicao e cuidado |
 | --- | --- |
-| Uso de ferramenta | Usuarios que abriram uma ferramenta, com `tool_id` |
+| Uso de ferramenta | Visualizacoes pelo caminho da pagina; interacoes e calculos por `tool_id` |
 | Conclusoes | Eventos de resultado valido; podem existir varias por usuario |
 | Taxa de conclusao por visita | Visitas com conclusao / visitas com inicio, usando o mesmo recorte e deduplicacao |
 | Erros | Eventos por `error_code`, nao textos livres de entrada |
@@ -433,7 +498,7 @@ Rotina semanal: acompanhar erros e conclusoes de simulacao, paginas de entrada, 
 - [x] Atualizar politica e implementar escolha conjunta antes de tags opcionais.
 - [x] Registrar o ID GA4 `G-NJ1DY9YD2D` e implementar coleta condicionada no codigo.
 - [ ] Publicar a integracao e revisar metrica otimizada e retencao no painel GA4.
-- [ ] Instrumentar eventos de produto sem entradas financeiras ou dados pessoais.
+- [x] Instrumentar eventos de produto sem entradas financeiras, texto pesquisado ou dados pessoais.
 - [ ] Validar page views e deduplicacao em DebugView.
 - [ ] Criar dashboard privado no Data Studio.
 - [ ] Revisar conteudo e requisitos de qualificacao do AdSense.
