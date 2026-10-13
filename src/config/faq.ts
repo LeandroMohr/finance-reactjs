@@ -14,12 +14,12 @@ export const generalFaqItems: FaqItem[] = [
   {
     question: "As calculadoras e ferramentas são gratuitas?",
     answer:
-      "Sim. Todas as ferramentas disponíveis no Lemo Finance podem ser usadas gratuitamente e sem cadastro.",
+      "Sim. Todas as ferramentas disponíveis no Lemohr Finance podem ser usadas gratuitamente e sem cadastro.",
   },
   {
     question: "Os valores informados ficam salvos?",
     answer:
-      "Não. Os valores são processados no seu navegador para realizar os cálculos e não ficam salvos pelo Lemo Finance.",
+      "Não. Os valores são processados no seu navegador para realizar os cálculos e não ficam salvos pelo Lemohr Finance.",
   },
   {
     question: "Posso confiar nos resultados das simulações?",
@@ -199,7 +199,7 @@ export const faqSections: FaqSection[] = [
   {
     id: "geral",
     category: "Geral",
-    title: "Sobre o Lemo Finance",
+    title: "Sobre o Lemohr Finance",
     items: generalFaqItems,
   },
   {

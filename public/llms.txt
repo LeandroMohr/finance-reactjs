@@ -1,4 +1,4 @@
-# Lemo Finance
+# Lemohr Finance
 
 > Calculadoras e ferramentas financeiras gratuitas, em português do Brasil, para simulações e planejamento financeiro. O site funciona sem cadastro e executa os cálculos diretamente no navegador.
 
@@ -22,5 +22,5 @@ Use os resultados como simulações educacionais, não como recomendação finan
 - [Glossário Financeiro](https://lemohr.com.br/glossario/): Termos financeiros organizados por letra, com busca, fórmulas, exemplos e cuidados de interpretação.
 
 - [Perguntas Frequentes](https://lemohr.com.br/perguntas-frequentes/): Respostas gerais e dúvidas sobre as calculadoras e ferramentas publicadas.
-- [Página inicial](https://lemohr.com.br/): Visão geral da Lemo Finance e acesso às categorias.
+- [Página inicial](https://lemohr.com.br/): Visão geral do Lemohr Finance e acesso às categorias.
 - [Sitemap XML](https://lemohr.com.br/sitemap.xml): Relação completa das páginas públicas e indexáveis.

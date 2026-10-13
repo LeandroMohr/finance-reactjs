@@ -78,7 +78,7 @@ export default function Glossary() {
         ))}
       <section className={styles.sources} aria-labelledby="glossary-sources">
         <Accordion summary={<h2 id="glossary-sources">Referências e critérios</h2>}>
-        <p>Textos redigidos para o Lemo Finance. As referências orientam os temas e conceitos,
+        <p>Textos redigidos para o Lemohr Finance. As referências orientam os temas e conceitos,
           sem reprodução literal. Exemplos são simplificados e não usam cotações atuais.</p>
         <ul>
           <li><a href="https://www.bcb.gov.br/content/cidadaniafinanceira/documentos_cidadania/Informacoes_gerais/glossario_cidadania_financeira.pdf"

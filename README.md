@@ -1,6 +1,6 @@
-# Lemo Finance
+# Lemohr Finance
 
-Projeto inicial do MVP de calculadora financeira em Next.js, com foco em juros compostos e identidade visual Lemo.
+Projeto inicial do MVP de calculadora financeira em Next.js, com foco em juros compostos e identidade visual Lemohr.
 
 ## Visão geral
 

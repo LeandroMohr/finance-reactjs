@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Lemo Finance",
+  name: "Lemohr Finance",
   url: "https://lemohr.com.br",
   description:
     "Simuladores e calculadoras financeiras eficientes para planejamento e tomadas de decisão.",

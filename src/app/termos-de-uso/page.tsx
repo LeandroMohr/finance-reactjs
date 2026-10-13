@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 
 const canonical = "/termos-de-uso/";
 const description =
-  "Consulte as regras de uso, responsabilidades e limites das calculadoras e conteúdos do Lemo Finance.";
+  "Consulte as regras de uso, responsabilidades e limites das calculadoras e conteúdos do Lemohr Finance.";
 
 export const metadata: Metadata = {
   title: "Termos de uso",
@@ -179,7 +179,7 @@ export default function TermsOfUsePage() {
     <InstitutionalPage
       eyebrow="Regras claras"
       title="Termos de uso"
-      description="Condições para usar as ferramentas e conteúdos do Lemo Finance com consciência sobre seu alcance."
+      description="Condições para usar as ferramentas e conteúdos do Lemohr Finance com consciência sobre seu alcance."
       updatedAt="23 de setembro de 2026"
       sections={sections}
     />

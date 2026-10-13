@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 
 const canonical = "/politica-de-privacidade/";
 const description =
-  "Saiba quais dados o Lemo Finance trata, para quais finalidades e como exercer seus direitos de privacidade.";
+  "Saiba quais dados o Lemohr Finance trata, para quais finalidades e como exercer seus direitos de privacidade.";
 
 export const metadata: Metadata = {
   title: "Política de privacidade",

@@ -8,7 +8,7 @@ import styles from "./page.module.scss";
 
 const canonical = "/perguntas-frequentes/";
 const description =
-  "Respostas sobre o Lemo Finance, calculadoras financeiras e ferramentas disponíveis.";
+  "Respostas sobre o Lemohr Finance, calculadoras financeiras e ferramentas disponíveis.";
 
 export const metadata: Metadata = {
   title: "Perguntas frequentes",

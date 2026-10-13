@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 
 const canonical = "/sobre-nos/";
 const description =
-  "Conheça o propósito, os princípios e a autoria do Lemo Finance, um projeto de ferramentas financeiras gratuitas.";
+  "Conheça o propósito, os princípios e a autoria do Lemohr Finance, um projeto de ferramentas financeiras gratuitas.";
 
 export const metadata: Metadata = {
   title: "Sobre nós",
@@ -40,7 +40,7 @@ const sections: InstitutionalSection[] = [
   },
   {
     id: "proposito",
-    title: "Por que o Lemo Finance existe",
+    title: "Por que o Lemohr Finance existe",
     content: (
       <>
         <p>

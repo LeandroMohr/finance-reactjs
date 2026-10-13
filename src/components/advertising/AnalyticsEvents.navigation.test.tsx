@@ -57,7 +57,7 @@ describe("menu navigation analytics", () => {
       {location === "header" ? <Header /> : <Footer />}
     </div>);
     const menu = screen.getByRole(location === "header" ? "banner" : "contentinfo");
-    within(menu).getByRole("link", { name: /Lemo Finance/ }).focus();
+    within(menu).getByRole("link", { name: /Lemohr Finance/ }).focus();
     await user.keyboard("{Enter}");
     expect(window.gtag).toHaveBeenCalledExactlyOnceWith("event", "menu_click", {
       menu_location: location, target_path: "/", page_path: "/conversor-de-taxas/",

@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 
 const canonical = "/contato/";
 const description =
-  "Entre em contato com o Lemo Finance para enviar dúvidas, sugestões, correções ou solicitações de privacidade.";
+  "Entre em contato com o Lemohr Finance para enviar dúvidas, sugestões, correções ou solicitações de privacidade.";
 const emailHref = `mailto:${siteConfig.contactEmail}?subject=Contato%20-%20${encodeURIComponent(siteConfig.name)}`;
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 const sections: InstitutionalSection[] = [
   {
     id: "fale-conosco",
-    title: "Fale com o Lemo Finance",
+    title: "Fale com o Lemohr Finance",
     content: (
       <>
         <p>

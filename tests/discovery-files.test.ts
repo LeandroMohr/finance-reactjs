@@ -35,7 +35,7 @@ describe("discovery files", () => {
   it("provides a curated llms.txt with published tools", () => {
     const content = readFileSync(join(process.cwd(), "public", "llms.txt"), "utf8");
 
-    expect(content).toMatch(/^# Lemo Finance/m);
+    expect(content).toMatch(/^# Lemohr Finance/m);
     expect(content).toContain(`${siteConfig.url}/juros-compostos/`);
     expect(content).toContain(`${siteConfig.url}/primeiro-milhao/`);
     expect(content).toContain(`${siteConfig.url}/conversor-de-taxas/`);
