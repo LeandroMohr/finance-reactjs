@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { advertisingConfig } from "@/config/advertising";
 import AdvertisingProvider, { AdvertisingPreferencesButton } from "./AdvertisingProvider";
 import AdSlot from "./AdSlot";
+import { trackEvent } from "@/utils/analytics";
 
 vi.mock("next/script", () => ({
   default: ({ id }: { id: string }) => <div data-testid={id} />,
@@ -21,7 +22,15 @@ describe("Advertising in preview deployments", () => {
     expect(screen.queryByTestId("google-analytics-init")).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Publicidade" })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Preferências de privacidade" }));
-    expect(screen.getByRole("button", { name: "Recusar", exact: true })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Aceitar", exact: true })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Recusar" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Aceitar" })).toBeVisible();
+  });
+
+  it("blocks custom events outside production even if a tag and consent are present", () => {
+    localStorage.setItem(advertisingConfig.consentStorageKey, "granted");
+    window.gtag = vi.fn();
+    expect(trackEvent("contact_click", { contact_method: "email" })).toBe(false);
+    expect(window.gtag).not.toHaveBeenCalled();
+    delete window.gtag;
   });
 });

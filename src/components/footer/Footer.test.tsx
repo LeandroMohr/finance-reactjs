@@ -8,6 +8,7 @@ describe("Footer", () => {
   it("renders a navigation column for every group", () => {
     render(<AdvertisingProvider><Footer /></AdvertisingProvider>);
 
+    expect(screen.getByRole("contentinfo")).toHaveAttribute("data-analytics-menu", "footer");
     for (const group of navGroups) {
       expect(screen.getByRole("navigation", { name: group.label })).toBeInTheDocument();
     }

@@ -61,7 +61,7 @@ export default function Header() {
   }, [openGroup, isNavOpen]);
 
   return (
-    <header ref={headerRef} className={styles.header}>
+    <header ref={headerRef} className={styles.header} data-analytics-menu="header">
       <div className={styles.inner}>
         <Link href="/" className={styles.brand} onClick={closeNav}>
           <span className={styles.logo} aria-hidden="true">

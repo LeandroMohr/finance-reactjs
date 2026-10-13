@@ -74,7 +74,7 @@ function renderAdvertising() {
 }
 
 function accept() {
-  fireEvent.click(screen.getByRole("button", { name: "Aceitar", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: "Aceitar" }));
 }
 
 function loadScript() {
@@ -85,8 +85,8 @@ describe("AdvertisingProvider", () => {
   it("blocks all advertising before a choice and keeps the tools accessible", () => {
     renderAdvertising();
     expect(screen.getByRole("region", { name: "Publicidade, análise e sua privacidade" })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Aceitar", exact: true })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Recusar", exact: true })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Aceitar" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Recusar" })).toBeVisible();
     expect(screen.getByText("A calculadora continua disponível.")).toBeVisible();
     expect(screen.queryByTestId("adsense-script")).not.toBeInTheDocument();
     expect(screen.queryByTestId("google-analytics")).not.toBeInTheDocument();
@@ -97,7 +97,7 @@ describe("AdvertisingProvider", () => {
 
   it("saves refusal without requesting the script or an ad", () => {
     renderAdvertising();
-    fireEvent.click(screen.getByRole("button", { name: "Recusar", exact: true }));
+    fireEvent.click(screen.getByRole("button", { name: "Recusar" }));
     expect(localStorage.getItem(advertisingConfig.consentStorageKey)).toBe("denied");
     expect(screen.queryByTestId("adsense-script")).not.toBeInTheDocument();
     expect(screen.queryByTestId("google-analytics")).not.toBeInTheDocument();
@@ -161,8 +161,8 @@ describe("AdvertisingProvider", () => {
     localStorage.setItem(advertisingConfig.consentStorageKey, "granted");
     renderAdvertising();
     fireEvent.click(screen.getByRole("button", { name: "Preferências de privacidade" }));
-    expect(screen.getByRole("button", { name: "Recusar", exact: true })).toBeVisible();
-    expect(screen.getByRole("button", { name: "Aceitar", exact: true })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Recusar" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Aceitar" })).toBeVisible();
     expect(screen.getByText(/Os valores preenchidos serão reiniciados/)).toBeVisible();
     expect(screen.getByText(/interromper os scripts de/)).toHaveTextContent("publicidade e análise de uso");
   });
@@ -173,7 +173,7 @@ describe("AdvertisingProvider", () => {
     renderAdvertising();
     expect(warning).toHaveBeenCalledWith(expect.stringContaining("Invalid advertising consent"));
     expect(screen.queryByTestId("adsense-script")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Recusar", exact: true })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Recusar" })).toBeVisible();
     expect(screen.queryByTestId("google-analytics")).not.toBeInTheDocument();
   });
 
@@ -224,7 +224,7 @@ describe("AdvertisingProvider", () => {
   it("requests fresh combined consent instead of reusing an advertising-only choice", () => {
     localStorage.setItem("lemo-finance:advertising-consent:v1", "granted");
     renderAdvertising();
-    expect(screen.getByRole("button", { name: "Aceitar", exact: true })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Aceitar" })).toBeVisible();
     expect(screen.queryByTestId("adsense-script")).not.toBeInTheDocument();
     expect(screen.queryByTestId("google-analytics")).not.toBeInTheDocument();
   });

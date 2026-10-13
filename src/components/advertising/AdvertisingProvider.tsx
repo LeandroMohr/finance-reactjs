@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from "react";
 import { advertisingConfig } from "@/config/advertising";
+import AnalyticsEvents from "./AnalyticsEvents";
 import styles from "./AdvertisingProvider.module.scss";
 
 type ConsentChoice = "granted" | "denied";
@@ -143,6 +144,7 @@ export default function AdvertisingProvider({ children }: { children: ReactNode 
       },
     }}>
       {children}
+      <AnalyticsEvents enabled={canRequestAds} />
       {canRequestAds && (
         <>
           <Script id="google-analytics-init" strategy="afterInteractive">
@@ -202,7 +204,8 @@ export default function AdvertisingProvider({ children }: { children: ReactNode 
           <div className={styles.content}>
             <h2 id="advertising-preferences-title">Publicidade, análise e sua privacidade</h2>
             <p>
-              Com sua autorização, carregamos o Google Analytics para medir visitas e navegação
+              Com sua autorização, carregamos o Google Analytics para medir visitas, navegação
+              e uso das ferramentas
               e o Google AdSense para exibir, personalizar e medir publicidade. Esses serviços
               podem usar cookies e dados do dispositivo. Uma única escolha vale para ambos.
               Não enviamos os valores das simulações. Recusar não limita o uso das calculadoras.

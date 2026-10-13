@@ -28,6 +28,7 @@ describe("Header", () => {
     render(<Header />);
 
     expect(screen.getByRole("link", { name: /Lemo Finance/ })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("banner")).toHaveAttribute("data-analytics-menu", "header");
 
     const nav = await openNav(user);
 
