@@ -27,7 +27,11 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   category: "Finanças",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
   robots: {
     index: true,
@@ -41,7 +45,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
   },
   other: {
     "google-adsense-account": advertisingConfig.clientId,

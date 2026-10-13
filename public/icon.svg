@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Lemohr Finance">
+<title>Lemohr Finance</title>
+<defs>
+  <linearGradient id="ar" x1="60" y1="40" x2="450" y2="470" gradientUnits="userSpaceOnUse"><stop stop-color="#7bf2a8"/><stop offset="1" stop-color="#22c55e"/></linearGradient>
+  <linearGradient id="as" x1="120" y1="100" x2="400" y2="430" gradientUnits="userSpaceOnUse"><stop stop-color="#22b95c"/><stop offset="1" stop-color="#15873f"/></linearGradient>
+  <linearGradient id="ay" x1="256" y1="30" x2="460" y2="240" gradientUnits="userSpaceOnUse"><stop stop-color="#fde047"/><stop offset="1" stop-color="#f5c400"/></linearGradient>
+  <mask id="am" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><path d="M256 256L256 -44A300 300 0 0 1 520.88 115.16Z" fill="#000" stroke="#000" stroke-width="22" stroke-linejoin="round"/></mask>
+</defs>
+  <circle cx="256" cy="256" r="244" fill="#0a2e1e"/>
+  <g mask="url(#am)">
+    <circle cx="256" cy="256" r="236" fill="url(#ar)"/>
+    <g fill="url(#as)" stroke="url(#as)" stroke-linejoin="round"><path d="M292.21 271L443.4 271A188 188 0 0 1 399.12 377.91Z" stroke-width="16"/><path d="M271 292.21L377.91 399.12A188 188 0 0 1 271 443.4Z" stroke-width="16"/><path d="M241 292.21L241 443.4A188 188 0 0 1 134.09 399.12Z" stroke-width="16"/><path d="M219.79 271L112.88 377.91A188 188 0 0 1 68.6 271Z" stroke-width="16"/><path d="M219.79 241L68.6 241A188 188 0 0 1 112.88 134.09Z" stroke-width="16"/><path d="M241 219.79L134.09 112.88A188 188 0 0 1 241 68.6Z" stroke-width="16"/><path d="M316.16 241L428.51 181.26A188 188 0 0 1 443.4 241Z" stroke-width="16"/></g>
+  </g>
+  <path d="M256 256L256 20A236 236 0 0 1 464.38 145.2Z" fill="url(#ay)"/>
+</svg>
