@@ -27,7 +27,7 @@ describe("Header", () => {
     const user = userEvent.setup();
     render(<Header />);
 
-    expect(screen.getByRole("link", { name: /Lemo Finance/ })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: /Lemohr Finance/ })).toHaveAttribute("href", "/");
     expect(screen.getByRole("banner")).toHaveAttribute("data-analytics-menu", "header");
 
     const nav = await openNav(user);
@@ -98,6 +98,12 @@ describe("Header", () => {
     expect(menu.getByRole("link", { name: new RegExp(available.title) })).toBeVisible();
     expect(menu.queryByText(unavailable.title)).not.toBeInTheDocument();
     expect(menu.getByText("em breve")).toBeVisible();
+
+    const entries = within(list).getAllByRole("listitem");
+    expect(entries[0]).toHaveTextContent("em breve");
+    expect(entries[entries.length - 1]).toHaveTextContent(
+      `Ver todas as ${group.label.toLowerCase()}`,
+    );
   });
 
   it("closes the open menu when Escape is pressed", async () => {

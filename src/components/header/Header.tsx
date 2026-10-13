@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { navGroups, siteConfig } from "@/config/site";
+import { navGroups } from "@/config/site";
+import { BrandLogo } from "@/components/brand";
 import { Icon } from "@/components/icon";
 import styles from "./Header.module.scss";
 
@@ -64,10 +65,7 @@ export default function Header() {
     <header ref={headerRef} className={styles.header} data-analytics-menu="header">
       <div className={styles.inner}>
         <Link href="/" className={styles.brand} onClick={closeNav}>
-          <span className={styles.logo} aria-hidden="true">
-            L
-          </span>
-          <span className={styles.brandName}>{siteConfig.name}</span>
+          <BrandLogo variant="horizontal" className={styles.logo} />
         </Link>
 
         <nav
@@ -99,12 +97,13 @@ export default function Header() {
                   <span className={styles.chevron} data-open={isOpen} aria-hidden="true" />
                 </button>
 
+                {/* Menu order for every group: upcoming notice, available items, "view all" link. */}
                 <ul id={`menu-${group.id}`} className={styles.menu} data-open={isOpen}>
-                  <li>
-                    <Link href={`/${group.id}/`} className={styles.menuOverview} onClick={closeNav}>
-                      Ver todas as {group.label.toLowerCase()}
-                    </Link>
-                  </li>
+                  {upcomingCount > 0 && (
+                    <li className={styles.menuUpcoming}>
+                      {upcomingCount} novas opções <span className={styles.soonBadge}>em breve</span>
+                    </li>
+                  )}
                   {availableItems.map((item) => (
                     <li key={item.slug}>
                       <Link href={`/${item.slug}/`} className={styles.menuItem} onClick={closeNav}>
@@ -113,8 +112,10 @@ export default function Header() {
                       </Link>
                     </li>
                   ))}
-                  <li className={styles.menuFooter}>
-                    {upcomingCount} novas opções <span className={styles.soonBadge}>em breve</span>
+                  <li>
+                    <Link href={`/${group.id}/`} className={styles.menuOverview} onClick={closeNav}>
+                      Ver todas as {group.label.toLowerCase()}
+                    </Link>
                   </li>
                 </ul>
               </div>

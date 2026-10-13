@@ -35,19 +35,7 @@
 }
 
 .logo {
-  display: grid;
-  place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: $radius-pill;
-  background-color: var(--brand-cta);
-  color: #08110c;
-  font-weight: 900;
-}
-
-.brandName {
-  font-weight: 700;
-  font-size: $font-md;
+  height: 2.5rem;
 }
 
 .nav {
@@ -198,10 +186,10 @@
 
 .menuOverview {
   display: block;
-  margin-bottom: $space-2;
+  margin-top: $space-2;
   padding: $space-2 $space-3;
-  border-bottom: 1px solid var(--border);
-  border-radius: $radius-sm $radius-sm 0 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 $radius-sm $radius-sm;
   color: var(--brand-cta);
   font-size: $font-sm;
   font-weight: 700;
@@ -232,14 +220,14 @@
   letter-spacing: 0.08em;
 }
 
-.menuFooter {
+.menuUpcoming {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: $space-2;
-  margin-top: $space-2;
-  padding: $space-2 $space-3 $space-1;
-  border-top: 1px solid var(--border);
+  margin-bottom: $space-2;
+  padding: $space-1 $space-3 $space-2;
+  border-bottom: 1px solid var(--border);
   font-size: $font-xs;
   color: var(--text-muted);
 }
