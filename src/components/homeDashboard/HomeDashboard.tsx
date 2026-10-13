@@ -32,7 +32,7 @@ export default function HomeDashboard({ items }: HomeDashboardProps) {
             <div className={styles.grid}>
               {section.items.map((item) =>
                 item.available ? (
-                  <Link key={item.slug} href={`/${item.slug}/`} className={styles.card}>
+                  <Link key={item.slug} href={`/${item.slug}/`} className={`${styles.card} interactive`}>
                     <span className={`${styles.badge} ${styles.badgeAvailable}`}>Disponível</span>
                     <h3 className={styles.cardTitle}>{item.title}</h3>
                     <p className={styles.cardDescription}>{item.description}</p>

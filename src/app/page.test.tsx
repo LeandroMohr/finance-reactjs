@@ -21,6 +21,7 @@ describe("Home", () => {
 
       // Next normalizes the trailing slash at build time via the `trailingSlash` config.
       expect(link.getAttribute("href")).toMatch(new RegExp(`^/${group.id}/?$`));
+      expect(link).toHaveClass("interactive");
 
       for (const item of group.items) {
         expect(screen.queryByText(item.title)).not.toBeInTheDocument();

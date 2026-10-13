@@ -23,7 +23,7 @@ export default function RelatedTools({ slugs }: RelatedToolsProps) {
       <div className={styles.grid}>
         {items.map((item) =>
           item.available ? (
-            <Link key={item.slug} href={`/${item.slug}/`} className={styles.card}>
+            <Link key={item.slug} href={`/${item.slug}/`} className={`${styles.card} interactive`} data-analytics-related-tool={item.slug}>
               <span className={styles.status}>Disponível</span>
               <h3 className={styles.cardTitle}>{item.title}</h3>
               <p className={styles.description}>{item.description}</p>

@@ -45,12 +45,6 @@
   align-items: flex-start;
   gap: $space-2;
   padding: $space-5;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    border-color: var(--brand-accent);
-    transform: translateY(-2px);
-  }
 }
 
 .cardSoon {

@@ -52,13 +52,6 @@
   align-items: flex-start;
   gap: $space-3;
   padding: $space-6;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    border-color: var(--brand-accent);
-    box-shadow: 0 12px 32px rgb(0 0 0 / 25%);
-    transform: translateY(-2px);
-  }
 }
 
 .hubTitle {

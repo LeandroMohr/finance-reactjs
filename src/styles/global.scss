@@ -1,4 +1,5 @@
 @use "./variables" as *;
+@use "./mixins" as *;
 
 :root {
   --bg-base: #{$bg-base};
@@ -75,4 +76,54 @@ button {
   font: inherit;
   color: inherit;
   cursor: pointer;
+}
+
+.interactive {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:where(a[href], button:enabled):hover {
+    border-color: var(--brand-accent);
+    box-shadow: 0 12px 32px rgb(0 0 0 / 25%);
+    transform: translateY(-2px);
+  }
+
+  &:where(a[href], button:enabled):active {
+    box-shadow: inset 0 2px 4px rgb(0 0 0 / 25%);
+    transform: translateY(1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:where(a[href], button:enabled):hover,
+    &:where(a[href], button:enabled):active {
+      transform: none;
+    }
+  }
+}
+
+.button-primary {
+  min-height: 2.75rem;
+  padding: $space-3 $space-5;
+  border: 1px solid var(--brand-primary);
+  border-radius: $radius-sm;
+  background: $light-brand-primary;
+  color: $text-primary;
+  font-weight: 600;
+
+  @include focus-ring;
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: $space-3;
+  margin-top: $space-4;
+
+  [role="alert"] {
+    align-self: stretch;
+    color: var(--feedback-error);
+    font-size: $font-sm;
+  }
 }

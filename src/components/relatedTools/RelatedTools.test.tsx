@@ -12,6 +12,10 @@ describe("RelatedTools", () => {
     expect(screen.getByRole("link", { name: /Primeiro Milhão/ }).getAttribute("href")).toMatch(/^\/primeiro-milhao\/?$/);
     expect(screen.queryByRole("link", { name: /Simulador de Metas/ })).not.toBeInTheDocument();
     expect(screen.getByText("Em breve")).toBeInTheDocument();
+    for (const link of screen.getAllByRole("link")) {
+      expect(link).toHaveClass("interactive");
+    }
+    expect(screen.getByText("Em breve").closest("article")).not.toHaveClass("interactive");
   });
 
   it("ignores unknown slugs", () => {

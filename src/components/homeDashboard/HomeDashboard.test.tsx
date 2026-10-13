@@ -28,6 +28,8 @@ describe("HomeDashboard", () => {
       /^\/juros-compostos\/?$/,
     );
     expect(screen.queryByRole("link", { name: /Simulador de Metas/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Juros Compostos/ })).toHaveClass("interactive");
+    expect(screen.getByRole("heading", { name: "Simulador de Metas" }).closest("article")).not.toHaveClass("interactive");
   });
 
   it("renders every item title as a heading", () => {

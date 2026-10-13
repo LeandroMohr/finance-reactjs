@@ -31,7 +31,7 @@ export default function Home() {
             const availableCount = group.items.filter((item) => item.available).length;
 
             return (
-              <Link key={group.id} href={`/${group.id}/`} className={styles.hubCard}>
+              <Link key={group.id} href={`/${group.id}/`} className={`${styles.hubCard} interactive`}>
                 <h2 className={styles.hubTitle}>{group.label}</h2>
                 <p className={styles.hubDescription}>{group.description}</p>
                 <span className={styles.hubMeta}>
