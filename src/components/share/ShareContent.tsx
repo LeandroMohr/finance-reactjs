@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Icon, type IconName } from "@/components/icon";
 import { siteConfig } from "@/config/site";
+import { trackEvent, type ShareMethod } from "@/utils/analytics";
 import styles from "./ShareContent.module.scss";
 
 type ShareContentProps = {
@@ -15,7 +16,7 @@ type ShareContentProps = {
 };
 
 type ShareNetwork = {
-  id: string;
+  id: Exclude<ShareMethod, "copy">;
   label: string;
   icon: IconName;
   buildHref: (url: string, message: string) => string;
@@ -79,6 +80,7 @@ export default function ShareContent({
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(url);
+      trackEvent("share", { method: "copy", content_type: "page", item_id: path });
       setCopied(true);
       if (resetTimer.current) {
         clearTimeout(resetTimer.current);
@@ -108,6 +110,8 @@ export default function ShareContent({
             rel="noopener noreferrer"
             title={network.label}
             aria-label={network.label}
+            data-analytics-share={network.id}
+            data-analytics-item={path}
           >
             <Icon name={network.icon} size={20} />
           </a>

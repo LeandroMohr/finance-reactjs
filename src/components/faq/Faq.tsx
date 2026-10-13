@@ -44,7 +44,9 @@ export default function Faq({
 
       <div className={styles.list}>
         {items.map((item) => (
-          <Accordion key={item.question} summary={item.question}>
+          <Accordion key={item.question} summary={item.question}
+            analyticsId={item.question.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+              .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}>
             <p className={styles.answer}>{item.answer}</p>
           </Accordion>
         ))}

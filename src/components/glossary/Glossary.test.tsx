@@ -1,7 +1,13 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import Glossary from "./Glossary";
 import { glossaryTerms } from "@/config/glossary";
+import * as analytics from "@/utils/analytics";
+
+afterEach(() => {
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+});
 
 describe("Glossary", () => {
   it("renders all definitions and examples with unique anchors", () => {
@@ -61,5 +67,22 @@ describe("Glossary", () => {
     expect(screen.getByRole("link", { name: "Compartilhar no WhatsApp" }).getAttribute("href")).toContain(
       encodeURIComponent("https://lemohr.com.br/glossario/"),
     );
+  });
+
+  it("debounces search metadata without sending the visitor's search text", () => {
+    vi.useFakeTimers();
+    const track = vi.spyOn(analytics, "trackEvent").mockReturnValue(true);
+    const { unmount } = render(<Glossary />);
+    const input = screen.getByLabelText("Buscar termo, sigla ou descrição");
+    fireEvent.change(input, { target: { value: "LP" } });
+    act(() => vi.advanceTimersByTime(1499));
+    expect(track).not.toHaveBeenCalled();
+    fireEvent.change(input, { target: { value: "LPA" } });
+    act(() => vi.advanceTimersByTime(1500));
+    expect(track).toHaveBeenCalledExactlyOnceWith("glossary_search", { result_count: 2, query_length: 3 });
+    fireEvent.change(input, { target: { value: "new query" } });
+    unmount();
+    act(() => vi.advanceTimersByTime(1500));
+    expect(track).toHaveBeenCalledTimes(1);
   });
 });

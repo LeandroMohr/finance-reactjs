@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Accordion from "@/components/accordion/Accordion";
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 import ShareContent from "@/components/share/ShareContent";
 import { alphabet, getGlossaryGroups, glossaryTerms } from "@/config/glossary";
+import { trackEvent } from "@/utils/analytics";
 import styles from "./Glossary.module.scss";
 
 export default function Glossary() {
@@ -12,6 +13,14 @@ export default function Glossary() {
   const groups = getGlossaryGroups(query);
   const count = groups.reduce((total, group) => total + group.terms.length, 0);
   const availableLetters = new Set(groups.map((group) => group.letter));
+
+  useEffect(() => {
+    if (!query.trim()) return;
+    const timer = window.setTimeout(() => {
+      trackEvent("glossary_search", { result_count: count, query_length: query.trim().length });
+    }, 1500);
+    return () => window.clearTimeout(timer);
+  }, [query, count]);
 
   return (
     <main className={styles.main}>

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { siteConfig } from "@/config/site";
 import ShareContent from "./ShareContent";
+import * as analytics from "@/utils/analytics";
 
 const path = "/juros-compostos/";
 const title = "Calculadora de Juros Compostos";
@@ -36,6 +37,7 @@ describe("ShareContent", () => {
   });
 
   it("copies the canonical url and confirms the action", async () => {
+    const track = vi.spyOn(analytics, "trackEvent").mockReturnValue(true);
     const writeText = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { ...navigator, clipboard: { writeText } });
 
@@ -44,11 +46,14 @@ describe("ShareContent", () => {
 
     expect(writeText).toHaveBeenCalledWith(url);
     expect(await screen.findByText("Link copiado!")).toBeInTheDocument();
+    expect(track).toHaveBeenCalledExactlyOnceWith("share", { method: "copy", content_type: "page", item_id: path });
 
     vi.unstubAllGlobals();
+    track.mockRestore();
   });
 
   it("stays silent when the clipboard is unavailable", async () => {
+    const track = vi.spyOn(analytics, "trackEvent").mockReturnValue(true);
     vi.stubGlobal("navigator", {
       ...navigator,
       clipboard: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
@@ -58,7 +63,9 @@ describe("ShareContent", () => {
     await userEvent.click(screen.getByRole("button", { name: "Copiar link" }));
 
     expect(screen.queryByText("Link copiado!")).not.toBeInTheDocument();
+    expect(track).not.toHaveBeenCalled();
 
     vi.unstubAllGlobals();
+    track.mockRestore();
   });
 });
