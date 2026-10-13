@@ -12,19 +12,19 @@ export default function FieldLabel({ htmlFor, id, label, tooltipText }: FieldLab
   const [open, setOpen] = useState(false);
   const helpRef = useRef<HTMLSpanElement>(null);
   const rowRef = useRef<HTMLSpanElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const tooltipRef = useRef<HTMLSpanElement>(null);
-  const [position, setPosition] = useState({ left: 0, top: 0, width: 320 });
+  const [position, setPosition] = useState({ left: 0, top: 0 });
   const helpId = `${htmlFor ?? id}-tooltip`;
 
   useLayoutEffect(() => {
-    if (!open || !rowRef.current || !tooltipRef.current) return;
+    if (!open || !rowRef.current || !triggerRef.current || !tooltipRef.current) return;
     const row = rowRef.current.getBoundingClientRect();
-    const width = Math.min(320, window.innerWidth - 32);
-    const height = tooltipRef.current.getBoundingClientRect().height;
+    const trigger = triggerRef.current.getBoundingClientRect();
+    const { width, height } = tooltipRef.current.getBoundingClientRect();
     setPosition({
-      width,
       left: Math.max(16, Math.min(row.left, window.innerWidth - width - 16)),
-      top: Math.max(16, row.bottom + height > window.innerHeight - 16 ? row.top - height : row.bottom),
+      top: Math.max(16, trigger.top - height),
     });
   }, [open]);
 
@@ -58,7 +58,7 @@ export default function FieldLabel({ htmlFor, id, label, tooltipText }: FieldLab
         onPointerEnter={() => setOpen(true)}
         onPointerLeave={() => setOpen(false)}
         onBlur={() => setOpen(false)}>
-        <button type="button" className={styles.trigger}
+        <button ref={triggerRef} type="button" className={styles.trigger}
           aria-label={`Ajuda: ${label}`} aria-describedby={helpId}
           onFocus={() => setOpen(true)} onClick={() => setOpen(true)}>
           <span aria-hidden="true">?</span>

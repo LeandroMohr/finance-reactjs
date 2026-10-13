@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import FieldLabel from "./FieldLabel";
 import CompoundInterestCalculator from "@/components/compoundInterestCalculator/CompoundInterestCalculator";
 import FirstMillionCalculator from "@/components/firstMillionCalculator/FirstMillionCalculator";
@@ -22,6 +22,25 @@ function renderField() {
 }
 
 describe("FieldLabel", () => {
+  it("positions help above the icon using the tooltip's rendered dimensions", () => {
+    const row = new DOMRect(100, 263, 106, 20);
+    const icon = new DOMRect(190, 260, 16, 16);
+    const tooltip = new DOMRect(0, 0, 320, 120);
+    const measure = vi.spyOn(HTMLElement.prototype, "getBoundingClientRect")
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.getAttribute("role") === "tooltip") return tooltip;
+        if (this.tagName === "BUTTON") return icon;
+        return row;
+      });
+    try {
+      renderField();
+      fireEvent.click(screen.getByRole("button", { name: "Ajuda: Capital inicial" }));
+      expect(screen.getByRole("tooltip")).toHaveStyle({ left: "100px", top: "140px" });
+    } finally {
+      measure.mockRestore();
+    }
+  });
+
   it("keeps the field name and description accessible with help initially hidden", () => {
     renderField();
     expect(screen.getByLabelText("Capital inicial")).toHaveAccessibleDescription(
@@ -110,6 +129,7 @@ describe("FieldLabel", () => {
   it("explains the contribution result after switching first-million modes", () => {
     renderCalculator(<FirstMillionCalculator />);
     fireEvent.click(screen.getByLabelText("Descobrir o aporte mensal"));
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     fireEvent.click(screen.getByRole("button", { name: "Ajuda: Aporte mensal necessário" }));
     expect(screen.getByRole("tooltip")).toHaveTextContent(/arredondado para cima em centavos/);
   });
