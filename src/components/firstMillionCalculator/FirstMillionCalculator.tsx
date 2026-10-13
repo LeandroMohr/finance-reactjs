@@ -7,6 +7,7 @@ import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
+import useCalculation from "@/hooks/useCalculation";
 import { firstMillionFaqItems } from "@/config/faq";
 import { currency, formatCompactCurrency, maskCurrency, parseCurrency } from "@/utils/currency";
 import { calculateFirstMillion, MILLION, MAX_MONTHS, type FirstMillionInput } from "./calculateFirstMillion";
@@ -42,11 +43,12 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
     (!/^\d+$/.test(duration) || !Number.isInteger(months) || months < 1 || months > MAX_MONTHS)
     ? "Informe um prazo inteiro de 1 a 100 anos ou de 1 a 1200 meses." : undefined;
   const common = { initialAmount: parseCurrency(initialAmount), interestRate: rateValue, ratePeriod };
-  const result = rateError || durationError ? null : calculateFirstMillion(
-    mode === "time"
-      ? { ...common, mode, monthlyContribution: parseCurrency(contribution) }
-      : { ...common, mode, months },
-  );
+  const input: FirstMillionInput = mode === "time"
+    ? { ...common, mode, monthlyContribution: parseCurrency(contribution) }
+    : { ...common, mode, months };
+  const { result, calculatedInput, calculationError, runCalculation } = useCalculation({
+    input, valid: !rateError && !durationError, calculate: calculateFirstMillion, toolId: "primeiro-milhao",
+  });
   const chart = result ? buildFirstMillionChart(result.evolution) : null;
   const hoveredPoint = hoveredMonth === null ? null : chart?.points[hoveredMonth];
   const handleChartPointerMove = (event: PointerEvent<SVGSVGElement>) => {
@@ -59,7 +61,7 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
   };
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} data-analytics-tool="primeiro-milhao">
       {breadcrumb}
       <h1 className={styles.title}>Calculadora do primeiro milhão</h1>
       <p className={styles.description}>
@@ -68,7 +70,7 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
       </p>
 
       <section className={styles.simulation} aria-label="Simulação do primeiro milhão">
-        <div className={styles.form} onChange={() => setHoveredMonth(null)}>
+        <div className={styles.form} data-analytics-input onChange={() => setHoveredMonth(null)}>
           <p className={styles.eyebrow}>Sua estratégia</p>
           <h2>Como você quer planejar?</h2>
           <fieldset className={styles.mode}>
@@ -128,6 +130,16 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
               <p id="million-rate-help">Taxa efetiva constante. A anual é convertida para a mensal equivalente.</p>
             </div>
           </div>
+          <div className="form-actions">
+            <button type="button" className="button-primary interactive" data-analytics-simulation-interaction
+              onClick={() => {
+                if (!runCalculation()) return;
+                setHoveredMonth(null);
+              }}>
+              Calcular
+            </button>
+            {calculationError && <p role="alert">{calculationError}</p>}
+          </div>
           <p className={styles.note}>
             Aportes no fim de cada mês. Limite de projeção: 100 anos.
             Valores nominais, sem impostos, tarifas ou inflação.
@@ -139,16 +151,16 @@ export default function FirstMillionCalculator({ breadcrumb }: { breadcrumb?: Re
             <>
               <div className={styles.highlight}>
                 <h2><FieldLabel id="million-main-result"
-                  label={mode === "time" ? "Tempo até o primeiro milhão" : "Aporte mensal necessário"}
-                  tooltipText={mode === "time"
+                  label={calculatedInput.mode === "time" ? "Tempo até o primeiro milhão" : "Aporte mensal necessário"}
+                  tooltipText={calculatedInput.mode === "time"
                     ? "Primeiro mês em que o patrimônio chega a R$ 1 milhão ou o ultrapassa. Se a meta já foi alcançada, o tempo é zero. Cenários impossíveis ou acima do limite de 100 anos são indicados explicitamente."
                     : "Aporte fixo no fim de cada mês necessário para chegar a R$ 1 milhão dentro do prazo escolhido, arredondado para cima em centavos. Pode ser zero quando o patrimônio inicial já é suficiente ou cresce até a meta sem novos aportes."} /></h2>
                 <p className={styles.highlightValue} aria-describedby="million-main-result-tooltip">
                   {result.status === "reached"
-                    ? mode === "time" ? formatDuration(result.months) : currency.format(result.monthlyContribution)
+                    ? calculatedInput.mode === "time" ? formatDuration(result.months) : currency.format(result.monthlyContribution)
                     : result.status === "unreachable" ? "Meta não alcançável neste cenário" : "Meta não atingida em 100 anos"}
                 </p>
-                {result.status === "reached" && mode === "contribution" &&
+                {result.status === "reached" && calculatedInput.mode === "contribution" &&
                   <p>{formatDuration(result.months)}. O aporte é arredondado para cima em centavos.</p>}
                 {result.status === "unreachable" && <p>Adicione aportes ou um capital inicial com rendimento positivo.</p>}
                 {result.status === "limit" && <p>Aumente o aporte ou revise a taxa estimada para alcançar a meta no limite simulado.</p>}

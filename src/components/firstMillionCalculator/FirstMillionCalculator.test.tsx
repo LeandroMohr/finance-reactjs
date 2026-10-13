@@ -20,6 +20,8 @@ describe("FirstMillionCalculator", () => {
     fireEvent.change(screen.getByLabelText("Aporte mensal"), { target: { value: "10000000" } });
     fireEvent.change(screen.getByLabelText("Taxa de juros (%)"), { target: { value: "0,0" } });
     expect(screen.getByLabelText("Aporte mensal")).toHaveValue(currency.format(100_000));
+    expect(within(screen.getByRole("complementary")).queryByText("10 meses")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(within(screen.getByRole("complementary")).getByText("10 meses")).toBeVisible();
   });
 
@@ -28,8 +30,10 @@ describe("FirstMillionCalculator", () => {
     fireEvent.click(screen.getByLabelText("Descobrir o aporte mensal"));
     fireEvent.change(screen.getByLabelText("Taxa de juros (%)"), { target: { value: "0" } });
     fireEvent.change(screen.getByLabelText("Prazo desejado"), { target: { value: "10" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(within(screen.getByRole("complementary")).getByText(/R\$\s8\.333,34/)).toBeVisible();
     fireEvent.change(screen.getByLabelText("Unidade do prazo"), { target: { value: "months" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(within(screen.getByRole("complementary")).getByText(/R\$\s100\.000,00/)).toBeVisible();
     expect(screen.queryByLabelText("Aporte mensal")).not.toBeInTheDocument();
   });
@@ -37,6 +41,7 @@ describe("FirstMillionCalculator", () => {
   it("recognizes existing wealth and does not render an empty chart", () => {
     render(<FirstMillionCalculator />);
     fireEvent.change(screen.getByLabelText("Patrimônio inicial"), { target: { value: "100000000" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(screen.getByText("Meta já alcançada")).toBeVisible();
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
@@ -44,16 +49,19 @@ describe("FirstMillionCalculator", () => {
   it("reports impossible scenarios instead of a success-shaped result", () => {
     render(<FirstMillionCalculator />);
     fireEvent.change(screen.getByLabelText("Aporte mensal"), { target: { value: "0" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(screen.getByText("Meta não alcançável neste cenário")).toBeVisible();
   });
 
-  it.each(["", "-1", "abc", "101", "Infinity"])("hides the result for an invalid rate: %s", (rate) => {
+  it.each(["", "-1", "abc", "101", "Infinity"])("preserves the last calculation for an invalid rate: %s", (rate) => {
     render(<FirstMillionCalculator />);
+    const before = screen.getByRole("complementary").textContent;
     fireEvent.change(screen.getByLabelText("Taxa de juros (%)"), { target: { value: rate } });
     expect(screen.getByRole("alert")).toBeVisible();
     expect(screen.getByLabelText("Taxa de juros (%)")).toHaveAttribute("aria-invalid", "true");
-    expect(screen.getByText("Corrija os campos indicados para ver o resultado.")).toBeVisible();
-    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
+    expect(screen.getByRole("complementary").textContent).toBe(before);
+    expect(screen.queryByText(/Campos alterados/)).not.toBeInTheDocument();
   });
 
   it("validates deadlines only when needed", () => {
@@ -70,6 +78,7 @@ describe("FirstMillionCalculator", () => {
     render(<FirstMillionCalculator />);
     fireEvent.change(screen.getByLabelText("Aporte mensal"), { target: { value: "100" } });
     fireEvent.change(screen.getByLabelText("Taxa de juros (%)"), { target: { value: "0" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(screen.getByText("Meta não atingida em 100 anos")).toBeVisible();
   });
 
@@ -77,6 +86,7 @@ describe("FirstMillionCalculator", () => {
     render(<FirstMillionCalculator />);
     fireEvent.change(screen.getByLabelText("Aporte mensal"), { target: { value: "10000000" } });
     fireEvent.change(screen.getByLabelText("Taxa de juros (%)"), { target: { value: "0" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     const chart = screen.getByRole("img");
     vi.spyOn(chart, "getBoundingClientRect").mockReturnValue({
       ...new DOMRect(), left: 0, width: 760,
