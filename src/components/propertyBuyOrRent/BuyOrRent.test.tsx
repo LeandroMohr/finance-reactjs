@@ -22,9 +22,12 @@ describe("BuyOrRent", () => {
   it("changes from SAC to Price and preserves currency masking", () => {
     render(<BuyOrRent />);
     fireEvent.change(screen.getByLabelText("Sistema de amortização"), { target: { value: "price" } });
+    expect(screen.getByText(/R\$\s1\.900,00/)).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(screen.queryByText(/R\$\s1\.900,00/)).not.toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Entrada"), { target: { value: "30000000" } });
     expect(screen.getByLabelText("Entrada")).toHaveValue(currency.format(300000));
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     const buy = screen.getByRole("region", { name: "Comprar e investir a sobra" });
     expect(within(buy).getAllByText(/R\$\s0,00/).length).toBeGreaterThan(0);
   });
@@ -35,15 +38,19 @@ describe("BuyOrRent", () => {
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(screen.getByRole("status", { name: "Resultado da comparação" })).toBeVisible();
     fireEvent.change(screen.getByLabelText("Tipo da taxa do financiamento"), { target: { value: "effective" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(screen.queryByText(/R\$\s1\.900,00/)).not.toBeInTheDocument();
   });
 
-  it.each(["", "abc", "Infinity", "51", "1.5"])("hides results for an invalid comparison horizon: %s", (value) => {
+  it.each(["", "abc", "Infinity", "51", "1.5"])("keeps the last calculation for an invalid comparison horizon: %s", (value) => {
     render(<BuyOrRent />);
     fireEvent.change(screen.getByLabelText("Prazo da comparação (anos)"), { target: { value } });
     expect(screen.getByRole("alert")).toBeVisible();
     expect(screen.getByLabelText("Prazo da comparação (anos)")).toHaveAttribute("aria-invalid", "true");
-    expect(screen.queryByRole("status", { name: "Resultado da comparação" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
+    expect(screen.getByRole("status", { name: "Resultado da comparação" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Comparação em 20 anos" })).toBeVisible();
+    expect(screen.queryByText(/Campos alterados/)).not.toBeInTheDocument();
   });
 
   it("reports an invalid cash deposit in the rental scenario", () => {
@@ -68,6 +75,7 @@ describe("BuyOrRent", () => {
     const checkbox = screen.getByRole("checkbox", { name: /contrato de locação atribui o IPTU/ });
     expect(checkbox).toBeChecked();
     fireEvent.click(checkbox);
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(checkbox).not.toBeChecked();
     const rent = screen.getByRole("region", { name: "Alugar e investir a sobra" });
     expect(within(rent).getByText(/R\$\s2\.300,00/)).toBeVisible();
@@ -83,8 +91,10 @@ describe("BuyOrRent", () => {
     expect(document.getElementById("housing-chart-values")).toHaveTextContent("Mês 60");
     expect(document.getElementById("housing-chart-values")).toHaveTextContent("Reforma:");
     fireEvent.change(screen.getByLabelText("Reforma a cada 5 anos (% do imóvel)"), { target: { value: "0" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(document.getElementById("housing-chart-values")).not.toHaveTextContent("Reforma:");
     fireEvent.change(screen.getByLabelText("Prazo da comparação (anos)"), { target: { value: "1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
     expect(document.getElementById("housing-chart-values")).toHaveTextContent("Mês 12");
   });
 

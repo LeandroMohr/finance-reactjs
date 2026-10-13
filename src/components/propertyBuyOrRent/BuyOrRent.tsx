@@ -7,6 +7,7 @@ import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
+import useCalculation from "@/hooks/useCalculation";
 import { buyOrRentFaqItems } from "@/config/faq";
 import { currency, formatCompactCurrency, maskCurrency, parseCurrency } from "@/utils/currency";
 import { calculateBuyOrRent, defaultBuyOrRentInput, validateBuyOrRent } from "./calculateBuyOrRent";
@@ -71,15 +72,17 @@ export default function BuyOrRent({ breadcrumb }: { breadcrumb?: ReactNode }) {
   const [loanRateType, setLoanRateType] = useState<"nominal" | "effective">("nominal");
   const [renterPaysPropertyTax, setRenterPaysPropertyTax] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
-  const input = fields.reduce((result, field) => {
+  const draftInput = fields.reduce((result, field) => {
     const raw = values[field.key];
     const value = field.money ? parseCurrency(raw)
       : /^-?\d+(?:[.,]\d{1,6})?$/.test(raw.trim()) ? Number(raw.replace(",", ".")) : NaN;
     return { ...result, [field.key]: value };
   }, { ...defaultBuyOrRentInput, amortization, loanRateType, renterPaysPropertyTax });
-  const errors = validateBuyOrRent(input);
+  const errors = validateBuyOrRent(draftInput);
   const hasErrors = Object.keys(errors).length > 0;
-  const result = hasErrors ? null : calculateBuyOrRent(input);
+  const { result, calculatedInput: input, calculationError, runCalculation } = useCalculation({
+    input: draftInput, valid: !hasErrors, calculate: calculateBuyOrRent, toolId: "comprar-ou-alugar",
+  });
   const chart = result ? buildHousingChart(result.evolution) : null;
   const chartPoint = result?.evolution[Math.min(selectedMonth ?? result.final.month, result.final.month)];
   const selectChartMonth = (event: PointerEvent<SVGSVGElement>) => {
@@ -112,7 +115,7 @@ export default function BuyOrRent({ breadcrumb }: { breadcrumb?: ReactNode }) {
   );
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} data-analytics-tool="comprar-ou-alugar">
       {breadcrumb}
       <h1>Comprar x Alugar Imóvel</h1>
       <p>Compare morar em imóvel próprio com alugar um equivalente e investir.
@@ -126,7 +129,7 @@ export default function BuyOrRent({ breadcrumb }: { breadcrumb?: ReactNode }) {
           Você pode rever o plano quando suas prioridades ou as condições mudarem.</p>
       </section>
 
-      <section className={styles.form} aria-labelledby="housing-purchase-inputs">
+      <section className={styles.form} aria-labelledby="housing-purchase-inputs" data-analytics-input>
         <h2 id="housing-purchase-inputs">1. Compra do imóvel</h2>
         <p>Preço, financiamento e despesas de quem será proprietário.</p>
         {renderFields(purchaseFields)}
@@ -154,7 +157,7 @@ export default function BuyOrRent({ breadcrumb }: { breadcrumb?: ReactNode }) {
         <h3>Custos da compra</h3>
         {renderFields(purchaseCosts)}
       </section>
-      <section className={styles.form} aria-labelledby="housing-rental-inputs">
+      <section className={styles.form} aria-labelledby="housing-rental-inputs" data-analytics-input>
         <h2 id="housing-rental-inputs">2. Aluguel do mesmo imóvel</h2>
         <p>Informe a locação de um imóvel com as mesmas características.
           Seus custos são separados dos campos da compra.</p>
@@ -165,13 +168,23 @@ export default function BuyOrRent({ breadcrumb }: { breadcrumb?: ReactNode }) {
             onChange={(event) => setRenterPaysPropertyTax(event.target.checked)} />
             O contrato de locação atribui o IPTU ao locatário</label>
       </section>
-      <section className={styles.form} aria-labelledby="housing-comparison-inputs">
+      <section className={styles.form} aria-labelledby="housing-comparison-inputs" data-analytics-input>
         <h2 id="housing-comparison-inputs">3. Premissas da comparação de moradia</h2>
         {renderFields(comparisonFields)}
         <p>O retorno financeiro serve apenas para considerar as sobras do orçamento.
           Esta página não compara comprar imóvel para renda com investir em FII de tijolo.</p>
         <p className={styles.note}>Valores nominais, sem correção do poder de compra.
           Juros e retornos são constantes; reajustes de aluguel e despesas ocorrem a cada 12 meses.</p>
+        <div className="form-actions">
+          <button type="button" className="button-primary interactive" data-analytics-simulation-interaction
+            onClick={() => {
+              if (!runCalculation()) return;
+              setSelectedMonth(null);
+            }}>
+            Calcular
+          </button>
+          {calculationError && <p role="alert">{calculationError}</p>}
+        </div>
       </section>
 
       {hasErrors && <p role="alert" className={styles.error}>Revise os campos para calcular:
