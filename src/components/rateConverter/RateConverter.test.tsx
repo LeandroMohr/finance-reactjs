@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import RateConverter, { convertRate } from "./RateConverter";
@@ -42,6 +42,10 @@ describe("RateConverter", () => {
     expect(screen.getByLabelText("Periodicidade da taxa")).toHaveValue("monthly");
     expect(screen.getByLabelText("Converter para")).toHaveValue("annual");
     expect(screen.getByLabelText("Valor de exemplo")).toHaveValue("R$ 1.000,00");
+    const button = screen.getByRole("button", { name: "Calcular" });
+    const amount = screen.getByLabelText("Valor de exemplo");
+    expect(button.parentElement?.parentElement).toBe(amount.closest("[data-analytics-input]"));
+    expect(amount.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("recommends related tools", () => {
@@ -84,7 +88,7 @@ describe("RateConverter", () => {
     expect(within(aside).getByText("R$ 392,89")).toBeInTheDocument();
   });
 
-  it("updates the example interest amounts when the example amount changes", async () => {
+  it("updates example interest amounts only after clicking Calcular", async () => {
     const user = userEvent.setup();
     render(<RateConverter />);
 
@@ -94,6 +98,8 @@ describe("RateConverter", () => {
 
     const aside = screen.getByText("Resultado").closest("aside")!;
 
+    expect(within(aside).getByText("R$ 392,89")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Calcular" }));
     expect(within(aside).getByText("R$ 785,78")).toBeInTheDocument();
   });
 
@@ -127,5 +133,14 @@ describe("RateConverter", () => {
     expect(table).not.toHaveTextContent("Bimestral");
     expect(table).not.toHaveTextContent("Trimestral");
     expect(table).not.toHaveTextContent("Semestral");
+  });
+
+  it("rejects overflow while preserving the last finite calculation", () => {
+    render(<RateConverter />);
+    fireEvent.change(screen.getByLabelText("Taxa de juros (%)"), { target: { value: "9999999999999999999" } });
+    fireEvent.change(screen.getByLabelText("Periodicidade da taxa"), { target: { value: "daily" } });
+    fireEvent.click(screen.getByRole("button", { name: "Calcular" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("resultado finito");
+    expect(within(screen.getByText("Resultado").closest("aside")!).getByText("39,29%")).toBeInTheDocument();
   });
 });

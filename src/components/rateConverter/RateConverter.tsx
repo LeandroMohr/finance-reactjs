@@ -7,6 +7,7 @@ import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
+import useCalculation from "@/hooks/useCalculation";
 import { rateConverterFaqItems } from "@/config/faq";
 import { currency, maskCurrency, parseCurrency } from "@/utils/currency";
 import styles from "./RateConverter.module.scss";
@@ -95,22 +96,29 @@ const defaultValues: FormValues = {
   amount: maskCurrency("100000"),
 };
 
+function calculateConversion(input: RateConverterInput & { amount: number }) {
+  return {
+    convertedRate: convertRate(input),
+    allPeriods: PERIOD_ORDER.map((period) => ({
+      period,
+      rate: convertRate({ rate: input.rate, fromPeriod: input.fromPeriod, toPeriod: period }),
+    })),
+  };
+}
+
 export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }) {
   const [values, setValues] = useState(defaultValues);
 
   const { error, input } = useMemo(() => validateValues(values), [values]);
-  const convertedRate = useMemo(() => convertRate(input), [input]);
-
-  const allPeriods = useMemo(
-    () =>
-      PERIOD_ORDER.map((period) => ({
-        period,
-        rate: convertRate({ rate: input.rate, fromPeriod: input.fromPeriod, toPeriod: period }),
-      })),
-    [input],
-  );
-
-  const exampleAmount = parseCurrency(values.amount);
+  const amount = parseCurrency(values.amount);
+  const { result, calculatedInput, calculationError, runCalculation } = useCalculation({
+    input: { ...input, amount }, valid: !error,
+    calculate: calculateConversion, toolId: "conversor-de-taxas",
+    validateResult: (value) => Number.isFinite(value.convertedRate) &&
+      value.allPeriods.every((row) => Number.isFinite(row.rate) && Number.isFinite(amount * (row.rate / 100))),
+  });
+  const { convertedRate, allPeriods } = result;
+  const exampleAmount = calculatedInput.amount;
   const dailyRate = allPeriods.find((row) => row.period === "daily")!.rate;
   const monthlyRate = allPeriods.find((row) => row.period === "monthly")!.rate;
   const annualRate = allPeriods.find((row) => row.period === "annual")!.rate;
@@ -139,12 +147,12 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
   };
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} data-analytics-tool="conversor-de-taxas">
       {breadcrumb}
       <h1 className={styles.title}>Conversor de taxas</h1>
 
       <section className={styles.simulation}>
-        <div className={styles.form}>
+        <div className={styles.form} data-analytics-input>
           <p className={styles.eyebrow}>Conversão</p>
           <h2 className={styles.sectionTitle}>Informe a taxa</h2>
 
@@ -208,6 +216,7 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
                   className={styles.swapButton}
                   onClick={handleSwap}
                   aria-label="Inverter periodicidades"
+                  data-analytics-simulation-interaction
                 >
                   ⇄
                 </button>
@@ -231,13 +240,20 @@ export default function RateConverter({ breadcrumb }: { breadcrumb?: ReactNode }
               </div>
             </div>
           </div>
+          <div className="form-actions">
+            <button type="button" className="button-primary interactive" data-analytics-simulation-interaction
+              onClick={runCalculation}>
+              Calcular
+            </button>
+            {calculationError && <p role="alert">{calculationError}</p>}
+          </div>
         </div>
 
         <aside className={styles.result}>
           <p className={styles.eyebrow}>Resultado</p>
 
           <div className={styles.highlight}>
-            <FieldLabel id="converter-equivalent" label={`Taxa ${PERIOD_LABELS[values.toPeriod].toLowerCase()} equivalente`}
+            <FieldLabel id="converter-equivalent" label={`Taxa ${PERIOD_LABELS[calculatedInput.toPeriod].toLowerCase()} equivalente`}
               tooltipText="Taxa no período escolhido que mantém o mesmo crescimento acumulado da taxa original, considerando juros compostos e a convenção 30/360. A exibição é arredondada para duas casas decimais." />
             <p className={styles.highlightValue} aria-describedby="converter-equivalent-tooltip">{percent.format(convertedRate)}%</p>
           </div>
