@@ -7,6 +7,7 @@ import FieldLabel from "@/components/fieldLabel/FieldLabel";
 import Faq from "@/components/faq/Faq";
 import RelatedTools from "@/components/relatedTools/RelatedTools";
 import ShareContent from "@/components/share/ShareContent";
+import useCalculation from "@/hooks/useCalculation";
 import { compoundInterestFaqItems } from "@/config/faq";
 import { currency, formatCompactCurrency, maskCurrency, parseCurrency } from "@/utils/currency";
 import styles from "./CompoundInterestCalculator.module.scss";
@@ -317,7 +318,11 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
   const [values, setValues] = useState(defaultValues);
 
   const { errors, input } = useMemo(() => validateValues(values), [values]);
-  const result = useMemo(() => calculateCompoundInterest(input), [input]);
+  const { result, calculatedInput, calculationError, runCalculation } = useCalculation({
+    input, valid: Object.keys(errors).length === 0, calculate: calculateCompoundInterest,
+    toolId: "juros-compostos",
+    validateResult: (value) => [value.finalAmount, value.totalContributed, value.totalReturns].every(Number.isFinite),
+  });
 
   const chart = useMemo(() => buildChart(result.monthlyBreakdown), [result]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -326,7 +331,7 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
   const hoveredPoint = hoveredIndex === null ? null : (chart.points[hoveredIndex] ?? null);
 
   const tableMode: TableMode =
-    values.durationUnit === "years" ? "years" : groupByYear ? "monthRanges" : "months";
+    calculatedInput.durationUnit === "years" ? "years" : groupByYear ? "monthRanges" : "months";
   const rows = useMemo(
     () => buildTableRows(result.monthlyBreakdown, tableMode),
     [result, tableMode],
@@ -348,7 +353,6 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
   };
 
   const handleChange = (key: AmountKey, type: FieldType, value: string) => {
-    setPage(1);
     setValues((current) => ({
       ...current,
       [key]: type === "currency" ? maskCurrency(value) : value,
@@ -356,17 +360,16 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
   };
 
   const handleUnitChange = (key: UnitKey, value: string) => {
-    setPage(1);
     setValues((current) => ({ ...current, [key]: value }) as FormValues);
   };
 
   return (
-    <main className={styles.main}>
+    <main className={styles.main} data-analytics-tool="juros-compostos">
       {breadcrumb}
       <h1 className={styles.title}>Calculadora de juros compostos</h1>
 
       <section className={styles.simulation}>
-        <div className={styles.form}>
+        <div className={styles.form} data-analytics-input>
           <p className={styles.eyebrow}>Simulação</p>
           <h2 className={styles.sectionTitle}>Descubra seu crescimento</h2>
 
@@ -413,6 +416,17 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
                 </div>
               );
             })}
+          </div>
+          <div className="form-actions">
+            <button type="button" className="button-primary interactive" data-analytics-simulation-interaction
+              onClick={() => {
+                if (!runCalculation()) return;
+                setPage(1);
+                setHoveredIndex(null);
+              }}>
+              Calcular
+            </button>
+            {calculationError && <p role="alert">{calculationError}</p>}
           </div>
         </div>
 
@@ -529,7 +543,7 @@ export default function CompoundInterestCalculator({ breadcrumb }: { breadcrumb?
           <p className={styles.chartEmpty}>Informe um tempo maior que zero para ver a evolução.</p>
         )}
 
-        {values.durationUnit === "months" ? (
+        {calculatedInput.durationUnit === "months" ? (
           <label className={styles.groupToggle}>
             <input
               type="checkbox"

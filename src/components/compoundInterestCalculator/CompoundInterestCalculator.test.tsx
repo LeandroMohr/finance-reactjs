@@ -159,6 +159,7 @@ describe("CompoundInterestCalculator", () => {
     await user.clear(duration);
     await user.type(duration, "18");
     await user.selectOptions(screen.getByLabelText("Unidade do tempo"), "months");
+    await user.click(screen.getByRole("button", { name: "Calcular" }));
 
     const table = screen.getByRole("table");
 
@@ -186,6 +187,7 @@ describe("CompoundInterestCalculator", () => {
     await user.clear(duration);
     await user.type(duration, "18");
     await user.selectOptions(screen.getByLabelText("Unidade do tempo"), "months");
+    await user.click(screen.getByRole("button", { name: "Calcular" }));
     await user.click(screen.getByLabelText("Agrupar a cada 12 meses"));
 
     const table = screen.getByRole("table");
@@ -206,6 +208,7 @@ describe("CompoundInterestCalculator", () => {
     const duration = getInput("Tempo");
     await user.clear(duration);
     await user.type(duration, "2");
+    await user.click(screen.getByRole("button", { name: "Calcular" }));
 
     const table = screen.getByRole("table");
 
@@ -238,6 +241,7 @@ describe("CompoundInterestCalculator", () => {
     const duration = getInput("Tempo");
     await user.clear(duration);
     await user.type(duration, "1.5");
+    await user.click(screen.getByRole("button", { name: "Calcular" }));
 
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(3); // header + 2 years
@@ -302,6 +306,7 @@ describe("CompoundInterestCalculator", () => {
     await user.clear(duration);
     await user.type(duration, "3");
     await user.selectOptions(screen.getByLabelText("Unidade do tempo"), "months");
+    await user.click(screen.getByRole("button", { name: "Calcular" }));
 
     const chart = screen.getByRole("img");
     // jsdom não calcula layout, então o tamanho do gráfico precisa ser simulado.
@@ -323,7 +328,7 @@ describe("CompoundInterestCalculator", () => {
     expect(screen.queryByText("3º mês")).not.toBeInTheDocument();
   });
 
-  it("recalculates the result when the user changes a field", async () => {
+  it("keeps results unchanged until the user clicks Calcular", async () => {
     const user = userEvent.setup();
     render(<CompoundInterestCalculator />);
 
@@ -339,6 +344,9 @@ describe("CompoundInterestCalculator", () => {
     await user.type(duration, "18");
     await user.selectOptions(screen.getByLabelText("Unidade do tempo"), "months");
 
+    expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(1);
+    expect(screen.queryByText(/Campos alterados/)).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Calcular" }));
     // getByText normaliza o espaço não separável usado pelo Intl.
     expect(screen.getByText(currency.format(9000).replace(/\u00a0/g, " "))).toBeInTheDocument();
     expect(screen.getByText(currency.format(807.37).replace(/\u00a0/g, " "))).toBeInTheDocument();
