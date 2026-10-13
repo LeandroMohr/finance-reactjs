@@ -40,18 +40,7 @@
 }
 
 .logo {
-  display: grid;
-  place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: $radius-pill;
-  background-color: var(--brand-cta);
-  color: #08110c;
-  font-weight: 900;
-}
-
-.brandName {
-  font-weight: 700;
+  height: 8rem;
 }
 
 .tagline {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand";
 import { AdvertisingPreferencesButton } from "@/components/advertising/AdvertisingProvider";
 import { institutionalLinks, navGroups, siteConfig } from "@/config/site";
 import styles from "./Footer.module.scss";
@@ -11,10 +12,7 @@ export default function Footer() {
       <div className={styles.inner}>
         <div className={styles.brandColumn}>
           <Link href="/" className={styles.brand}>
-            <span className={styles.logo} aria-hidden="true">
-              L
-            </span>
-            <span className={styles.brandName}>{siteConfig.name}</span>
+            <BrandLogo variant="vertical" className={styles.logo} />
           </Link>
           <p className={styles.tagline}>{siteConfig.description}</p>
         </div>

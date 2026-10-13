@@ -1,0 +1,19 @@
+.logo {
+  display: block;
+  width: auto;
+  max-width: none;
+}
+
+.light {
+  display: none;
+}
+
+:global(html[data-theme="light"]) {
+  .dark {
+    display: none;
+  }
+
+  .light {
+    display: block;
+  }
+}
